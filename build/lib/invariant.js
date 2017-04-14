@@ -1,10 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = invariant;
-
+exports.default = invariant;
 function invariant(condition, format, a, b, c, d, e, f) {
   if (!condition) {
     (function () {
@@ -18,5 +17,3 @@ function invariant(condition, format, a, b, c, d, e, f) {
     })();
   }
 }
-
-module.exports = exports['default'];

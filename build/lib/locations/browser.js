@@ -1,10 +1,8 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _dash = require('../dash');
 
@@ -12,7 +10,10 @@ var _locationBar = require('location-bar');
 
 var _locationBar2 = _interopRequireDefault(_locationBar);
 
-exports['default'] = BrowserLocation;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = BrowserLocation;
+
 
 function BrowserLocation(options) {
   this.path = options.path || '';
@@ -25,7 +26,7 @@ function BrowserLocation(options) {
   // we're using the location-bar module for actual
   // URL management
   var self = this;
-  this.locationBar = new _locationBar2['default']();
+  this.locationBar = new _locationBar2.default();
   this.locationBar.onChange(function (path) {
     self.handleURL('/' + (path || ''));
   });
@@ -141,4 +142,3 @@ BrowserLocation.prototype.handleURL = function (url) {
     this.changeCallback(url);
   }
 };
-module.exports = exports['default'];

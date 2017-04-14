@@ -1,12 +1,13 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _dash = require('../dash');
 
-exports['default'] = MemoryLocation;
+exports.default = MemoryLocation;
+
 
 function MemoryLocation(options) {
   this.path = options.path || '';
@@ -52,4 +53,3 @@ MemoryLocation.prototype.removeRoot = function (url) {
 MemoryLocation.prototype.formatURL = function (url) {
   return url;
 };
-module.exports = exports['default'];

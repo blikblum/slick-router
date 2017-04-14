@@ -1,17 +1,17 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = transition;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = transition;
 
 var _dash = require('./dash');
 
 var _invariant = require('./invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function transition(options, Promise) {
   options = options || {};
@@ -38,8 +38,8 @@ function transition(options, Promise) {
   log('Transition #' + id, 'query:', query);
 
   // create the transition promise
-  var resolve = undefined,
-      reject = undefined;
+  var resolve = void 0,
+      reject = void 0;
   var promise = new Promise(function (res, rej) {
     resolve = res;
     reject = rej;
@@ -51,7 +51,7 @@ function transition(options, Promise) {
   //    unhandled rejection' for cancellations
   promise.then(function () {
     log('Transition #' + id, 'completed in', Date.now() - startTime + 'ms');
-  })['catch'](function (err) {
+  }).catch(function (err) {
     if (err.type !== 'TransitionRedirected' && err.type !== 'TransitionCancelled') {
       log('Transition #' + id, 'FAILED');
       logError(err.stack);
@@ -116,12 +116,12 @@ function transition(options, Promise) {
     },
 
     then: promise.then.bind(promise),
-    'catch': promise['catch'].bind(promise)
+    catch: promise.catch.bind(promise)
   };
 
   // here we handle calls to all of the middlewares
   function callNext(i, prevResult) {
-    var middlewareName = undefined;
+    var middlewareName = void 0;
     // if transition has been cancelled - nothing left to do
     if (cancelled) {
       return;
@@ -130,17 +130,17 @@ function transition(options, Promise) {
     if (i < router.middleware.length) {
       middlewareName = router.middleware[i].name || 'anonymous';
       log('Transition #' + id, 'resolving middleware:', middlewareName);
-      var middlewarePromise = undefined;
+      var middlewarePromise = void 0;
       try {
         middlewarePromise = router.middleware[i](transition, prevResult);
-        (0, _invariant2['default'])(transition !== middlewarePromise, 'Middleware %s returned a transition which resulted in a deadlock', middlewareName);
+        (0, _invariant2.default)(transition !== middlewarePromise, 'Middleware %s returned a transition which resulted in a deadlock', middlewareName);
       } catch (err) {
         router.state.activeTransition = null;
         return reject(err);
       }
       Promise.resolve(middlewarePromise).then(function (result) {
         callNext(i + 1, result);
-      })['catch'](function (err) {
+      }).catch(function (err) {
         log('Transition #' + id, 'resolving middleware:', middlewareName, 'FAILED');
         router.state.activeTransition = null;
         reject(err);
@@ -172,5 +172,3 @@ function transition(options, Promise) {
 
   return transition;
 }
-
-module.exports = exports['default'];

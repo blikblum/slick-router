@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var toString = Object.prototype.toString;
@@ -12,26 +12,23 @@ var isArray = function isArray(obj) {
   return toString.call(obj) === '[object Array]';
 };
 
-var clone = function clone(obj) {
+var clone = exports.clone = function clone(obj) {
   return obj ? isArray(obj) ? obj.slice(0) : extend({}, obj) : obj;
 };
 
-exports.clone = clone;
-var pick = function pick(obj, attrs) {
+var pick = exports.pick = function pick(obj, attrs) {
   return attrs.reduce(function (acc, attr) {
     return obj[attr] === undefined ? acc : assoc(acc, attr, obj[attr]);
   }, {});
 };
 
-exports.pick = pick;
-var isEqual = function isEqual(obj1, obj2) {
+var isEqual = exports.isEqual = function isEqual(obj1, obj2) {
   return keys(obj1).length === keys(obj2).length && keys(obj1).reduce(function (acc, key) {
     return acc && obj2[key] === obj1[key];
   }, true);
 };
 
-exports.isEqual = isEqual;
-var extend = function extend(obj) {
+var extend = exports.extend = function extend(obj) {
   for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     rest[_key - 1] = arguments[_key];
   }
@@ -46,8 +43,7 @@ var extend = function extend(obj) {
   return obj;
 };
 
-exports.extend = extend;
-var find = function find(list, pred) {
+var find = exports.find = function find(list, pred) {
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -62,8 +58,8 @@ var find = function find(list, pred) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator['return']) {
-        _iterator['return']();
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
       }
     } finally {
       if (_didIteratorError) {
@@ -73,8 +69,6 @@ var find = function find(list, pred) {
   }
 };
 
-exports.find = find;
-var isString = function isString(obj) {
+var isString = exports.isString = function isString(obj) {
   return Object.prototype.toString.call(obj) === '[object String]';
 };
-exports.isString = isString;

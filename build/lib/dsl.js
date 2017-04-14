@@ -1,11 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = dsl;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = dsl;
 
 var _dash = require('./dash');
 
@@ -13,15 +11,17 @@ var _invariant = require('./invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function dsl(callback) {
   var ancestors = [];
   var matches = {};
   var names = {};
 
   callback(function route(name, options, callback) {
-    var routes = undefined;
+    var routes = void 0;
 
-    (0, _invariant2['default'])(!names[name], 'Route names must be unique, but route "%s" is declared multiple times', name);
+    (0, _invariant2.default)(!names[name], 'Route names must be unique, but route "%s" is declared multiple times', name);
 
     names[name] = true;
 
@@ -62,8 +62,9 @@ function dsl(callback) {
   }
 
   function push(route) {
-    matches[currentLevel()] = matches[currentLevel()] || [];
-    matches[currentLevel()].push(route);
+    var level = currentLevel();
+    matches[level] = matches[level] || [];
+    matches[level].push(route);
   }
 
   function currentLevel() {
@@ -72,5 +73,3 @@ function dsl(callback) {
 
   return pop();
 }
-
-module.exports = exports['default'];

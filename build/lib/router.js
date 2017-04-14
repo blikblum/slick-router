@@ -1,11 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = cherrytree;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = cherrytree;
 
 var _dash = require('./dash');
 
@@ -21,13 +19,13 @@ var _invariant = require('./invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _locationsBrowser = require('./locations/browser');
+var _browser = require('./locations/browser');
 
-var _locationsBrowser2 = _interopRequireDefault(_locationsBrowser);
+var _browser2 = _interopRequireDefault(_browser);
 
-var _locationsMemory = require('./locations/memory');
+var _memory = require('./locations/memory');
 
-var _locationsMemory2 = _interopRequireDefault(_locationsMemory);
+var _memory2 = _interopRequireDefault(_memory);
 
 var _transition = require('./transition');
 
@@ -42,6 +40,8 @@ var _logger2 = _interopRequireDefault(_logger);
 var _qs = require('./qs');
 
 var _qs2 = _interopRequireDefault(_qs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Cherrytree() {
   this.initialize.apply(this, arguments);
@@ -60,12 +60,12 @@ Cherrytree.prototype.initialize = function (options) {
     interceptLinks: true,
     logError: true,
     Promise: Promise,
-    qs: _qs2['default']
+    qs: _qs2.default
   }, options);
-  this.log = (0, _logger2['default'])(this.options.log);
-  this.logError = (0, _logger2['default'])(this.options.logError, { error: true });
+  this.log = (0, _logger2.default)(this.options.log);
+  this.logError = (0, _logger2.default)(this.options.logError, { error: true });
 
-  (0, _invariant2['default'])(typeof this.options.Promise === 'function', 'Cherrytree requires an ES6 Promise implementation, ' + 'either as an explicit option or a global Promise');
+  (0, _invariant2.default)(typeof this.options.Promise === 'function', 'Cherrytree requires an ES6 Promise implementation, ' + 'either as an explicit option or a global Promise');
 };
 
 /**
@@ -87,7 +87,7 @@ Cherrytree.prototype.use = function (middleware) {
  */
 Cherrytree.prototype.map = function (routes) {
   // create the route tree
-  this.routes = (0, _dsl2['default'])(routes);
+  this.routes = (0, _dsl2.default)(routes);
 
   // create the matcher list, which is like a flattened
   // list of routes = a list of all branches of the route tree
@@ -133,7 +133,7 @@ Cherrytree.prototype.map = function (routes) {
 
   // check if there is an index route for each abstract route
   Object.keys(abstracts).forEach(function (path) {
-    var matcher = undefined;
+    var matcher = void 0;
     if (!dupes[path]) return;
 
     matchers.some(function (m) {
@@ -234,10 +234,9 @@ Cherrytree.prototype.replaceWith = function () {
  * @api public
  */
 Cherrytree.prototype.generate = function (name, params, query) {
-  (0, _invariant2['default'])(this.location, 'call .listen() before using .generate()');
-  var matcher = undefined;
+  (0, _invariant2.default)(this.location, 'call .listen() before using .generate()');
+  var matcher = void 0;
 
-  params = params || {};
   query = query || {};
 
   this.matchers.forEach(function (m) {
@@ -250,18 +249,7 @@ Cherrytree.prototype.generate = function (name, params, query) {
     throw new Error('No route is named ' + name);
   }
 
-  // this might be a dangerous feature, although it's useful in practise
-  // if some params are not passed into the generate call, they're populated
-  // based on the current state or on the currently active transition.
-  // Consider removing this.. since the users can opt into this behaviour, by
-  // reaching out to the router.state if that's what they want.
-  var currentParams = (0, _dash.clone)(this.state.params || {});
-  if (this.state.activeTransition) {
-    currentParams = (0, _dash.clone)(this.state.activeTransition.params || {});
-  }
-  params = (0, _dash.extend)(currentParams, params);
-
-  var url = _path2['default'].withQuery(this.options.qs, _path2['default'].injectParams(matcher.path, params), query);
+  var url = _path2.default.withQuery(this.options.qs, _path2.default.injectParams(matcher.path, params), query);
   return this.location.formatURL(url);
 };
 
@@ -332,7 +320,7 @@ Cherrytree.prototype.doTransition = function (method, params) {
 
   var transition = this.dispatch(url);
 
-  transition['catch'](function (err) {
+  transition.catch(function (err) {
     if (err && err.type === 'TransitionCancelled') {
       // reset the URL in case the transition has been cancelled
       _this2.location.replaceURL(previousUrl, { trigger: false });
@@ -354,12 +342,12 @@ Cherrytree.prototype.doTransition = function (method, params) {
  */
 Cherrytree.prototype.match = function (path) {
   path = (path || '').replace(/\/$/, '') || '/';
-  var params = undefined;
+  var params = void 0;
   var routes = [];
-  var pathWithoutQuery = _path2['default'].withoutQuery(path);
+  var pathWithoutQuery = _path2.default.withoutQuery(path);
   var qs = this.options.qs;
   this.matchers.some(function (matcher) {
-    params = _path2['default'].extractParams(matcher.path, pathWithoutQuery);
+    params = _path2.default.extractParams(matcher.path, pathWithoutQuery);
     if (params) {
       routes = matcher.routes;
       return true;
@@ -369,7 +357,7 @@ Cherrytree.prototype.match = function (path) {
     routes: routes.map(descriptor),
     params: params || {},
     pathname: pathWithoutQuery,
-    query: _path2['default'].extractQuery(qs, path) || {}
+    query: _path2.default.extractQuery(qs, path) || {}
   };
 
   // clone the data (only a shallow clone of options)
@@ -382,7 +370,7 @@ Cherrytree.prototype.match = function (path) {
     return {
       name: route.name,
       path: route.path,
-      params: (0, _dash.pick)(params, _path2['default'].extractParamNames(route.path)),
+      params: (0, _dash.pick)(params, _path2.default.extractParamNames(route.path)),
       options: (0, _dash.clone)(route.options)
     };
   }
@@ -416,7 +404,7 @@ Cherrytree.prototype.dispatch = function (path) {
   // but don't actually run any of the middleware
   if (!activeTransition) {
     if (this.state.pathname === pathname && (0, _dash.isEqual)(this.state.query, query)) {
-      return (0, _transition2['default'])({
+      return (0, _transition2.default)({
         id: this.nextId++,
         path: path,
         match: match,
@@ -426,7 +414,7 @@ Cherrytree.prototype.dispatch = function (path) {
     }
   }
 
-  var t = (0, _transition2['default'])({
+  var t = (0, _transition2.default)({
     id: this.nextId++,
     path: path,
     match: match,
@@ -452,9 +440,9 @@ Cherrytree.prototype.createLocation = function (path) {
     return location;
   }
   if (location === 'browser') {
-    return new _locationsBrowser2['default']((0, _dash.pick)(this.options, ['pushState', 'root']));
+    return new _browser2.default((0, _dash.pick)(this.options, ['pushState', 'root']));
   } else if (location === 'memory') {
-    return new _locationsMemory2['default']({ path: path });
+    return new _memory2.default({ path: path });
   } else {
     throw new Error('Location can be `browser`, `memory` or a custom implementation');
   }
@@ -483,6 +471,5 @@ function cherrytree(options) {
   return new Cherrytree(options);
 }
 
-cherrytree.BrowserLocation = _locationsBrowser2['default'];
-cherrytree.MemoryLocation = _locationsMemory2['default'];
-module.exports = exports['default'];
+cherrytree.BrowserLocation = _browser2.default;
+cherrytree.MemoryLocation = _memory2.default;

@@ -1,9 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = {
+exports.default = {
   parse: function parse(querystring) {
     return querystring.split('&').reduce(function (acc, pair) {
       var parts = pair.split('=');
@@ -11,7 +11,6 @@ exports['default'] = {
       return acc;
     }, {});
   },
-
   stringify: function stringify(params) {
     return Object.keys(params).reduce(function (acc, key) {
       if (params[key] !== undefined) {
@@ -21,4 +20,3 @@ exports['default'] = {
     }, []).join('&');
   }
 };
-module.exports = exports['default'];

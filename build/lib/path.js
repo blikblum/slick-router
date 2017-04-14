@@ -1,10 +1,8 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _invariant = require('./invariant');
 
@@ -13,6 +11,8 @@ var _invariant2 = _interopRequireDefault(_invariant);
 var _pathToRegexp = require('path-to-regexp');
 
 var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?+*]?)/g;
 var specialParamChars = /[+*?]$/g;
@@ -23,7 +23,7 @@ var _compiledPatterns = {};
 function compilePattern(pattern) {
   if (!(pattern in _compiledPatterns)) {
     var paramNames = [];
-    var re = (0, _pathToRegexp2['default'])(pattern, paramNames);
+    var re = (0, _pathToRegexp2.default)(pattern, paramNames);
 
     _compiledPatterns[pattern] = {
       matcher: re,
@@ -99,7 +99,7 @@ var Path = {
           return '';
         }
       } else {
-        (0, _invariant2['default'])(params[paramName] != null, "Missing '%s' parameter for path '%s'", paramName, pattern);
+        (0, _invariant2.default)(params[paramName] != null, "Missing '%s' parameter for path '%s'", paramName, pattern);
       }
 
       var paramValue = encodeURIComponent(params[paramName]);
@@ -142,5 +142,4 @@ var Path = {
   }
 };
 
-exports['default'] = Path;
-module.exports = exports['default'];
+exports.default = Path;

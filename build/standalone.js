@@ -64,12 +64,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = cherrytree;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = cherrytree;
 
 	var _dash = __webpack_require__(2);
 
@@ -85,13 +83,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _locationsBrowser = __webpack_require__(8);
+	var _browser = __webpack_require__(8);
 
-	var _locationsBrowser2 = _interopRequireDefault(_locationsBrowser);
+	var _browser2 = _interopRequireDefault(_browser);
 
-	var _locationsMemory = __webpack_require__(11);
+	var _memory = __webpack_require__(11);
 
-	var _locationsMemory2 = _interopRequireDefault(_locationsMemory);
+	var _memory2 = _interopRequireDefault(_memory);
 
 	var _transition = __webpack_require__(12);
 
@@ -106,6 +104,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _qs = __webpack_require__(16);
 
 	var _qs2 = _interopRequireDefault(_qs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function Cherrytree() {
 	  this.initialize.apply(this, arguments);
@@ -124,12 +124,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    interceptLinks: true,
 	    logError: true,
 	    Promise: Promise,
-	    qs: _qs2['default']
+	    qs: _qs2.default
 	  }, options);
-	  this.log = (0, _logger2['default'])(this.options.log);
-	  this.logError = (0, _logger2['default'])(this.options.logError, { error: true });
+	  this.log = (0, _logger2.default)(this.options.log);
+	  this.logError = (0, _logger2.default)(this.options.logError, { error: true });
 
-	  (0, _invariant2['default'])(typeof this.options.Promise === 'function', 'Cherrytree requires an ES6 Promise implementation, ' + 'either as an explicit option or a global Promise');
+	  (0, _invariant2.default)(typeof this.options.Promise === 'function', 'Cherrytree requires an ES6 Promise implementation, ' + 'either as an explicit option or a global Promise');
 	};
 
 	/**
@@ -151,7 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Cherrytree.prototype.map = function (routes) {
 	  // create the route tree
-	  this.routes = (0, _dsl2['default'])(routes);
+	  this.routes = (0, _dsl2.default)(routes);
 
 	  // create the matcher list, which is like a flattened
 	  // list of routes = a list of all branches of the route tree
@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // check if there is an index route for each abstract route
 	  Object.keys(abstracts).forEach(function (path) {
-	    var matcher = undefined;
+	    var matcher = void 0;
 	    if (!dupes[path]) return;
 
 	    matchers.some(function (m) {
@@ -298,10 +298,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @api public
 	 */
 	Cherrytree.prototype.generate = function (name, params, query) {
-	  (0, _invariant2['default'])(this.location, 'call .listen() before using .generate()');
-	  var matcher = undefined;
+	  (0, _invariant2.default)(this.location, 'call .listen() before using .generate()');
+	  var matcher = void 0;
 
-	  params = params || {};
 	  query = query || {};
 
 	  this.matchers.forEach(function (m) {
@@ -314,18 +313,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('No route is named ' + name);
 	  }
 
-	  // this might be a dangerous feature, although it's useful in practise
-	  // if some params are not passed into the generate call, they're populated
-	  // based on the current state or on the currently active transition.
-	  // Consider removing this.. since the users can opt into this behaviour, by
-	  // reaching out to the router.state if that's what they want.
-	  var currentParams = (0, _dash.clone)(this.state.params || {});
-	  if (this.state.activeTransition) {
-	    currentParams = (0, _dash.clone)(this.state.activeTransition.params || {});
-	  }
-	  params = (0, _dash.extend)(currentParams, params);
-
-	  var url = _path2['default'].withQuery(this.options.qs, _path2['default'].injectParams(matcher.path, params), query);
+	  var url = _path2.default.withQuery(this.options.qs, _path2.default.injectParams(matcher.path, params), query);
 	  return this.location.formatURL(url);
 	};
 
@@ -396,7 +384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var transition = this.dispatch(url);
 
-	  transition['catch'](function (err) {
+	  transition.catch(function (err) {
 	    if (err && err.type === 'TransitionCancelled') {
 	      // reset the URL in case the transition has been cancelled
 	      _this2.location.replaceURL(previousUrl, { trigger: false });
@@ -418,12 +406,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Cherrytree.prototype.match = function (path) {
 	  path = (path || '').replace(/\/$/, '') || '/';
-	  var params = undefined;
+	  var params = void 0;
 	  var routes = [];
-	  var pathWithoutQuery = _path2['default'].withoutQuery(path);
+	  var pathWithoutQuery = _path2.default.withoutQuery(path);
 	  var qs = this.options.qs;
 	  this.matchers.some(function (matcher) {
-	    params = _path2['default'].extractParams(matcher.path, pathWithoutQuery);
+	    params = _path2.default.extractParams(matcher.path, pathWithoutQuery);
 	    if (params) {
 	      routes = matcher.routes;
 	      return true;
@@ -433,7 +421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    routes: routes.map(descriptor),
 	    params: params || {},
 	    pathname: pathWithoutQuery,
-	    query: _path2['default'].extractQuery(qs, path) || {}
+	    query: _path2.default.extractQuery(qs, path) || {}
 	  };
 
 	  // clone the data (only a shallow clone of options)
@@ -446,7 +434,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      name: route.name,
 	      path: route.path,
-	      params: (0, _dash.pick)(params, _path2['default'].extractParamNames(route.path)),
+	      params: (0, _dash.pick)(params, _path2.default.extractParamNames(route.path)),
 	      options: (0, _dash.clone)(route.options)
 	    };
 	  }
@@ -480,7 +468,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // but don't actually run any of the middleware
 	  if (!activeTransition) {
 	    if (this.state.pathname === pathname && (0, _dash.isEqual)(this.state.query, query)) {
-	      return (0, _transition2['default'])({
+	      return (0, _transition2.default)({
 	        id: this.nextId++,
 	        path: path,
 	        match: match,
@@ -490,7 +478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  var t = (0, _transition2['default'])({
+	  var t = (0, _transition2.default)({
 	    id: this.nextId++,
 	    path: path,
 	    match: match,
@@ -516,9 +504,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return location;
 	  }
 	  if (location === 'browser') {
-	    return new _locationsBrowser2['default']((0, _dash.pick)(this.options, ['pushState', 'root']));
+	    return new _browser2.default((0, _dash.pick)(this.options, ['pushState', 'root']));
 	  } else if (location === 'memory') {
-	    return new _locationsMemory2['default']({ path: path });
+	    return new _memory2.default({ path: path });
 	  } else {
 	    throw new Error('Location can be `browser`, `memory` or a custom implementation');
 	  }
@@ -547,9 +535,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return new Cherrytree(options);
 	}
 
-	cherrytree.BrowserLocation = _locationsBrowser2['default'];
-	cherrytree.MemoryLocation = _locationsMemory2['default'];
-	module.exports = exports['default'];
+	cherrytree.BrowserLocation = _browser2.default;
+	cherrytree.MemoryLocation = _memory2.default;
 
 /***/ },
 /* 2 */
@@ -557,7 +544,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var toString = Object.prototype.toString;
@@ -569,26 +556,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return toString.call(obj) === '[object Array]';
 	};
 
-	var clone = function clone(obj) {
+	var clone = exports.clone = function clone(obj) {
 	  return obj ? isArray(obj) ? obj.slice(0) : extend({}, obj) : obj;
 	};
 
-	exports.clone = clone;
-	var pick = function pick(obj, attrs) {
+	var pick = exports.pick = function pick(obj, attrs) {
 	  return attrs.reduce(function (acc, attr) {
 	    return obj[attr] === undefined ? acc : assoc(acc, attr, obj[attr]);
 	  }, {});
 	};
 
-	exports.pick = pick;
-	var isEqual = function isEqual(obj1, obj2) {
+	var isEqual = exports.isEqual = function isEqual(obj1, obj2) {
 	  return keys(obj1).length === keys(obj2).length && keys(obj1).reduce(function (acc, key) {
 	    return acc && obj2[key] === obj1[key];
 	  }, true);
 	};
 
-	exports.isEqual = isEqual;
-	var extend = function extend(obj) {
+	var extend = exports.extend = function extend(obj) {
 	  for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 	    rest[_key - 1] = arguments[_key];
 	  }
@@ -603,8 +587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return obj;
 	};
 
-	exports.extend = extend;
-	var find = function find(list, pred) {
+	var find = exports.find = function find(list, pred) {
 	  var _iteratorNormalCompletion = true;
 	  var _didIteratorError = false;
 	  var _iteratorError = undefined;
@@ -619,8 +602,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _iteratorError = err;
 	  } finally {
 	    try {
-	      if (!_iteratorNormalCompletion && _iterator['return']) {
-	        _iterator['return']();
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
 	      }
 	    } finally {
 	      if (_didIteratorError) {
@@ -630,11 +613,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	exports.find = find;
-	var isString = function isString(obj) {
+	var isString = exports.isString = function isString(obj) {
 	  return Object.prototype.toString.call(obj) === '[object String]';
 	};
-	exports.isString = isString;
 
 /***/ },
 /* 3 */
@@ -642,12 +623,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = dsl;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = dsl;
 
 	var _dash = __webpack_require__(2);
 
@@ -655,15 +634,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function dsl(callback) {
 	  var ancestors = [];
 	  var matches = {};
 	  var names = {};
 
 	  callback(function route(name, options, callback) {
-	    var routes = undefined;
+	    var routes = void 0;
 
-	    (0, _invariant2['default'])(!names[name], 'Route names must be unique, but route "%s" is declared multiple times', name);
+	    (0, _invariant2.default)(!names[name], 'Route names must be unique, but route "%s" is declared multiple times', name);
 
 	    names[name] = true;
 
@@ -704,8 +685,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function push(route) {
-	    matches[currentLevel()] = matches[currentLevel()] || [];
-	    matches[currentLevel()].push(route);
+	    var level = currentLevel();
+	    matches[level] = matches[level] || [];
+	    matches[level].push(route);
 	  }
 
 	  function currentLevel() {
@@ -715,19 +697,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return pop();
 	}
 
-	module.exports = exports['default'];
-
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = invariant;
-
+	exports.default = invariant;
 	function invariant(condition, format, a, b, c, d, e, f) {
 	  if (!condition) {
 	    (function () {
@@ -742,19 +721,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	module.exports = exports['default'];
-
 /***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _invariant = __webpack_require__(4);
 
@@ -763,6 +738,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _pathToRegexp = __webpack_require__(6);
 
 	var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?+*]?)/g;
 	var specialParamChars = /[+*?]$/g;
@@ -773,7 +750,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function compilePattern(pattern) {
 	  if (!(pattern in _compiledPatterns)) {
 	    var paramNames = [];
-	    var re = (0, _pathToRegexp2['default'])(pattern, paramNames);
+	    var re = (0, _pathToRegexp2.default)(pattern, paramNames);
 
 	    _compiledPatterns[pattern] = {
 	      matcher: re,
@@ -849,7 +826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return '';
 	        }
 	      } else {
-	        (0, _invariant2['default'])(params[paramName] != null, "Missing '%s' parameter for path '%s'", paramName, pattern);
+	        (0, _invariant2.default)(params[paramName] != null, "Missing '%s' parameter for path '%s'", paramName, pattern);
 	      }
 
 	      var paramValue = encodeURIComponent(params[paramName]);
@@ -892,8 +869,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	exports['default'] = Path;
-	module.exports = exports['default'];
+	exports.default = Path;
 
 /***/ },
 /* 6 */
@@ -1342,11 +1318,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _dash = __webpack_require__(2);
 
@@ -1354,7 +1328,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _locationBar2 = _interopRequireDefault(_locationBar);
 
-	exports['default'] = BrowserLocation;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = BrowserLocation;
+
 
 	function BrowserLocation(options) {
 	  this.path = options.path || '';
@@ -1367,7 +1344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // we're using the location-bar module for actual
 	  // URL management
 	  var self = this;
-	  this.locationBar = new _locationBar2['default']();
+	  this.locationBar = new _locationBar2.default();
 	  this.locationBar.onChange(function (path) {
 	    self.handleURL('/' + (path || ''));
 	  });
@@ -1483,7 +1460,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.changeCallback(url);
 	  }
 	};
-	module.exports = exports['default'];
 
 /***/ },
 /* 9 */
@@ -1546,8 +1522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Handles cross-browser history management, based on either
 	  // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
 	  // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
-	  // and URL fragments. If the browser supports neither (old IE, natch),
-	  // falls back to polling.
+	  // and URL fragments.
 	  var History = function() {
 	    this.handlers = [];
 
@@ -1574,24 +1549,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Cached regex for stripping leading and trailing slashes.
 	  var rootStripper = /^\/+|\/+$/g;
 
-	  // Cached regex for detecting MSIE.
-	  var isExplorer = /msie [\w.]+/;
-
 	  // Cached regex for removing a trailing slash.
 	  var trailingSlash = /\/$/;
 
 	  // Cached regex for stripping urls of hash.
 	  var pathStripper = /#.*$/;
 
+	  // MODIFICATION OF ORIGINAL BACKBONE.HISTORY
 	  // Has the history handling already been started?
-	  History.started = false;
+	  // History.started = false;
 
 	  // Set up all inheritable **Backbone.History** properties and methods.
 	  _.extend(History.prototype, {
-
-	    // The default interval to poll for hash changes, if necessary, is
-	    // twenty times a second.
-	    interval: 50,
 
 	    // Are we at the app root?
 	    atRoot: function() {
@@ -1623,10 +1592,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Start the hash change handling, returning `true` if the current URL matches
 	    // an existing route, and `false` otherwise.
 	    start: function(options) {
-	      if (History.started) throw new Error("LocationBar has already been started");
-	      History.started = true;
+	      // MODIFICATION OF ORIGINAL BACKBONE.HISTORY
+	      // if (History.started) throw new Error("LocationBar has already been started");
+	      // History.started = true;
+	      this.started = true;
 
-	      // Figure out the initial configuration. Do we need an iframe?
+	      // Figure out the initial configuration.
 	      // Is pushState desired ... is it available?
 	      this.options          = _.extend({root: '/'}, options);
 	      this.location         = this.options.location || this.location;
@@ -1636,35 +1607,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._wantsPushState  = !!this.options.pushState;
 	      this._hasPushState    = !!(this.options.pushState && this.history && this.history.pushState);
 	      var fragment          = this.getFragment();
-	      var docMode           = document.documentMode;
-	      var oldIE             = (isExplorer.exec(navigator.userAgent.toLowerCase()) && (!docMode || docMode <= 7));
 
 	      // Normalize root to always include a leading and trailing slash.
 	      this.root = ('/' + this.root + '/').replace(rootStripper, '/');
-
-	      if (oldIE && this._wantsHashChange) {
-	        // MODIFICATION OF ORIGINAL BACKBONE.HISTORY
-	        //
-	        // var frame = Backbone.$('<iframe src="javascript:0" tabindex="-1">');
-	        // this.iframe = frame.hide().appendTo('body')[0].contentWindow;
-	        //
-	        this.iframe = document.createElement("iframe");
-	        this.iframe.setAttribute("src", "javascript:0");
-	        this.iframe.setAttribute("tabindex", -1);
-	        this.iframe.style.display = "none";
-	        document.body.appendChild(this.iframe);
-	        this.iframe = this.iframe.contentWindow;
-	        this.navigate(fragment);
-	      }
 
 	      // Depending on whether we're using pushState or hashes, and whether
 	      // 'onhashchange' is supported, determine how we check the URL state.
 	      if (this._hasPushState) {
 	        on(window, 'popstate', this.checkUrl);
-	      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
+	      } else {
 	        on(window, 'hashchange', this.checkUrl);
-	      } else if (this._wantsHashChange) {
-	        this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
 	      }
 
 	      // Determine if we need to change the base url, for a pushState link
@@ -1701,8 +1653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    stop: function() {
 	      off(window, 'popstate', this.checkUrl);
 	      off(window, 'hashchange', this.checkUrl);
-	      if (this._checkUrlInterval) clearInterval(this._checkUrlInterval);
-	      History.started = false;
+	      this.started = false;
 	    },
 
 	    // Add a route to be tested when the fragment changes. Routes added later
@@ -1712,14 +1663,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    // Checks the current URL to see if it has changed, and if it has,
-	    // calls `loadUrl`, normalizing across the hidden iframe.
+	    // calls `loadUrl`.
 	    checkUrl: function() {
 	      var current = this.getFragment();
-	      if (current === this.fragment && this.iframe) {
-	        current = this.getFragment(this.getHash(this.iframe));
-	      }
 	      if (current === this.fragment) return false;
-	      if (this.iframe) this.navigate(current);
 	      this.loadUrl();
 	    },
 
@@ -1744,7 +1691,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // route callback be fired (not usually desirable), or `replace: true`, if
 	    // you wish to modify the current URL without adding an entry to the history.
 	    navigate: function(fragment, options) {
-	      if (!History.started) return false;
+	      if (!this.started) return false;
 	      if (!options || options === true) options = {trigger: !!options};
 
 	      var url = this.root + (fragment = this.getFragment(fragment || ''));
@@ -1766,14 +1713,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // fragment to store history.
 	      } else if (this._wantsHashChange) {
 	        this._updateHash(this.location, fragment, options.replace);
-	        if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
-	          // Opening and closing the iframe tricks IE7 and earlier to push a
-	          // history entry on hash-tag change.  When replace is true, we don't
-	          // want this.
-	          if(!options.replace) this.iframe.document.open().close();
-	          this._updateHash(this.iframe.location, fragment, options.replace);
-	        }
-
 	      // If you've told us that you explicitly don't want fallback hashchange-
 	      // based history, then `navigate` becomes a page refresh.
 	      } else {
@@ -1812,7 +1751,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // checks if the browser has pushstate support
 	  History.prototype.hasPushState = function () {
-	    if (!History.started) {
+	    // MODIFICATION OF ORIGINAL BACKBONE.HISTORY
+	    if (!this.started) {
 	      throw new Error("only available after LocationBar.start()");
 	    }
 	    return this._hasPushState;
@@ -1841,13 +1781,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _dash = __webpack_require__(2);
 
-	exports['default'] = MemoryLocation;
+	exports.default = MemoryLocation;
+
 
 	function MemoryLocation(options) {
 	  this.path = options.path || '';
@@ -1893,7 +1834,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	MemoryLocation.prototype.formatURL = function (url) {
 	  return url;
 	};
-	module.exports = exports['default'];
 
 /***/ },
 /* 12 */
@@ -1901,18 +1841,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = transition;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = transition;
 
 	var _dash = __webpack_require__(2);
 
 	var _invariant = __webpack_require__(4);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function transition(options, Promise) {
 	  options = options || {};
@@ -1939,8 +1879,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  log('Transition #' + id, 'query:', query);
 
 	  // create the transition promise
-	  var resolve = undefined,
-	      reject = undefined;
+	  var resolve = void 0,
+	      reject = void 0;
 	  var promise = new Promise(function (res, rej) {
 	    resolve = res;
 	    reject = rej;
@@ -1952,7 +1892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  //    unhandled rejection' for cancellations
 	  promise.then(function () {
 	    log('Transition #' + id, 'completed in', Date.now() - startTime + 'ms');
-	  })['catch'](function (err) {
+	  }).catch(function (err) {
 	    if (err.type !== 'TransitionRedirected' && err.type !== 'TransitionCancelled') {
 	      log('Transition #' + id, 'FAILED');
 	      logError(err.stack);
@@ -2017,12 +1957,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    then: promise.then.bind(promise),
-	    'catch': promise['catch'].bind(promise)
+	    catch: promise.catch.bind(promise)
 	  };
 
 	  // here we handle calls to all of the middlewares
 	  function callNext(i, prevResult) {
-	    var middlewareName = undefined;
+	    var middlewareName = void 0;
 	    // if transition has been cancelled - nothing left to do
 	    if (cancelled) {
 	      return;
@@ -2031,17 +1971,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (i < router.middleware.length) {
 	      middlewareName = router.middleware[i].name || 'anonymous';
 	      log('Transition #' + id, 'resolving middleware:', middlewareName);
-	      var middlewarePromise = undefined;
+	      var middlewarePromise = void 0;
 	      try {
 	        middlewarePromise = router.middleware[i](transition, prevResult);
-	        (0, _invariant2['default'])(transition !== middlewarePromise, 'Middleware %s returned a transition which resulted in a deadlock', middlewareName);
+	        (0, _invariant2.default)(transition !== middlewarePromise, 'Middleware %s returned a transition which resulted in a deadlock', middlewareName);
 	      } catch (err) {
 	        router.state.activeTransition = null;
 	        return reject(err);
 	      }
 	      Promise.resolve(middlewarePromise).then(function (result) {
 	        callNext(i + 1, result);
-	      })['catch'](function (err) {
+	      }).catch(function (err) {
 	        log('Transition #' + id, 'resolving middleware:', middlewareName, 'FAILED');
 	        router.state.activeTransition = null;
 	        reject(err);
@@ -2074,24 +2014,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return transition;
 	}
 
-	module.exports = exports['default'];
-
 /***/ },
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.intercept = intercept;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 	var _events = __webpack_require__(14);
 
 	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Handle link delegation on `el` or the document,
@@ -2153,7 +2091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	function delegate(el, type, fn) {
-	  return _events2['default'].bind(el, type, function (e) {
+	  return _events2.default.bind(el, type, function (e) {
 	    var target = e.target || e.srcElement;
 	    var el = link(target);
 	    if (el) {
@@ -2173,7 +2111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	function undelegate(el, type, fn) {
-	  _events2['default'].unbind(el, type, fn);
+	  _events2.default.unbind(el, type, fn);
 	}
 
 	/**
@@ -2223,12 +2161,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var events = createEvents();
 
-	exports['default'] = events;
+	exports.default = events;
+
 
 	function createEvents() {
 	  var exp = {};
@@ -2279,7 +2218,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return exp;
 	}
-	module.exports = exports['default'];
 
 /***/ },
 /* 15 */
@@ -2290,8 +2228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = createLogger;
-
+	exports.default = createLogger;
 	function createLogger(log, options) {
 	  options = options || {};
 	  // falsy means no logging
@@ -2305,18 +2242,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 
-	module.exports = exports["default"];
-
 /***/ },
 /* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = {
+	exports.default = {
 	  parse: function parse(querystring) {
 	    return querystring.split('&').reduce(function (acc, pair) {
 	      var parts = pair.split('=');
@@ -2324,7 +2259,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return acc;
 	    }, {});
 	  },
-
 	  stringify: function stringify(params) {
 	    return Object.keys(params).reduce(function (acc, key) {
 	      if (params[key] !== undefined) {
@@ -2334,7 +2268,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, []).join('&');
 	  }
 	};
-	module.exports = exports['default'];
 
 /***/ }
 /******/ ])

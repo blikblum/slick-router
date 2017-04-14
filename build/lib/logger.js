@@ -3,8 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = createLogger;
-
+exports.default = createLogger;
 function createLogger(log, options) {
   options = options || {};
   // falsy means no logging
@@ -17,5 +16,3 @@ function createLogger(log, options) {
     fn.apply(console, arguments);
   };
 }
-
-module.exports = exports["default"];

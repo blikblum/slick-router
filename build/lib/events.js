@@ -1,11 +1,12 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var events = createEvents();
 
-exports['default'] = events;
+exports.default = events;
+
 
 function createEvents() {
   var exp = {};
@@ -56,4 +57,3 @@ function createEvents() {
 
   return exp;
 }
-module.exports = exports['default'];

@@ -1,15 +1,15 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.intercept = intercept;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 var _events = require('./events');
 
 var _events2 = _interopRequireDefault(_events);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Handle link delegation on `el` or the document,
@@ -71,7 +71,7 @@ function link(element) {
  */
 
 function delegate(el, type, fn) {
-  return _events2['default'].bind(el, type, function (e) {
+  return _events2.default.bind(el, type, function (e) {
     var target = e.target || e.srcElement;
     var el = link(target);
     if (el) {
@@ -91,7 +91,7 @@ function delegate(el, type, fn) {
  */
 
 function undelegate(el, type, fn) {
-  _events2['default'].unbind(el, type, fn);
+  _events2.default.unbind(el, type, fn);
 }
 
 /**
