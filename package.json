@@ -1,6 +1,6 @@
 {
-  "name": "cherrytree",
-  "version": "2.4.1",
+  "name": "cherrytree.svelte",
+  "version": "2.4.2",
   "description": "Cherrytree - a flexible hierarchical client side router",
   "main": "index",
   "scripts": {
