@@ -2,7 +2,7 @@
 
 Cherrytree is a flexible hierarchical router that translates every URL change into a transition descriptor object and calls your middleware functions that put the application into a desired state.
 
-cherrytree.svelte is a fork of master / v2 branch with the following changes
+This is a fork of master / v2 branch with the following changes
 
 * Updated location-bar dependency (v3.0.1)
 * Do not use active state to generate links
