@@ -207,21 +207,3 @@ test('url behaviour during failed transitions', async function () {
     router.transitionTo('faq')
   })
 })
-
-test('uses a custom provided Promise implementation', async function () {
-  let called = 0
-  var LocalPromise = function (fn) {
-    called++
-    return new Promise(fn)
-  }
-  let statics = ['reject', 'resolve', 'race', 'all']
-  statics.forEach(s => LocalPromise[s] = Promise[s].bind(Promise))
-
-  app.destroy()
-  app = new TestApp({ Promise: LocalPromise })
-  await app.start()
-  assert.equals(called, 1)
-
-  await app.router.transitionTo('faq')
-  assert.equals(called, 2)
-})
