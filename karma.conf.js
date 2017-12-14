@@ -28,20 +28,27 @@ function config (c) {
       watch: true,
       devtool: 'inline-source-map',
       module: Object.assign(webpackConfig.module, {
-        loaders: [{
-          test: /\.js$/,
-          exclude: /node_modules/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015'],
-            plugins: ['transform-runtime', 'transform-async-to-generator']
-          }
-        }],
-        postLoaders: c.coverage ? [{
-          test: /\.js/,
-          exclude: /(test|node_modules)/,
-          loader: 'istanbul-instrumenter'
-        }] : []
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['es2015'],
+                  plugins: ['transform-runtime', 'transform-async-to-generator']
+                }
+              }
+            ]
+          },
+          c.coverage ? {
+            enforce: 'post',
+            test: /\.js/,
+            exclude: /(test|node_modules)/,
+            loader: 'istanbul-instrumenter-loader'
+          } : {}
+        ]
       })
     }),
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import { assert } from 'referee'
 import BrowserLocation from '../../lib/locations/browser'
 import MemoryLocation from '../../lib/locations/memory'

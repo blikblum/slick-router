@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import $ from 'jquery'
 import { Promise } from 'es6-promise'
 import { assert } from 'referee'
@@ -207,7 +208,7 @@ test('url behaviour during failed transitions', async function () {
   })
 })
 
-test('uses a custom provided Promise implementation', async function() {
+test('uses a custom provided Promise implementation', async function () {
   let called = 0
   var LocalPromise = function (fn) {
     called++

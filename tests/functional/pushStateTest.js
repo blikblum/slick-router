@@ -16,6 +16,7 @@ if (window.history && window.history.pushState) {
       root: '/app'
     })
     router = app.router
+// eslint-disable-next-line no-return-assign
     return app.start().then(() => history = fakeHistory(router.location))
   })
 
