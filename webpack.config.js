@@ -1,8 +1,12 @@
+const path = require('path')
+
 module.exports = {
   context: __dirname,
+  entry: './lib/router.js',
   output: {
     library: 'cherrytree',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    filename: path.join('build', 'cherrytree.js')
   },
   resolve: {
     alias: {
