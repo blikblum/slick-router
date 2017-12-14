@@ -4,3 +4,4 @@ sauce.json
 .sublimelinterrc
 examples/*/dist
 coverage
+/.idea/
