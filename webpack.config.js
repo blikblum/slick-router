@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   context: __dirname,
@@ -22,11 +23,14 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-            options: {presets: ['es2015']}
+            options: {presets: [['es2015', {modules: false}]]}
           }
         ]
       }
     ]
   },
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin()
+  ],
   devtool: process.env.DEBUG ? 'inline-source-map' : false
 }
