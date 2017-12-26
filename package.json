@@ -69,7 +69,9 @@
     "ignore": [
       "examples/**",
       "docs/**",
-      "build/**"
+      "build/**",
+      "lib/locations/location-bar.js",
+      "tests/location-bar/**"
     ]
   }
 }
