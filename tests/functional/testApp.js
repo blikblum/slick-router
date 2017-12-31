@@ -1,11 +1,11 @@
 import $ from 'jquery'
-import cherrytree from 'cherrytree'
+import Cherrytree from 'cherrytree'
 
 export default function TestApp (options) {
   options = options || {}
 
   // create the router
-  var router = this.router = cherrytree(options)
+  var router = this.router = new Cherrytree(options)
 
   // provide the route map
   router.map(function (route) {

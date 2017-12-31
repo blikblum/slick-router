@@ -1,9 +1,8 @@
 /* eslint-disable no-return-assign */
 import { assert } from 'referee'
 import BrowserLocation from '../../lib/locations/browser'
-import MemoryLocation from '../../lib/locations/memory'
 import { extend } from '../../lib/dash'
-import cherrytree from '../..'
+import Cherrytree from '../..'
 
 let mouse = window.effroi.mouse
 let {suite, test, beforeEach, afterEach} = window
@@ -24,7 +23,7 @@ let routes = (route) => {
 
 beforeEach(() => {
   window.location.hash = ''
-  router = cherrytree()
+  router = new Cherrytree()
 })
 
 afterEach(() => {
@@ -358,7 +357,7 @@ test('#isActive returns true if arguments match current state and false if not',
 suite('route maps')
 
 beforeEach(() => {
-  router = cherrytree()
+  router = new Cherrytree()
 })
 
 afterEach(() => {
@@ -483,8 +482,3 @@ if (window.history && window.history.pushState) {
     document.body.removeChild(a)
   })
 }
-
-test('Browser and Memory locations are exported in the main router file', function () {
-  assert.equals(cherrytree.BrowserLocation, BrowserLocation)
-  assert.equals(cherrytree.MemoryLocation, MemoryLocation)
-})
