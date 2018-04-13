@@ -36,8 +36,7 @@ function config (c) {
               {
                 loader: 'babel-loader',
                 options: {
-                  presets: ['es2015'],
-                  plugins: ['transform-runtime', 'transform-async-to-generator']
+                  presets: ['es2015']
                 }
               }
             ]
