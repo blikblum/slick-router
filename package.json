@@ -5,7 +5,6 @@
   "main": "cherrytree",
   "scripts": {
     "build": "webpack",
-    "release": "release --build",
     "test": "standard | snazzy && karma start --single-run",
     "test-no-coverage": "standard | snazzy && karma start --single-run --no-coverage",
     "watch": "DEBUG=1 webpack -w index.js build/standalone.js"
