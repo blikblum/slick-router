@@ -1,6 +1,5 @@
 /* eslint-disable no-return-assign */
 import $ from 'jquery'
-import { Promise } from 'es6-promise'
 import { assert } from 'referee'
 import TestApp from './testApp'
 
