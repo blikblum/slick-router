@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { assert } from 'referee'
+import { assert } from '@sinonjs/referee'
 import { intercept } from '../../lib/links'
 
 let {suite, test, beforeEach, afterEach} = window

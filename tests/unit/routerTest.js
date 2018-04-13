@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import { assert } from 'referee'
+import { assert } from '@sinonjs/referee'
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
 import Cherrytree from '../..'

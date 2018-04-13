@@ -31,6 +31,8 @@
     "nested"
   ],
   "devDependencies": {
+    "@sinonjs/referee": "^2.0.0",
+    "@sinonjs/referee-sinon": "^2.0.1",
     "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
@@ -51,7 +53,7 @@
     "karma-sourcemap-loader": "^0.3.4",
     "karma-webpack": "^2.0.6",
     "mocha": "^4.0.1",
-    "referee": "^1.1.1",
+    "sinon": "^4.5.0",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3",
     "webpack": "^3.10.0",

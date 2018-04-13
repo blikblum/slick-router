@@ -1,4 +1,4 @@
-import { assert } from 'referee'
+import { assert } from '@sinonjs/referee'
 import qs from '../../lib/qs'
 import * as Path from '../../lib/path'
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import $ from 'jquery'
-import { assert } from 'referee'
+import { assert } from '@sinonjs/referee'
 import TestApp from './testApp'
 
 let { suite, test, beforeEach, afterEach } = window

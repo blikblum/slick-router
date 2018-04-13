@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import {assert} from 'referee'
+import {assert} from '@sinonjs/referee'
 import fakeHistory from '../lib/fakeHistory'
 import TestApp from './testApp'
 let {suite, test, beforeEach, afterEach} = window

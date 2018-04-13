@@ -1,4 +1,4 @@
-import { assert, refute } from 'referee'
+import { assert, refute } from '@sinonjs/referee'
 import { clone, pick, isEqual, extend } from '../../lib/dash'
 
 let {suite, test} = window
