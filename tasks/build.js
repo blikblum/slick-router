@@ -36,4 +36,5 @@ webpack(config, (err, stats) => {
   fs.writeFileSync(`${BUILD_DIR}/package.json`, JSON.stringify(pkg, null, '  '), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/LICENSE`, fs.readFileSync('LICENSE', 'utf-8'), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/README.md`, fs.readFileSync('README.md', 'utf-8'), 'utf-8')
+  fs.writeFileSync(`${BUILD_DIR}/CHANGELOG.md`, fs.readFileSync('CHANGELOG.md', 'utf-8'), 'utf-8')
 })
