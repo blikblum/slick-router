@@ -908,7 +908,7 @@ function transition_transition(options) {
       log('Transition #' + id, 'resolving middleware:', middlewareName);
       var middlewarePromise = void 0;
       try {
-        middlewarePromise = middleware.next(transition, prevResult);
+        middlewarePromise = middleware.next ? middleware.next(transition, prevResult) : prevResult;
         invariant(transition !== middlewarePromise, 'Middleware %s returned a transition which resulted in a deadlock', middlewareName);
       } catch (err) {
         router.state.activeTransition = null;
