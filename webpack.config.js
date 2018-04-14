@@ -32,5 +32,13 @@ module.exports = {
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin()
   ],
-  devtool: process.env.DEBUG ? 'inline-source-map' : false
+  devtool: process.env.DEBUG ? 'inline-source-map' : false,
+  externals: {
+    'path-to-regexp': {
+      commonjs: 'path-to-regexp',
+      commonjs2: 'path-to-regexp',
+      amd: 'path-to-regexp',
+      root: 'pathToRegexp'
+    }
+  }
 }
