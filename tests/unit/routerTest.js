@@ -1,5 +1,6 @@
 /* eslint-disable no-return-assign */
 import { assert } from '@sinonjs/referee'
+import sinon from 'sinon'
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
 import Cherrytree from '../..'
@@ -32,8 +33,19 @@ afterEach(() => {
 
 // @api public
 
-test('#use registers middleware', () => {
+test('#use registers function middleware', () => {
   let m = () => {}
+  router.use(m)
+  assert(router.middleware.length === 1)
+  assert(router.middleware[0].next === m)
+})
+
+test('#use registers object middleware ', () => {
+  let m = {
+    next: function () {},
+    done: function () {},
+    error: function () {}
+  }
   router.use(m)
   assert(router.middleware.length === 1)
   assert(router.middleware[0] === m)
@@ -103,6 +115,37 @@ test('#use middleware gets passed a transition object', (done) => {
       router.use(m)
       return router.transitionTo('status', {user: 1, id: 2}, {withReplies: true})
     }).catch(done)
+})
+
+test('#use middleware next and done hooks are called on successful transition', (done) => {
+  router.map(routes)
+  var m = {
+    next: sinon.spy(),
+    done: sinon.spy()
+  }
+  router.use(m)
+  router.listen()
+  router.transitionTo('messages').then(() => {
+    assert.calledOnce(m.next)
+    assert.calledOnce(m.done)
+    assert.callOrder(m.next, m.done)
+    done()
+  })
+})
+
+test('#use middleware error hook is called on failed transition', (done) => {
+  router.map(routes)
+  var m = {
+    next: sinon.spy(),
+    error: sinon.spy()
+  }
+  router.use(m)
+  router.use(() => { throw new Error('fail') })
+  router.listen()
+  router.transitionTo('messages').catch(() => {
+    assert.calledOnce(m.error)
+    done()
+  })
 })
 
 test('#map registers the routes', () => {
