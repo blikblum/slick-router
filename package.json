@@ -1,10 +1,10 @@
 {
-  "name": "cherrytree",
-  "version": "2.4.2",
+  "name": "cherrytreex",
+  "version": "3.0.0",
   "description": "Cherrytree - a flexible hierarchical client side router",
   "main": "cherrytree.js",
   "scripts": {
-    "build": "standard | node tasks/build.js",
+    "build": "standard && node tasks/build.js",
     "test-coverage": "standard | snazzy && karma start --single-run",
     "test": "standard | snazzy && karma start --single-run --no-coverage",
     "watch": "DEBUG=1 webpack -w index.js build/standalone.js"
@@ -14,6 +14,9 @@
     "url": "git://github.com/QubitProducts/cherrytree.git"
   },
   "author": "Karolis Narkevicius <karolis.n@gmail.com>",
+  "contributors": [
+    "Luiz Américo Pereira Câmara"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/QubitProducts/cherrytree/issues"
