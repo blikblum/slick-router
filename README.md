@@ -78,12 +78,22 @@ router.use(function render (transition) {
   })
 })
 
+// for error logging attach a catch handler to transition promise...
 router.use(function errorHandler (transition) {
   transition.catch(function (err) {
     if (err.type !== 'TransitionCancelled' && err.type !== 'TransitionRedirected') {
       console.error(err.stack)
     }
   })
+})
+
+// ...or use the error hook
+router.use({
+  error: function (transition, err) {
+    if (err.type !== 'TransitionCancelled' && err.type !== 'TransitionRedirected') {
+      console.error(err.stack)
+    }    
+  }
 })
 
 // start listening to URL changes

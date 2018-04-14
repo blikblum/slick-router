@@ -136,7 +136,6 @@ test('#use middleware next and done hooks are called on successful transition', 
 test('#use middleware error hook is called on failed transition', (done) => {
   router.map(routes)
   var m = {
-    next: sinon.spy(),
     error: sinon.spy()
   }
   router.use(m)
