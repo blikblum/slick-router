@@ -4,22 +4,27 @@ Cherrytree is a flexible hierarchical router that translates every URL change in
 
 This is a fork of master / v2 branch with the following changes
 
-* Updated location-bar dependency (v3.0.1)
-* Do not use active state to generate links
+* API changes:
+  * Published package with cherrytreex name
+  * Export router constructor instead of factory function
+  * Add possibility to register middleware with a object containing next/done/error hooks
+  * Drop ability to customize Promise implementation. To run in browsers without native Promise is necessary a polyfill
+  * Do not use active state to generate links
+* Infrastructure changes  
+  * Update build system simplifying it and producing smaller bundle
+  * Incorporated location-bar dependency removing shared code
+  * Upgraded dev dependencies
+
 
 ## Installation
 
-The size excluding all deps is ~4.83kB gzipped and the standalone build with all deps is ~7.24kB gzipped.
+The size excluding path-to-regexp dependency is ~43kB (without minification and compression)
 
-    $ npm install --save cherrytree
+    $ npm install --save cherrytreex
 
-In a CJS environment
+In a CJS/AMD environment
 
-    require('cherrytree')
-
-In an AMD environment, require the standalone UMD build - this version has all of the dependencies bundled
-
-    require('cherrytree/standalone')
+    require('cherrytreex')
 
 
 ## Docs
@@ -42,10 +47,10 @@ To use `cherrytree` with React, check out [`cherrytree-for-react`](https://githu
 ## Usage
 
 ```js
-var cherrytree = require('cherrytree')
+var Cherrytree = require('cherrytreex')
 
 // create the router
-var router = cherrytree()
+var router = new Cherrytree()
 var handlers = require('./handlers')
 
 // provide your route map

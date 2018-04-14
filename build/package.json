@@ -1,0 +1,29 @@
+{
+  "name": "cherrytreex",
+  "version": "3.0.0",
+  "description": "Cherrytree - a flexible hierarchical client side router",
+  "main": "cherrytree.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/QubitProducts/cherrytree.git"
+  },
+  "author": "Karolis Narkevicius <karolis.n@gmail.com>",
+  "contributors": [
+    "Luiz Américo Pereira Câmara"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QubitProducts/cherrytree/issues"
+  },
+  "dependencies": {
+    "path-to-regexp": "^2.1.0"
+  },
+  "keywords": [
+    "router",
+    "history",
+    "browser",
+    "pushState",
+    "hierarchical",
+    "nested"
+  ]
+}
