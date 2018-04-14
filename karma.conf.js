@@ -24,6 +24,7 @@ function config (c) {
 
     webpack: Object.assign(webpackConfig, {
       entry: undefined,
+      externals: [],
       // this watcher watches when source files are updated
       watch: true,
       devtool: 'inline-source-map',
