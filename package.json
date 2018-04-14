@@ -4,7 +4,7 @@
   "description": "Cherrytree - a flexible hierarchical client side router",
   "main": "cherrytree.js",
   "scripts": {
-    "build": "standard && node tasks/build.js",
+    "build": "standard | snazzy && node tasks/build.js",
     "test-coverage": "standard | snazzy && karma start --single-run",
     "test": "standard | snazzy && karma start --single-run --no-coverage",
     "watch": "DEBUG=1 webpack -w index.js build/standalone.js"
