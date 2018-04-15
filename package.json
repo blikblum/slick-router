@@ -1,6 +1,6 @@
 {
   "name": "cherrytreex",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Cherrytree - a flexible hierarchical client side router",
   "main": "cherrytree.js",
   "scripts": {

@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["path-to-regexp"], factory);
 	else if(typeof exports === 'object')
-		exports["cherrytree"] = factory(require("path-to-regexp"));
+		exports["cherrytreex"] = factory(require("path-to-regexp"));
 	else
-		root["cherrytree"] = factory(root["pathToRegexp"]);
+		root["Cherrytree"] = factory(root["pathToRegexp"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
