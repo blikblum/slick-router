@@ -5,7 +5,11 @@ module.exports = {
   context: __dirname,
   entry: './lib/router.js',
   output: {
-    library: 'cherrytree',
+    library: {
+      root: 'Cherrytree',
+      amd: 'cherrytreex',
+      commonjs: 'cherrytreex'
+    },
     libraryTarget: 'umd',
     filename: path.join('build', 'cherrytree.js')
   },
