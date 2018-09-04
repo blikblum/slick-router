@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "cherrytreex",
   "version": "3.0.3",
   "description": "Cherrytree - a flexible hierarchical client side router",
