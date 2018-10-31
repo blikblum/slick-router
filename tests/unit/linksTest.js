@@ -2,7 +2,7 @@ import $ from 'jquery'
 import { assert } from '@sinonjs/referee'
 import { intercept } from '../../lib/links'
 
-let {suite, test, beforeEach, afterEach} = window
+let { suite, test, beforeEach, afterEach } = window
 let mouse = window.effroi.mouse
 let $container
 
@@ -21,7 +21,7 @@ test('intercepts link clicks', () => {
   // prevent navigation
 
   let calledWith = []
-  let cb = (event, el) => calledWith.push({event, el})
+  let cb = (event, el) => calledWith.push({ event, el })
 
   // proxy all clicks via this callback
   let dispose = intercept(cb)

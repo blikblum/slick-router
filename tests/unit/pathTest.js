@@ -2,7 +2,7 @@ import { assert } from '@sinonjs/referee'
 import qs from '../../lib/qs'
 import * as Path from '../../lib/path'
 
-let {suite, test} = window
+let { suite, test } = window
 
 suite('Path')
 
@@ -62,8 +62,8 @@ test('Path.extractParams', () => {
   assert.equals(Path.extractParams('/:query/with/:domain', '/foo.ap'), null)
 
   // advanced use case of making params in the middle of the url optional
-  assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/123/edit'), {id: '123/edit'})
-  assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/edit'), {id: 'edit'})
+  assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/123/edit'), { id: '123/edit' })
+  assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/edit'), { id: 'edit' })
   assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/editor'), null)
   assert.equals(Path.extractParams('/comments/:id(.*/?edit)', '/comments/123'), null)
 })

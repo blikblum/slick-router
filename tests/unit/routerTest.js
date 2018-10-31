@@ -6,7 +6,7 @@ import { extend } from '../../lib/dash'
 import Cherrytree from '../..'
 
 let mouse = window.effroi.mouse
-let {suite, test, beforeEach, afterEach} = window
+let { suite, test, beforeEach, afterEach } = window
 
 let delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
 
@@ -18,7 +18,7 @@ let routes = (route) => {
   route('application', () => {
     route('notifications')
     route('messages')
-    route('status', {path: ':user/status/:id'})
+    route('status', { path: ':user/status/:id' })
   })
 }
 
@@ -113,7 +113,7 @@ test('#use middleware gets passed a transition object', (done) => {
       // this is so that we have a richer transition object
       // to assert
       router.use(m)
-      return router.transitionTo('status', {user: 1, id: 2}, {withReplies: true})
+      return router.transitionTo('status', { user: 1, id: 2 }, { withReplies: true })
     }).catch(done)
 })
 
@@ -163,7 +163,7 @@ test('#map registers the routes', () => {
 
 test('#generate generates urls given route name and params as object', () => {
   router.map(routes).listen()
-  var url = router.generate('status', {user: 'foo', id: 1}, {withReplies: true})
+  var url = router.generate('status', { user: 'foo', id: 1 }, { withReplies: true })
   assert.equals(url, '#application/foo/status/1?withReplies=true')
 })
 
@@ -172,7 +172,7 @@ if (window.history && window.history.pushState) {
     router.options.pushState = true
     router.options.root = '/foo/bar'
     router.map(routes).listen()
-    var url = router.generate('status', {user: 'usr', id: 1}, {withReplies: true})
+    var url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
     assert.equals(url, '/foo/bar/application/usr/status/1?withReplies=true')
   })
 }
@@ -195,7 +195,7 @@ if (window.history && !window.history.pushState) {
     })
 
     router.map(routes).listen()
-    var url = router.generate('status', {user: 'usr', id: 1}, {withReplies: true})
+    var url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
     assert.equals(browserRedirectedTo, '/foo/bar/#different')
     assert.equals(url, '#application/usr/status/1?withReplies=true')
   })
@@ -212,18 +212,18 @@ test('#generate throws a useful error when listen has not been called', () => {
 
 test('#generate throws a useful error when called with an abstract route', () => {
   router.map((route) => {
-    route('foo', {abstract: true})
+    route('foo', { abstract: true })
   }).listen()
 
   assert.exception(function () {
     router.generate('foo')
-  }, {message: 'No route is named foo'})
+  }, { message: 'No route is named foo' })
 })
 
 test('#generate succeeds when called with an abstract route that has a child index route', () => {
   router.map((route) => {
-    route('foo', {abstract: true}, () => {
-      route('bar', {path: ''})
+    route('foo', { abstract: true }, () => {
+      route('bar', { path: '' })
     })
   }).listen()
   let url = router.generate('foo')
@@ -291,8 +291,8 @@ test('#match matches a path with query params', () => {
 
 test('#match returns an array of route descriptors', () => {
   router.map((route) => {
-    route('foo', {customData: 1}, () => {
-      route('bar', {customData: 2})
+    route('foo', { customData: 1 }, () => {
+      route('bar', { customData: 2 })
     })
   })
   let match = router.match('/foo/bar')
@@ -324,21 +324,21 @@ test('#match ignores the trailing slash', () => {
 test('#match returns an empty route array if nothing matches', () => {
   router.map(routes)
   let match = router.match('/foo/bar')
-  assert.equals(match, {routes: [], params: {}, pathname: '/foo/bar', query: {}})
+  assert.equals(match, { routes: [], params: {}, pathname: '/foo/bar', query: {} })
 })
 
 test('#match always parses query parameters even if a route does not match', () => {
   router.map(routes)
   let match = router.match('/foo/bar?hello=world')
-  assert.equals(match, {routes: [], params: {}, pathname: '/foo/bar', query: { hello: 'world' }})
+  assert.equals(match, { routes: [], params: {}, pathname: '/foo/bar', query: { hello: 'world' } })
 })
 
 test('#transitionTo called multiple times reuses the active transition', (done) => {
   router.map(routes)
   router.listen().then(() => {
     router.use(() => delay(500))
-    assert.equals(router.transitionTo('status', {user: 'me', id: 1}).id, 2)
-    assert.equals(router.transitionTo('status', {user: 'me', id: 1}).id, 2)
+    assert.equals(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
+    assert.equals(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
     done()
   }).catch(done)
 })
@@ -347,10 +347,10 @@ test('#transitionTo called on the same route, returns a completed transition', (
   let called = false
   router.map(routes)
   router.listen().then(() => {
-    return router.transitionTo('status', {user: 'me', id: 1})
+    return router.transitionTo('status', { user: 'me', id: 1 })
   }).then(() => {
     router.use(() => called = true)
-    let t = router.transitionTo('status', {user: 'me', id: 1})
+    let t = router.transitionTo('status', { user: 'me', id: 1 })
     assert.equals(t.noop, true)
     return t
   }).then(() => {
@@ -361,18 +361,18 @@ test('#transitionTo called on the same route, returns a completed transition', (
 
 test('#transitionTo throws an useful error when called with an abstract route', () => {
   router.map((route) => {
-    route('foo', {abstract: true})
+    route('foo', { abstract: true })
   }).listen()
 
   assert.exception(function () {
     router.transitionTo('foo')
-  }, {message: 'No route is named foo'})
+  }, { message: 'No route is named foo' })
 })
 
 test('#transitionTo called on an abstract route with a child index route should activate the index route', async () => {
   router.map((route) => {
-    route('foo', {abstract: true}, () => {
-      route('bar', {path: ''})
+    route('foo', { abstract: true }, () => {
+      route('bar', { path: '' })
     })
   }).listen()
   await router.transitionTo('foo')
@@ -388,12 +388,12 @@ test('#isActive returns true if arguments match current state and false if not',
   await router.transitionTo('notifications')
   assert.equals(router.isActive('notifications'), true)
   assert.equals(router.isActive('messages'), false)
-  await router.transitionTo('status', {user: 'me', id: 1})
-  assert.equals(router.isActive('status', {user: 'me'}), true)
-  assert.equals(router.isActive('status', {user: 'notme'}), false)
-  await router.transitionTo('messages', null, {foo: 'bar'})
-  assert.equals(router.isActive('messages', null, {foo: 'bar'}), true)
-  assert.equals(router.isActive('messages', null, {foo: 'baz'}), false)
+  await router.transitionTo('status', { user: 'me', id: 1 })
+  assert.equals(router.isActive('status', { user: 'me' }), true)
+  assert.equals(router.isActive('status', { user: 'notme' }), false)
+  await router.transitionTo('messages', null, { foo: 'bar' })
+  assert.equals(router.isActive('messages', null, { foo: 'bar' }), true)
+  assert.equals(router.isActive('messages', null, { foo: 'baz' }), false)
 })
 
 suite('route maps')
@@ -419,7 +419,7 @@ test('a complex route map', () => {
           route('recent')
         })
       })
-      route('status', {path: ':user/status/:id'})
+      route('status', { path: ':user/status/:id' })
     })
     route('anotherTopLevel', () => {
       route('withChildren')
@@ -454,7 +454,7 @@ test('a parent route can be excluded from the route map by setting abstract to t
           route('recent')
         })
       })
-      route('status', {path: ':user/status/:id'})
+      route('status', { path: ':user/status/:id' })
     })
     route('anotherTopLevel', () => {
       route('withChildren')
@@ -497,11 +497,11 @@ test('modifying params or query in middleware does not affect the router state',
     transition.routes.push({})
     transition.routes[0].foobar = 123
   })
-  await router.transitionTo('status', {user: 'me', id: 42}, {q: 'abc'})
+  await router.transitionTo('status', { user: 'me', id: 42 }, { q: 'abc' })
   // none of the modifications to params, query or routes
   // array are persisted to the router state
-  assert.equals(router.state.params, {user: 'me', id: '42'})
-  assert.equals(router.state.query, {q: 'abc'})
+  assert.equals(router.state.params, { user: 'me', id: '42' })
+  assert.equals(router.state.query, { q: 'abc' })
   assert.equals(router.state.routes.length, 2)
 })
 

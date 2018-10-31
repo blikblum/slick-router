@@ -121,7 +121,7 @@ test.skip('cancelling transition does not add a history entry', async function (
   // we start of at faq
   await router.transitionTo('faq')
   // then go to posts.filter
-  await router.transitionTo('posts.filter', {filterId: 'foo'})
+  await router.transitionTo('posts.filter', { filterId: 'foo' })
   assert.equals(window.location.hash, '#posts/filter/foo')
 
   // now attempt to transition to about and cancel

@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import {assert} from '@sinonjs/referee'
+import { assert } from '@sinonjs/referee'
 import fakeHistory from '../lib/fakeHistory'
 import TestApp from './testApp'
-let {suite, test, beforeEach, afterEach} = window
+let { suite, test, beforeEach, afterEach } = window
 let app, router, history
 
 // This is to avoid running these tests in IE9 in CI
@@ -16,7 +16,7 @@ if (window.history && window.history.pushState) {
       root: '/app'
     })
     router = app.router
-// eslint-disable-next-line no-return-assign
+    // eslint-disable-next-line no-return-assign
     return app.start().then(() => history = fakeHistory(router.location))
   })
 
