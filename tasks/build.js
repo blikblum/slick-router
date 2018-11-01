@@ -1,33 +1,38 @@
+'use strict'
+
 const fs = require('fs')
 const del = require('del')
-const webpack = require('webpack')
-const config = require('../webpack.config')
+const rollup = require('rollup')
+const babel = require('rollup-plugin-babel')
 const pkg = require('../package.json')
 
 const BUILD_DIR = 'build'
 
 // Clean up the output directory
-del([`${BUILD_DIR}/*`])
 
-webpack(config, (err, stats) => {
-  if (err) {
-    console.error(err.stack || err)
-    if (err.details) {
-      console.error(err.details)
-    }
-    return
-  }
+let promise = Promise.resolve()
 
-  const info = stats.toJson()
+// Clean up the output directory
+promise = promise.then(() => del([`${BUILD_DIR}/*`]))
 
-  if (stats.hasErrors()) {
-    console.error(info.errors)
-  }
+// Compile source code into a distributable format with Babel
 
-  if (stats.hasWarnings()) {
-    console.warn(info.warnings)
-  }
+promise.then(() => rollup.rollup({
+  input: 'lib/router.js',
+  external: Object.keys(pkg.dependencies),
+  plugins: [babel({
+    babelrc: false,
+    exclude: 'node_modules/**',
+    presets: [[ 'es2015', { modules: false } ]]
+  })]
+}).then(bundle => bundle.write({
+  file: 'build/cherrytree.js',
+  format: 'es',
+  sourcemap: true
+})))
 
+// Copy package.json and LICENSE.txt
+promise = promise.then(() => {
   delete pkg.private
   delete pkg.devDependencies
   delete pkg.scripts
@@ -37,4 +42,9 @@ webpack(config, (err, stats) => {
   fs.writeFileSync(`${BUILD_DIR}/LICENSE`, fs.readFileSync('LICENSE', 'utf-8'), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/README.md`, fs.readFileSync('README.md', 'utf-8'), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/CHANGELOG.md`, fs.readFileSync('CHANGELOG.md', 'utf-8'), 'utf-8')
+})
+
+promise.catch(err => {
+  console.error(err.stack) // eslint-disable-line no-console
+  process.exit(1)
 })
