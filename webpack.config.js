@@ -1,7 +1,9 @@
 const path = require('path')
-const webpack = require('webpack')
+
+console.log(__dirname)
 
 module.exports = {
+  mode: 'production',
   context: __dirname,
   entry: './lib/router.js',
   output: {
@@ -11,7 +13,8 @@ module.exports = {
       commonjs: 'cherrytreex'
     },
     libraryTarget: 'umd',
-    filename: path.join('build', 'cherrytree.js')
+    path: path.join(__dirname, 'build'),
+    filename: 'cherrytree.js'
   },
   resolve: {
     alias: {
@@ -27,15 +30,15 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-            options: {presets: [['es2015', {modules: false}]]}
+            options: { presets: [['es2015', { modules: false }]] }
           }
         ]
       }
     ]
   },
-  plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin()
-  ],
+  optimization: {
+    minimize: false
+  },
   devtool: 'source-map',
   externals: {
     'path-to-regexp': {

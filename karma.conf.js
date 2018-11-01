@@ -9,8 +9,10 @@ function config (c) {
 
     frameworks: ['mocha', 'effroi'],
 
+    plugins: ['karma-mocha', 'karma-effroi', 'karma-webpack', 'karma-chrome-launcher', 'karma-sourcemap-loader'],
+
     preprocessors: {
-      'tests/index.js': ['webpack', 'sourcemap']
+      'tests/index.js': ['webpack']
     },
 
     files: [
@@ -67,10 +69,17 @@ function config (c) {
     browsers: [process.env.TRAVIS ? 'Firefox' : 'Chrome'],
     browserNoActivityTimeout: 30000,
 
+    customLaunchers: {
+      ChromeDebugging: {
+        base: 'Chrome',
+        flags: ['--remote-debugging-port=9333']
+      }
+    },
+
     coverageReporter: c.coverage ? {
       reporters: [
-        {type: 'html', dir: 'coverage/'},
-        {type: 'text-summary'}
+        { type: 'html', dir: 'coverage/' },
+        { type: 'text-summary' }
       ]
     } : {}
   }
