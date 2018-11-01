@@ -1,94 +1,11 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("path-to-regexp"));
-	else if(typeof define === 'function' && define.amd)
-		define(["path-to-regexp"], factory);
-	else if(typeof exports === 'object')
-		exports["cherrytreex"] = factory(require("path-to-regexp"));
-	else
-		root["Cherrytree"] = factory(root["pathToRegexp"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+import pathToRegexp from 'path-to-regexp';
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-// CONCATENATED MODULE: ./lib/dash.js
-var dash_toString = Object.prototype.toString;
+var toString = Object.prototype.toString;
 var keys = Object.keys;
 var assoc = function assoc(obj, attr, val) {
   obj[attr] = val;return obj;
 };
-var isArray = function isArray(obj) {
-  return dash_toString.call(obj) === '[object Array]';
-};
+var isArray = Array.isArray;
 
 var clone = function clone(obj) {
   return obj ? isArray(obj) ? obj.slice(0) : extend({}, obj) : obj;
@@ -101,9 +18,10 @@ var pick = function pick(obj, attrs) {
 };
 
 var isEqual = function isEqual(obj1, obj2) {
-  return keys(obj1).length === keys(obj2).length && keys(obj1).reduce(function (acc, key) {
-    return acc && obj2[key] === obj1[key];
-  }, true);
+  var keys1 = keys(obj1);
+  return keys1.length === keys(obj2).length && keys1.every(function (key) {
+    return obj2[key] === obj1[key];
+  });
 };
 
 var extend = function extend(obj) {
@@ -122,9 +40,9 @@ var extend = function extend(obj) {
 };
 
 var isString = function isString(obj) {
-  return Object.prototype.toString.call(obj) === '[object String]';
+  return toString.call(obj) === '[object String]';
 };
-// CONCATENATED MODULE: ./lib/invariant.js
+
 function invariant(condition, format, a, b, c, d, e, f) {
   if (!condition) {
     var args = [a, b, c, d, e, f];
@@ -136,10 +54,8 @@ function invariant(condition, format, a, b, c, d, e, f) {
     throw error;
   }
 }
-// CONCATENATED MODULE: ./lib/dsl.js
+
 /* eslint-disable standard/no-callback-literal */
-
-
 
 function dsl(callback) {
   var ancestors = [];
@@ -201,13 +117,6 @@ function dsl(callback) {
 
   return pop();
 }
-// EXTERNAL MODULE: external {"commonjs":"path-to-regexp","commonjs2":"path-to-regexp","amd":"path-to-regexp","root":"pathToRegexp"}
-var external___commonjs___path_to_regexp___commonjs2___path_to_regexp___amd___path_to_regexp___root___pathToRegexp__ = __webpack_require__(1);
-var external___commonjs___path_to_regexp___commonjs2___path_to_regexp___amd___path_to_regexp___root___pathToRegexp___default = /*#__PURE__*/__webpack_require__.n(external___commonjs___path_to_regexp___commonjs2___path_to_regexp___amd___path_to_regexp___root___pathToRegexp__);
-
-// CONCATENATED MODULE: ./lib/path.js
-
-
 
 var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?+*]?)/g;
 var specialParamChars = /[+*?]$/g;
@@ -218,7 +127,7 @@ var _compiledPatterns = {};
 function compilePattern(pattern) {
   if (!(pattern in _compiledPatterns)) {
     var paramNames = [];
-    var re = external___commonjs___path_to_regexp___commonjs2___path_to_regexp___amd___path_to_regexp___root___pathToRegexp___default()(pattern, paramNames);
+    var re = pathToRegexp(pattern, paramNames);
 
     _compiledPatterns[pattern] = {
       matcher: re,
@@ -320,8 +229,8 @@ function withQuery(qs, path, query) {
 function withoutQuery(path) {
   return path.replace(queryMatcher, '');
 }
-// CONCATENATED MODULE: ./lib/events.js
-/* harmony default export */ var events = ({
+
+var events = {
 
   /**
   * Bind `el` event `type` to `fn`.
@@ -352,17 +261,9 @@ function withoutQuery(path) {
     el.removeEventListener(type, fn);
     return fn;
   }
-});
-// CONCATENATED MODULE: ./lib/locations/location-bar.js
+};
+
 /* eslint-disable */
-// LocationBar module extracted from Backbone.js 1.1.0
-//
-// the dependency on backbone, underscore and jquery have been removed to turn
-// this into a small standalone library for handling browser's history API
-// cross browser and with a fallback to hashchange events or polling.
-
-
-
 
 // this is mostly original code with minor modifications
 // to avoid dependency on 3rd party libraries
@@ -588,14 +489,6 @@ History.prototype.hasPushState = function () {
   return this._hasPushState;
 };
 
-// export
-/* harmony default export */ var location_bar = (History);
-// CONCATENATED MODULE: ./lib/locations/browser.js
-
-
-
-/* harmony default export */ var browser = (BrowserLocation);
-
 function BrowserLocation(options) {
   this.path = options.path || '';
 
@@ -607,7 +500,7 @@ function BrowserLocation(options) {
   // we're using the location-bar module for actual
   // URL management
   var self = this;
-  this.locationBar = new location_bar();
+  this.locationBar = new History();
   this.locationBar.onChange(function (path) {
     self.handleURL('/' + (path || ''));
   });
@@ -723,10 +616,6 @@ BrowserLocation.prototype.handleURL = function (url) {
     this.changeCallback(url);
   }
 };
-// CONCATENATED MODULE: ./lib/locations/memory.js
-
-
-/* harmony default export */ var memory = (MemoryLocation);
 
 function MemoryLocation(options) {
   this.path = options.path || '';
@@ -772,15 +661,12 @@ MemoryLocation.prototype.removeRoot = function (url) {
 MemoryLocation.prototype.formatURL = function (url) {
   return url;
 };
-// CONCATENATED MODULE: ./lib/constants.js
+
 var TRANSITION_REDIRECTED = 'TransitionRedirected';
 
 var TRANSITION_CANCELLED = 'TransitionCancelled';
-// CONCATENATED MODULE: ./lib/transition.js
+
 /* eslint-disable promise/param-names */
-
-
-
 
 function runError(router, transition, err) {
   router.middleware.forEach(function (m) {
@@ -788,7 +674,7 @@ function runError(router, transition, err) {
   });
 }
 
-function transition_transition(options) {
+function transition(options) {
   options = options || {};
 
   var router = options.router;
@@ -829,7 +715,7 @@ function transition_transition(options) {
   }).catch(function (err) {
     if (err.type !== TRANSITION_REDIRECTED && err.type !== TRANSITION_CANCELLED) {
       log('Transition #' + id, 'FAILED');
-      logError(err.stack);
+      logError(err.message || err);
     }
   });
 
@@ -953,8 +839,6 @@ function transition_transition(options) {
 
   return transition;
 }
-// CONCATENATED MODULE: ./lib/links.js
-
 
 /**
  * Handle link delegation on `el` or the document,
@@ -981,7 +865,7 @@ function intercept(el, fn) {
   };
 }
 
-function links_link(element) {
+function link(element) {
   element = { parentNode: element };
 
   var root = document;
@@ -1018,7 +902,7 @@ function links_link(element) {
 function delegate(el, type, fn) {
   return events.bind(el, type, function (e) {
     var target = e.target || e.srcElement;
-    var el = links_link(target);
+    var el = link(target);
     if (el) {
       fn(e, el);
     }
@@ -1079,7 +963,7 @@ function which(e) {
   e = e || window.event;
   return e.which === null ? e.button : e.which;
 }
-// CONCATENATED MODULE: ./lib/logger.js
+
 function createLogger(log, options) {
   options = options || {};
   // falsy means no logging
@@ -1092,8 +976,8 @@ function createLogger(log, options) {
     fn.apply(console, arguments);
   };
 }
-// CONCATENATED MODULE: ./lib/qs.js
-/* harmony default export */ var lib_qs = ({
+
+var qs = {
   parse: function parse(querystring) {
     return querystring.split('&').reduce(function (acc, pair) {
       var parts = pair.split('=');
@@ -1109,19 +993,7 @@ function createLogger(log, options) {
       return acc;
     }, []).join('&');
   }
-});
-// CONCATENATED MODULE: ./lib/router.js
-
-
-
-
-
-
-
-
-
-
-
+};
 
 function Cherrytree(options) {
   this.nextId = 1;
@@ -1131,7 +1003,7 @@ function Cherrytree(options) {
     location: 'browser',
     interceptLinks: true,
     logError: true,
-    qs: lib_qs
+    qs: qs
   }, options);
   this.log = createLogger(this.options.log);
   this.logError = createLogger(this.options.logError, { error: true });
@@ -1388,9 +1260,9 @@ Cherrytree.prototype.doTransition = function (method, params) {
     url = this.location.removeRoot(url);
   }
 
-  var transition = this.dispatch(url);
+  var transition$$1 = this.dispatch(url);
 
-  transition.catch(function (err) {
+  transition$$1.catch(function (err) {
     if (err && err.type === TRANSITION_CANCELLED) {
       // reset the URL in case the transition has been cancelled
       _this2.location.replaceURL(previousUrl, { trigger: false });
@@ -1400,7 +1272,7 @@ Cherrytree.prototype.doTransition = function (method, params) {
 
   this.location[method](url, { trigger: false });
 
-  return transition;
+  return transition$$1;
 };
 
 /**
@@ -1415,7 +1287,7 @@ Cherrytree.prototype.match = function (path) {
   var params = void 0;
   var routes = [];
   var pathWithoutQuery = withoutQuery(path);
-  var qs = this.options.qs;
+  var qs$$1 = this.options.qs;
   this.matchers.some(function (matcher) {
     params = extractParams(matcher.path, pathWithoutQuery);
     if (params) {
@@ -1427,7 +1299,7 @@ Cherrytree.prototype.match = function (path) {
     routes: routes.map(descriptor),
     params: params || {},
     pathname: pathWithoutQuery,
-    query: extractQuery(qs, path) || {}
+    query: extractQuery(qs$$1, path) || {}
 
     // clone the data (only a shallow clone of options)
     // to make sure the internal route store is not mutated
@@ -1473,7 +1345,7 @@ Cherrytree.prototype.dispatch = function (path) {
   // but don't actually run any of the middleware
   if (!activeTransition) {
     if (this.state.pathname === pathname && isEqual(this.state.query, query)) {
-      return transition_transition({
+      return transition({
         id: this.nextId++,
         path: path,
         match: match,
@@ -1483,7 +1355,7 @@ Cherrytree.prototype.dispatch = function (path) {
     }
   }
 
-  var t = transition_transition({
+  var t = transition({
     id: this.nextId++,
     path: path,
     match: match,
@@ -1509,9 +1381,9 @@ Cherrytree.prototype.createLocation = function (path) {
     return location;
   }
   if (location === 'browser') {
-    return new browser(pick(this.options, ['pushState', 'root']));
+    return new BrowserLocation(pick(this.options, ['pushState', 'root']));
   } else if (location === 'memory') {
-    return new memory({ path: path });
+    return new MemoryLocation({ path: path });
   } else {
     throw new Error('Location can be `browser`, `memory` or a custom implementation');
   }
@@ -1536,15 +1408,5 @@ Cherrytree.prototype.interceptLinks = function () {
   }
 };
 
-/* harmony default export */ var lib_router = __webpack_exports__["default"] = (Cherrytree);
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ })
-/******/ ]);
-});
+export default Cherrytree;
 //# sourceMappingURL=cherrytree.js.map
