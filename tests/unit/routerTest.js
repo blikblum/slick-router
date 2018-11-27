@@ -146,6 +146,36 @@ test('#use middleware error hook is called on failed transition', (done) => {
   })
 })
 
+test('#use middleware cancel hook is called on cancelled transition', (done) => {
+  router.map(routes)
+  var m = {
+    cancel: sinon.spy()
+  }
+  router.listen().then(() => {
+    router.use(m)
+    router.use((transition) => { transition.cancel() })
+    router.transitionTo('messages').catch(() => {
+      assert.calledOnce(m.cancel)
+      done()
+    })
+  })
+})
+
+test('#use middleware cancel hook is called on redirected transition', (done) => {
+  router.map(routes)
+  var m = {
+    cancel: sinon.spy()
+  }
+  router.listen().then(() => {
+    router.use(m)
+    router.use((transition) => { transition.redirectTo('notifications') })
+    router.transitionTo('messages').catch(() => {
+      assert.calledOnce(m.cancel)
+      done()
+    })
+  })
+})
+
 test('#map registers the routes', () => {
   router.map(routes)
   // check that the internal matchers object is created
