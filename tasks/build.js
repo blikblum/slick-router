@@ -23,6 +23,7 @@ promise.then(() => rollup.rollup({
   plugins: [babel({
     babelrc: false,
     exclude: 'node_modules/**',
+    sourceMaps: true,
     presets: [[ 'es2015', { modules: false } ]]
   })]
 }).then(bundle => bundle.write({
