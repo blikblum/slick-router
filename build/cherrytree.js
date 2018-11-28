@@ -765,6 +765,9 @@ function transition(options) {
         log('Transition #' + id, 'redirected');
       }
 
+      router.middleware.forEach(function (m) {
+        m.cancel && m.cancel(transition, err);
+      });
       reject(err);
     },
     followRedirects: function followRedirects() {
@@ -1118,7 +1121,14 @@ Cherrytree.prototype.listen = function (path) {
   var location = this.location = this.createLocation(path || '');
   // setup the location onChange handler
   location.onChange(function (url) {
-    return _this.dispatch(url);
+    var previousUrl = _this.state.path;
+    _this.dispatch(url).catch(function (err) {
+      if (err && err.type === TRANSITION_CANCELLED) {
+        // reset the URL in case the transition has been cancelled
+        _this.location.replaceURL(previousUrl, { trigger: false });
+      }
+      return err;
+    });
   });
   // start intercepting links
   if (this.options.interceptLinks && location.usesPushState()) {
