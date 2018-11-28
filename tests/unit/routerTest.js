@@ -3,6 +3,7 @@ import { assert, sinon } from '@sinonjs/referee-sinon'
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
 import Cherrytree from '../..'
+import { refute } from '@sinonjs/referee'
 
 let mouse = window.effroi.mouse
 let { suite, test, beforeEach, afterEach } = window
@@ -423,6 +424,58 @@ test('#isActive returns true if arguments match current state and false if not',
   await router.transitionTo('messages', null, { foo: 'bar' })
   assert.equals(router.isActive('messages', null, { foo: 'bar' }), true)
   assert.equals(router.isActive('messages', null, { foo: 'baz' }), false)
+})
+
+test('#location URL is reset to previous one when a transition started programatically is cancelled', (done) => {
+  let beforeCancelHash
+  let beforeTransitionHash
+
+  router.map(routes)
+  router.use((transition) => {
+    if (transition.path === '/application/notifications') {
+      beforeCancelHash = router.location.getURL()
+      transition.cancel()
+    }
+  })
+
+  router.listen().then(() => {
+    router.transitionTo('messages').then(() => {
+      beforeTransitionHash = router.location.getURL()
+      router.transitionTo('notifications').catch(() => {
+        assert.equals(beforeTransitionHash, router.location.getURL())
+        refute.equals(beforeCancelHash, router.location.getURL())
+        done()
+      })
+    })
+  })
+})
+
+test('#location URL is reset to previous one when a transition started by URL interation is cancelled', (done) => {
+  let beforeCancelHash
+  let beforeTransitionHash
+
+  router.map(routes)
+  router.use((transition) => {
+    if (transition.path === '/application/notifications') {
+      beforeCancelHash = router.location.getURL()
+      transition.cancel()
+    }
+  })
+
+  router.listen().then(() => {
+    router.transitionTo('messages').then(() => {
+      beforeTransitionHash = router.location.getURL()
+      router.use({ cancel: function (transition) {
+        transition.catch(() => {
+          assert.equals(beforeTransitionHash, router.location.getURL())
+          refute.equals(beforeCancelHash, router.location.getURL())
+          done()
+        })
+      }
+      })
+      window.location.hash = '#application/notifications'
+    })
+  })
 })
 
 suite('route maps')
