@@ -4,6 +4,7 @@
   "version": "3.2.0",
   "description": "Cherrytree - a flexible hierarchical client side router",
   "main": "cherrytree.js",
+  "module": "cherrytree.js",
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
