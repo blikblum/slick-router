@@ -21,10 +21,8 @@ promise.then(() => rollup.rollup({
   input: 'lib/router.js',
   external: Object.keys(pkg.dependencies),
   plugins: [babel({
-    babelrc: false,
     exclude: 'node_modules/**',
-    sourceMaps: true,
-    presets: [[ 'es2015', { modules: false } ]]
+    sourceMaps: true
   })]
 }).then(bundle => bundle.write({
   file: 'build/cherrytree.js',
