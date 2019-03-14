@@ -2,7 +2,7 @@
 import { assert, sinon } from '@sinonjs/referee-sinon'
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
-import Cherrytree from '../..'
+import Cherrytree from '../../lib/router'
 import { refute } from '@sinonjs/referee'
 
 let mouse = window.effroi.mouse

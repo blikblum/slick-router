@@ -2,17 +2,19 @@
  * Run karma start --no-coverage to get non instrumented code to show up in the dev tools
  */
 
-var webpackConfig = require('./webpack.config')
+const babel = require('rollup-plugin-babel');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
 function config (c) {
   return {
 
     frameworks: ['mocha', 'effroi'],
 
-    plugins: ['karma-mocha', 'karma-effroi', 'karma-webpack', 'karma-chrome-launcher', 'karma-sourcemap-loader'],
+    plugins: ['karma-mocha', 'karma-effroi', 'karma-rollup-preprocessor',, 'karma-chrome-launcher'],
 
     preprocessors: {
-      'tests/index.js': ['webpack']
+      'tests/index.js': ['rollup']
     },
 
     files: [
@@ -24,39 +26,45 @@ function config (c) {
     // this watcher watches when bundled files are updated
     autoWatch: true,
 
-    webpack: Object.assign(webpackConfig, {
-      entry: undefined,
-      externals: [],
-      // this watcher watches when source files are updated
-      watch: true,
-      devtool: 'inline-source-map',
-      module: Object.assign(webpackConfig.module, {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: [
+
+    rollupPreprocessor: {
+      /**
+       * This is just a normal Rollup config object,
+       * except that `input` is handled for you.
+       */
+      plugins: [
+        babel({
+          babelrc: false,
+          exclude: ['node_modules/**'],
+          'presets': [
+            [
+              '@babel/preset-env',
               {
-                loader: 'babel-loader',
-                options: {
-                  presets: ['es2015']
+                'targets': {
+                  'browsers': [
+                    'chrome 60'
+                  ]
                 }
               }
             ]
+          ]
+        }),
+        nodeResolve(),
+        commonjs({
+          namedExports: { 
+            '@sinonjs/referee': ['assert', 'refute'],
+            '@sinonjs/referee-sinon': ['assert', 'sinon'] 
           },
-          c.coverage ? {
-            enforce: 'post',
-            test: /\.js/,
-            exclude: /(test|node_modules)/,
-            loader: 'istanbul-instrumenter-loader'
-          } : {}
-        ]
-      })
-    }),
+        })
+      ],
 
-    webpackServer: {
-      noInfo: true
-    },
+      output: {
+        format: 'iife', // Helps prevent naming collisions.
+        name: 'cherrytreeTests', // Required for 'iife' format.
+        sourcemap: 'inline' // Sensible for testing.        
+      }
+    },    
+
 
     client: {
       useIframe: true,
@@ -66,7 +74,7 @@ function config (c) {
       }
     },
 
-    browsers: [process.env.TRAVIS ? 'Firefox' : 'Chrome'],
+    browsers: ['Chrome'],
     browserNoActivityTimeout: 30000,
 
     customLaunchers: {
@@ -75,6 +83,8 @@ function config (c) {
         flags: ['--remote-debugging-port=9333']
       }
     },
+    
+
 
     coverageReporter: c.coverage ? {
       reporters: [

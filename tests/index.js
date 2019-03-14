@@ -1,3 +1,9 @@
-// do the webpack thing
-let testsContext = require.context('.', true, /Test$/)
-testsContext.keys().forEach(testsContext)
+import './unit/dashTest'
+import './unit/linksTest'
+import './unit/pathTest'
+import './unit/routerTest'
+
+import './functional/pushStateTest'
+import './functional/routerTest'
+
+

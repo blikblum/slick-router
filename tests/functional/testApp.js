@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import Cherrytree from 'cherrytree'
+import Cherrytree from '../../lib/router'
 
 export default function TestApp (options) {
   options = options || {}
