@@ -3,7 +3,6 @@ import { assert } from '@sinonjs/referee'
 import { intercept } from '../../lib/links'
 
 let { suite, test, beforeEach, afterEach } = window
-let mouse = window.effroi.mouse
 let $container
 let clickHandler
 
@@ -38,7 +37,7 @@ test('intercepts link clicks', () => {
   document.addEventListener('click', clickHandler)
 
   // now test that when clicking the link, the calledWith
-  mouse.click($a.get(0))
+  $a.get(0).click()
   // it calls back with event and el
   assert.equals(calledWith[0].event.target, calledWith[0].el)
   // and the el is the link that was clicked
@@ -48,7 +47,7 @@ test('intercepts link clicks', () => {
   // test that cleanup works
   dispose()
   // clicking this time
-  mouse.click($a.get(0))
+  $a.get(0).click()
   // should not call the cb again
   assert.equals(calledWith.length, 1)
   // only the nav prevention should kick in

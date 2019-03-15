@@ -5,7 +5,6 @@ import { extend } from '../../lib/dash'
 import Cherrytree from '../../lib/router'
 import { refute } from '@sinonjs/referee'
 
-let mouse = window.effroi.mouse
 let { suite, test, beforeEach, afterEach } = window
 
 let delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
@@ -601,7 +600,7 @@ if (window.history && window.history.pushState) {
     a.href = '/hello/world'
     a.innerHTML = 'hello'
     document.body.appendChild(a)
-    mouse.click(a)
+    a.click()
     assert.equals(interceptCalledWith, '/hello/world')
     document.body.removeChild(a)
   })
