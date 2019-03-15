@@ -8,8 +8,8 @@
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
-    "test-coverage": "karma start --single-run",
-    "test": "karma start --single-run --no-coverage",
+    "test-coverage": "karma start --browsers ChromeHeadless --single-run",
+    "test": "karma start --browsers ChromeHeadless --single-run --no-coverage",
     "test:debug": "karma start --browsers ChromeDebugging --no-single-run --no-coverage"
   },
   "repository": {
