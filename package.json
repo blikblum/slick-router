@@ -58,6 +58,9 @@
   },
   "standard": {
     "parser": "babel-eslint",
+    "env": {
+      "browser": true
+    },
     "ignore": [
       "examples/**",
       "docs/**",

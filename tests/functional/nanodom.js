@@ -1,5 +1,5 @@
 function Dom () {}
-Dom.prototype = new Array()
+Dom.prototype = new Array() // eslint-disable-line
 Dom.prototype.append = function (element) { element.forEach(function (e) { this[0].appendChild(e) }.bind(this)); return this }
 Dom.prototype.remove = function () { this.forEach(function (e) { e.parentNode.removeChild(e) }); return this }
 Dom.prototype.prepend = function (element) { element.forEach(function (e) { this[0].insertBefore(e, (this[0].hasChildNodes()) ? this[0].childNodes[0] : null) }.bind(this)); return this }
