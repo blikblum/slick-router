@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import $ from './nanodom'
 import Cherrytree from '../../lib/router'
 
 export default function TestApp (options) {
@@ -26,14 +26,7 @@ export default function TestApp (options) {
     // this is a cherrytree hook for 'performing'
     // actions upon entering this state
     activate: function () {
-      this.$view = $('<div>', {
-        'class': 'application',
-        css: {
-          margin: '100px',
-          textAlign: 'center',
-          border: '10px solid #333'
-        }
-      })
+      this.$view = $('<div class="application" style="margin: 100px; test-align: center; border: 10px solid #333;"></div>')
       this.$view.html('<h1>Cherrytree Application</h1><div class="outlet"></div>')
       this.$outlet = this.$view.find('.outlet')
       this.$outlet.html('Welcome to this application')
@@ -49,8 +42,7 @@ export default function TestApp (options) {
 
   handlers['faq'] = {
     activate: function (params, query) {
-      this.parent.$outlet.html('FAQ.')
-      this.parent.$outlet.append(' Sorted By: ' + query.sortBy)
+      this.parent.$outlet.html('FAQ. Sorted By: ' + query.sortBy)
     }
   }
 
@@ -83,6 +75,6 @@ TestApp.prototype.start = function () {
 }
 
 TestApp.prototype.destroy = function () {
-  $(document.body).empty()
+  document.body.innerHTML = ''
   return this.router.destroy()
 }

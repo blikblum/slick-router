@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import $ from 'jquery'
+import $ from './nanodom'
 import { assert } from '@sinonjs/referee'
 import TestApp from './testApp'
 

@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import $ from './nanodom'
 import { assert } from '@sinonjs/referee'
 import fakeHistory from '../lib/fakeHistory'
 import TestApp from './testApp'

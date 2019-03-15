@@ -1,10 +1,11 @@
-import $ from 'jquery'
+import $ from '../functional/nanodom'
 import { assert } from '@sinonjs/referee'
 import { intercept } from '../../lib/links'
 
 let { suite, test, beforeEach, afterEach } = window
 let mouse = window.effroi.mouse
 let $container
+let clickHandler
 
 suite('links')
 
@@ -13,7 +14,7 @@ beforeEach(() => {
 })
 afterEach(() => {
   $container.empty().remove()
-  $(document).off('click')
+  document.removeEventListener('click', clickHandler)
 })
 
 test('intercepts link clicks', () => {
@@ -30,10 +31,11 @@ test('intercepts link clicks', () => {
   // the navigation, we must install this after the
   // link.intercept has been already called
   let navPreventedCount = 0
-  $(document).on('click', e => {
+  clickHandler = e => {
     navPreventedCount++
     e.preventDefault()
-  })
+  }
+  document.addEventListener('click', clickHandler)
 
   // now test that when clicking the link, the calledWith
   mouse.click($a.get(0))
