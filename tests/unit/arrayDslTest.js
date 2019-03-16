@@ -1,14 +1,14 @@
 import { assert } from '@sinonjs/referee'
-import functionDsl from '../../lib/function-dsl'
+import dsl from '../../lib/array-dsl'
 
 let { suite, test } = window
 
-suite('dsl')
+suite('array-dsl')
 
 test('simple route map', () => {
-  const routes = functionDsl(route => {
-    route('application')
-  })
+  const routes = dsl([
+    { name: 'application' }
+  ])
   assert.equals(routes, [
     {
       name: 'application',
@@ -20,9 +20,14 @@ test('simple route map', () => {
 })
 
 test('simple route map with options', () => {
-  const routes = functionDsl(route => {
-    route('application', { path: '/', foo: 'bar' })
-  })
+  const routes = dsl([
+    {
+      name: 'application',
+      path: '/',
+      foo: 'bar'
+    }
+  ])
+
   assert.equals(routes, [
     {
       name: 'application',
@@ -34,11 +39,17 @@ test('simple route map with options', () => {
 })
 
 test('simple nested route map', () => {
-  const routes = functionDsl(route => {
-    route('application', () => {
-      route('child')
-    })
-  })
+  const routes = dsl([
+    {
+      name: 'application',
+      children: [
+        {
+          name: 'child'
+        }
+      ]
+    }
+  ])
+
   assert.equals(routes, [
     {
       name: 'application',
@@ -57,11 +68,17 @@ test('simple nested route map', () => {
 })
 
 test('route with dot names and no path', () => {
-  const routes = functionDsl(route => {
-    route('application', () => {
-      route('application.child')
-    })
-  })
+  const routes = dsl([
+    {
+      name: 'application',
+      children: [
+        {
+          name: 'application.child'
+        }
+      ]
+    }
+  ])
+
   assert.equals(routes, [
     {
       name: 'application',
@@ -80,24 +97,55 @@ test('route with dot names and no path', () => {
 })
 
 test('complex example', () => {
-  const routes = functionDsl((route) => {
-    route('application', { abstract: true }, () => {
-      route('notifications')
-      route('messages', () => {
-        route('unread', () => {
-          route('priority')
-        })
-        route('read')
-        route('draft', { abstract: true }, () => {
-          route('recent')
-        })
-      })
-      route('status', { path: ':user/status/:id' })
-    })
-    route('anotherTopLevel', () => {
-      route('withChildren')
-    })
-  })
+  const routes = dsl([
+    {
+      name: 'application',
+      abstract: true,
+      children: [
+        {
+          name: 'notifications'
+        },
+        {
+          name: 'messages',
+          children: [
+            {
+              name: 'unread',
+              children: [
+                {
+                  name: 'priority'
+                }
+              ]
+            },
+            {
+              name: 'read'
+            },
+            {
+              name: 'draft',
+              abstract: true,
+              children: [
+                {
+                  name: 'recent'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: 'status',
+          path: ':user/status/:id'
+        }
+      ]
+    },
+    {
+      name: 'anotherTopLevel',
+      children: [
+        {
+          name: 'withChildren'
+        }
+      ]
+    }
+  ])
+
   assert.equals(routes, [
     {
       name: 'application',

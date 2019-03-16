@@ -176,8 +176,38 @@ test('#use middleware cancel hook is called on redirected transition', (done) =>
   })
 })
 
-test('#map registers the routes', () => {
+test('#map registers the routes defined with a callback', () => {
   router.map(routes)
+  // check that the internal matchers object is created
+  assert.equals(router.matchers.map(m => m.path), [
+    '/application',
+    '/application/notifications',
+    '/application/messages',
+    '/application/:user/status/:id'
+  ])
+  // check that the internal routes object is created
+  assert.equals(router.routes[0].name, 'application')
+  assert.equals(router.routes[0].routes[2].options.path, ':user/status/:id')
+})
+
+test('#map registers the routes defined with an array', () => {
+  router.map([
+    {
+      name: 'application',
+      children: [
+        {
+          name: 'notifications'
+        },
+        {
+          name: 'messages'
+        },
+        {
+          name: 'status',
+          path: ':user/status/:id'
+        }
+      ]
+    }
+  ])
   // check that the internal matchers object is created
   assert.equals(router.matchers.map(m => m.path), [
     '/application',
