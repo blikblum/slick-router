@@ -652,3 +652,32 @@ if (window.history && window.history.pushState) {
     document.body.removeChild(a)
   })
 }
+
+test('children routes can be loaded lazily', async () => {
+  const getChildren = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(route => {
+          route('child')
+        })
+      }, 100)
+    })
+  }
+
+  router.map((route) => {
+    route('foo', () => {
+      route('bar', { lazyChildren: getChildren })
+    })
+    route('other')
+  })
+
+  assert.equals(router.matchers.map(m => m.path), [
+    '/foo',
+    '/foo/bar',
+    '/foo/bar/**',
+    '/other'
+  ])
+
+  await router.listen()
+  await router.transitionTo('notifications')
+})
