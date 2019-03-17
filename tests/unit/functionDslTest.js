@@ -3,7 +3,7 @@ import functionDsl from '../../lib/function-dsl'
 
 let { suite, test } = window
 
-suite('dsl')
+suite('function-dsl')
 
 test('simple route map', () => {
   const routes = functionDsl(route => {
