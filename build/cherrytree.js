@@ -55,7 +55,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 /* eslint-disable standard/no-callback-literal */
-function dsl(callback) {
+function functionDsl(callback) {
   var ancestors = [];
   var matches = {};
   var names = {};
@@ -110,6 +110,64 @@ function dsl(callback) {
   }
 
   return pop();
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+function arrayDsl(routes) {
+  var result = [];
+  routes.forEach(function (_ref) {
+    var name = _ref.name,
+        children = _ref.children,
+        options = _objectWithoutProperties(_ref, ["name", "children"]);
+
+    if (typeof options.path !== 'string') {
+      var parts = name.split('.');
+      options.path = parts[parts.length - 1];
+    }
+
+    result.push({
+      name: name,
+      path: options.path,
+      options: options,
+      routes: children ? arrayDsl(children) : []
+    });
+  });
+  return result;
 }
 
 var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?+*]?)/g;
@@ -974,7 +1032,8 @@ var qs = {
   }
 };
 
-function Cherrytree(options) {
+function Cherrytree() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   this.nextId = 1;
   this.state = {};
   this.middleware = [];
@@ -988,6 +1047,10 @@ function Cherrytree(options) {
   this.logError = createLogger(this.options.logError, {
     error: true
   });
+
+  if (options.routes) {
+    this.map(options.routes);
+  }
 }
 /**
  * Add a middleware
@@ -1014,7 +1077,7 @@ Cherrytree.prototype.use = function (middleware) {
 
 Cherrytree.prototype.map = function (routes) {
   // create the route tree
-  this.routes = dsl(routes); // create the matcher list, which is like a flattened
+  this.routes = Array.isArray(routes) ? arrayDsl(routes) : functionDsl(routes); // create the matcher list, which is like a flattened
   // list of routes = a list of all branches of the route tree
 
   var matchers = this.matchers = []; // keep track of whether duplicate paths have been created,
