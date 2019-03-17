@@ -220,6 +220,23 @@ test('#map registers the routes defined with an array', () => {
   assert.equals(router.routes[0].routes[2].options.path, ':user/status/:id')
 })
 
+test('routes can be registered using routes option', () => {
+  let localRouter = new Cherrytree({
+    routes
+  })
+
+  // check that the internal matchers object is created
+  assert.equals(localRouter.matchers.map(m => m.path), [
+    '/application',
+    '/application/notifications',
+    '/application/messages',
+    '/application/:user/status/:id'
+  ])
+  // check that the internal routes object is created
+  assert.equals(localRouter.routes[0].name, 'application')
+  assert.equals(localRouter.routes[0].routes[2].options.path, ':user/status/:id')
+})
+
 test('#generate generates urls given route name and params as object', () => {
   router.map(routes).listen()
   var url = router.generate('status', { user: 'foo', id: 1 }, { withReplies: true })
