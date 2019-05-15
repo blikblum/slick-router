@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "cherrytreex",
-  "version": "3.5.0",
-  "description": "Cherrytree - a flexible hierarchical client side router",
-  "main": "cherrytree.js",
-  "module": "cherrytree.js",
+  "name": "slick-router",
+  "version": "0.9.0",
+  "description": "A flexible hierarchical client side router",
+  "main": "slick-router.js",
+  "module": "slick-router.js",
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
@@ -14,15 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/QubitProducts/cherrytree.git"
+    "url": "git://github.com/blikblum/slick-router.git"
   },
-  "author": "Karolis Narkevicius <karolis.n@gmail.com>",
-  "contributors": [
-    "Luiz Américo Pereira Câmara"
-  ],
+  "author": "Luiz Américo Pereira Câmara",  
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/QubitProducts/cherrytree/issues"
+    "url": "https://github.com/blikblum/slick-router/issues"
   },
   "dependencies": {
     "path-to-regexp": "^2.1.0"

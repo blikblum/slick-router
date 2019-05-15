@@ -1479,4 +1479,4 @@ Cherrytree.prototype.interceptLinks = function () {
 };
 
 export default Cherrytree;
-//# sourceMappingURL=cherrytree.js.map
+//# sourceMappingURL=slick-router.js.map

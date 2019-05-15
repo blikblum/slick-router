@@ -25,7 +25,7 @@ promise.then(() => rollup.rollup({
     sourceMaps: true
   })]
 }).then(bundle => bundle.write({
-  file: 'build/cherrytree.js',
+  file: 'build/slick-router.js',
   format: 'es',
   sourcemap: true
 })))
