@@ -7,7 +7,7 @@ let app, router, history
 
 // This is to avoid running these tests in IE9 in CI
 if (window.history && window.history.pushState) {
-  suite('Cherrytree app using pushState')
+  suite('app using pushState')
 
   beforeEach(() => {
     window.location.hash = ''

@@ -1,31 +1,41 @@
-# <img src="https://cloud.githubusercontent.com/assets/324440/11302251/2c573b4a-8f94-11e5-9df6-889b19c2ad48.png" width="320" />
+# Slick Router
 
-Cherrytree is a flexible hierarchical router that translates every URL change into a transition descriptor object and calls your middleware functions that put the application into a desired state.
+Slick Router is a flexible hierarchical router that translates every URL change into a transition descriptor object and calls your middleware functions that put the application into a desired state. It is derived from [cherrytree](https://github.com/QubitProducts/cherrytree) library (see [differences](docs/cherrytree-diff.md)).
 
-This is a fork of master / v2 branch with the following changes
+## Features
 
-* API changes:
-  * Published package with cherrytreex name
-  * Export router constructor instead of factory function
-  * Add possibility to register middleware with a object containing next/done/error hooks
-  * Drop ability to customize Promise implementation. To run in browsers without native Promise is necessary a polyfill
-  * Do not use active state to generate links
-* Infrastructure changes  
-  * Update build system simplifying it and producing smaller bundle
-  * Incorporated location-bar dependency removing shared code
-  * Upgraded dev dependencies
+* can be used with any view and data framework
+* nested routes are great for nested UIs
+* generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
+* use pushState with automatic hashchange fallback
+* all urls are generated with or without `#` as appropriate
+* link clicks on the page are intercepted automatically when using pushState
+* dynamically load parts of your app during transitions
+* dynamic segments, optional params and query params
+* support for custom query string parser
+* transition is a first class citizen - abort, pause, resume, retry. E.g. pause the transition to display "There are unsaved changes" message if the user clicked some link on the page or used browser's back/forward buttons
+* navigate around the app programatically, e.g. `router.transitionTo('commits')`
+* easily rename URL segments in a single place (e.g. /account -> /profile)
 
 
 ## Installation
 
-The size excluding path-to-regexp dependency is ~43kB (without minification and compression)
+The size excluding path-to-regexp dependency is ~40kB (without minification and compression)
 
-    $ npm install --save cherrytreex
+    $ npm install --save slick-router
+
+
+In an ES6 environment
+
+```js
+import Router from 'slick-router';
+```
 
 In a CJS/AMD environment
 
-    require('cherrytreex')
-
+```js
+const Router = require('slick-router');
+```
 
 ## Docs
 
@@ -36,25 +46,21 @@ In a CJS/AMD environment
 
 ## Demo
 
-See it in action in [this demo](http://kidkarolis.github.io/cherrytree-redux-react-example).
+TBD
 
 
-## Plugins
+## Buitins middlewares
 
-To use `cherrytree` with React, check out [`cherrytree-for-react`](https://github.com/KidkArolis/cherrytree-for-react).
-
+TBD
 
 ## Usage
 
 ```js
-var Cherrytree = require('cherrytreex')
+import Router from 'slick-router';
+import handlers from './handlers';
 
-// create the router
-var router = new Cherrytree()
-var handlers = require('./handlers')
-
-// provide your route map
-router.map(function (route) {
+// route tree definition
+const routes = function (route) {
   route('application', {path: '/', abstract: true}, function () {
     route('feed', {path: ''})
     route('messages')
@@ -64,8 +70,14 @@ router.map(function (route) {
       route('profile.edit')
     })
   })
+}
+
+// create the router
+var router = new Router({
+  routes
 })
 
+// render middleware
 router.use(function render (transition) {
   transition.routes.forEach(function (route, i) {
     route.view = handlers[route.name]({
@@ -105,67 +117,20 @@ router.listen()
 
 You can clone this repo if you want to run the `examples` locally:
 
-* [hello-world-react](examples/hello-world-react) - best for first introduction
 * [hello-world-jquery](examples/hello-world-jquery) - a single file example
-* [cherry-pick](examples/cherry-pick) - a mini GitHub clone written in React.js
+* [slick-pick](examples/slick-pick) - a mini GitHub clone written with web components
 * [vanilla-blog](examples/vanilla-blog) - a small static demo of blog like app that uses no framework
-* [server-side-react](examples/server-side-react) - a server side express app using cherrytree for routing and react for rendering
-
-A more complex example in it's own repo:
-
-* [cherrytree-redux-react-example](https://github.com/KidkArolis/cherrytree-redux-react-example) - a more modern stack - redux + react + react-hot-loader + cherrytree-for-react
-
-
-## Features
-
-* can be used with any view and data framework
-* nested routes are great for nested UIs
-* generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
-* use pushState with automatic hashchange fallback
-* all urls are generated with or without `#` as appropriate
-* link clicks on the page are intercepted automatically when using pushState
-* dynamically load parts of your app during transitions
-* dynamic segments, optional params and query params
-* support for custom query string parser
-* transition is a first class citizen - abort, pause, resume, retry. E.g. pause the transition to display "There are unsaved changes" message if the user clicked some link on the page or used browser's back/forward buttons
-* navigate around the app programatically, e.g. `router.transitionTo('commits')`
-* easily rename URL segments in a single place (e.g. /account -> /profile)
-
-
-## How does it compare to other routers?
-
-* **Backbone router** is nice and simple and can often be enough. In fact cherrytree uses some bits from Backbone router under the hood. Cherrytree adds nested routing, support for asynchronous transitions, more flexible dynamic params, url generation, automatic click handling for pushState.
-* **Ember router / router.js** is the inspiration for cherrytree. It's where cherrytree inherits the idea of declaring hierarchical nested route maps. The scope of cherrytree is slightly different than that of router.js, for example cherrytree doesn't have the concept of handler objects or model hooks. On the other hand, unlike router.js - cherrytree handles browser url changes and intercepts link clicks with pushState out of the box. The handler concept and model hooks can be implemented based on the specific application needs using the middleware mechanism. Overall, cherrytree is less prescriptive, more flexible and easier to use out of the box.
-* **react-router** is also inspired by router.js. React-router is trying to solve a lot of routing related aspects out of the box in the most React idiomatic way whereas with `cherrytree` you'll have to write the glue code for integrating into React yourself (see [`cherrytree-for-react` plugin](https://github.com/KidkArolis/cherrytree-for-react)). However, what you get instead is a smaller, simpler and hopefully more flexible library which should be more adaptable to your specific needs. This also means that you can use a `react-router` like approach with other `React` inspired libraries such as `mercury`, `riot`, `om`, `cycle`, `deku` and so on.
-
-
-## CI
-
-[![Build Status](https://travis-ci.org/QubitProducts/cherrytree.svg?branch=master)](https://travis-ci.org/QubitProducts/cherrytree)
-[![build status](https://codeship.com/projects/aa5e37b0-aeb1-0131-dd5f-06fd12e6a611/status?branch=master)](https://codeship.com/projects/19734)
 
 
 ## Browser Support
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/cherrytree.svg)](https://saucelabs.com/u/cherrytree)
-
-Cherrytree works in all modern browsers. It requires es5 environment and es6 promises. Use polyfills for those if you have to support older browsers, e.g.:
+Slick Router works in all modern browsers. V1 requires es5 environment and es6 promises. Use polyfills for those if you have to support older browsers, e.g.:
 
 * https://github.com/es-shims/es5-shim
 * https://github.com/jakearchibald/es6-promise
 
-## Acknowledgement
+----
 
-Thanks to Marko Stupić for giving Cherrytree a logo from his http://icon-a-day.com/ project!
+Copyright (c) 2019 Luiz Américo Pereira Câmara
 
-## FAQ
-
-* Why is `cherrytree` written as one word? You got me, I'd say that represents the [wabisabi](https://en.wikipedia.org/wiki/Wabi-sabi) nature of the library.
-
-## Want to work on this for your day job?
-
-This project was created by the Engineering team at [Qubit](http://www.qubit.com). As we use open source libraries, we make our projects public where possible.
-
-We’re currently looking to grow our team, so if you’re a JavaScript engineer and keen on ES2016 React+Redux applications and Node micro services, why not get in touch? Work with like minded engineers in an environment that has fantastic perks, including an annual ski trip, yoga, a competitive foosball league, and copious amounts of yogurt.
-
-Find more details on our [Engineering site](https://eng.qubit.com). Don’t have an up to date CV? Just link us your Github profile! Better yet, send us a pull request that improves this project.
+Copyright (c) 2017 Karolis Narkevicius

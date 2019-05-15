@@ -1,4 +1,38 @@
-### 3.0.0 (first cherrytreex release)
+## Slick Router changelog
+
+### Unreleased
+
+### [v0.9.0] - 2019-05-15
+  * reset version to 0.9
+  * renamed project to Slick Router (published as slick-router)
+
+---
+## Cherrytree fork (published as cherrytreex)
+
+### v3.5.0
+ * Implement defining routes as array
+ * Allow to pass routes as a constructor option (calls map automatically)
+
+### v3.4.0
+ * Use rollup instead of webpack for tests
+ * Optimize clone
+ * Optimize mapping routes from function dsl
+
+### v3.3.0
+
+ * Add module entry for package
+
+### v3.2.0
+
+ * Implement cancel hook
+ * Reset URL when transition started by URL is cancelled
+
+### v3.1.0
+
+ * Use rollup instead of webpack for main bundle
+ * Optimize dash functions
+
+### v3.0.0 (first cherrytreex release)
 
 * API changes:
   * Published package with cherrytreex name
@@ -11,6 +45,8 @@
   * Incorporated location-bar dependency removing shared code
   * Upgraded dev dependencies
 
+---
+## Original Cherrytree
 
 ### v2.4.1
 

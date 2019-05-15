@@ -20,7 +20,7 @@ export default function fakeHistory (location) {
      * b) unit test around this
      */
     setURL: function setURL (url) {
-      // cherrytree + location-bar + window.location
+      // slick router + location-bar + window.location
       location.locationBar.location = {
         pathname: url,
         search: ''

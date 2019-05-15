@@ -1,20 +1,25 @@
 # Docs
 
-### var router = cherrytree(options)
+### Router
 
+```js
+const router = new Router(options)
+```
+
+* **options.routes** - route tree definition (an array or a callback function).
 * **options.log** - a function that is called with logging info, default is noop. Pass in `true`/`false` or a custom logging function.
 * **options.logError** - default is true. A function that is called when transitions error (except for the special `TransitionRedirected` and `TransitionCancelled` errors). Pass in `true`/`false` or a custom error handling function.
 * **options.pushState** - default is false, which means using hashchange events. Set to `true` to use pushState.
 * **options.root** - default is `/`. Use in combination with `pushState: true` if your application is not being served from the root url /.
 * **options.interceptLinks** - default is true. When pushState is used - intercepts all link clicks when appropriate, prevents the default behaviour and instead uses pushState to update the URL and handle the transition via the router. You can also set this option to a custom function that will get called whenever a link is clicked if you want to customize the behaviour. Read more on [intercepting links below](#intercepting-links).
 * **options.qs** - default is a simple built in query string parser. Pass in an object with `parse` and `stringify` functions to customize how query strings get treated.
-* **options.Promise** - default is window.Promise or global.Promise. Promise implementation to be used when constructing transitions.
 
-### router.map(fn)
+### Router#map
 
-Configure the router with a route map. E.g.
+Configure the router with a route tree which can be defined as an array or a callback. E.g.
 
 ```js
+// route tree as callback
 router.map(function (route) {
   route('app', {path: '/'}, function () {
     route('about')
@@ -24,6 +29,31 @@ router.map(function (route) {
     })
   })
 })
+
+// route tree as array
+router.map([
+  {
+    name: 'app',
+    path: '/',
+    children: [
+      {
+        name: 'about'
+      },
+      {
+        name: 'post',
+        path: ':postId',
+        children: [
+          {
+            name: 'show'
+          },
+          {
+            name: 'edit'
+          }
+        ]
+      }
+    ]
+  }
+])
 ```
 
 #### Nested paths
@@ -126,7 +156,7 @@ route('foo')
 route('foo', {path: 'foo'})
 ```
 
-If a route has a name with dots and no path specified, the path defaults to the last segment of the path. This special "dot" behaviour might be removed in the next major version of Cherrytree.
+If a route has a name with dots and no path specified, the path defaults to the last segment of the path. 
 
 ```js
 route('foo.bar')
@@ -252,10 +282,10 @@ listed in the order that they will be matched against the URL.
 
 ## Query params
 
-Cherrytree will extract and parse the query params using a very simple query string parser that only supports key values. For example, `?a=1&b=2` will be parsed to `{a: 1, b:2}`. If you want to use a more sophisticated query parser, pass in an object with `parse` and `stringify` functions - an interface compatible with the popular [qs](https://github.com/hapijs/qs) module e.g.:
+The query params is extracted and parsed using a very simple query string parser that only supports key values. For example, `?a=1&b=2` will be parsed to `{a: 1, b:2}`. If you want to use a more sophisticated query parser, pass in an object with `parse` and `stringify` functions - an interface compatible with the popular [qs](https://github.com/hapijs/qs) module e.g.:
 
 ```js
-cherrytree({
+const router = new Router({
   qs: require('qs')
 })
 ```
@@ -275,12 +305,12 @@ If you have some error handling middleware - you most likely want to check for t
 
 ## BrowserLocation
 
-Cherrytree can be configured to use differet implementations of libraries that manage browser's URL/history. By default, Cherrytree will use a very versatile implementation - `cherrytree/lib/locations/browser` which supports `pushState` and `hashChange` based URL management with graceful fallback of `pushState` -> `hashChange` -> `polling` depending on browser's capabilities.
+Is possible to configure hoe browser's URL/history is managed. By default, Slick Router will use a very versatile implementation - `slick-router/lib/locations/browser` which supports `pushState` and `hashChange` based URL management with graceful fallback of `pushState` -> `hashChange` -> `polling` depending on browser's capabilities.
 
 Configure BrowserLocation by passing options directly to the router.
 
 ```js
-var router = cherrytree({
+var router = new Router({
   pushState: true
 })
 ```
@@ -295,7 +325,7 @@ MemoryLocation can be used if you don't want router to touch the address bar at 
 e.g.
 
 ```js
-var router = cherrytree({
+var router = new Router({
   location: 'memory'
 })
 ```
@@ -305,7 +335,7 @@ var router = cherrytree({
 You can also pass a custom location in explicitly. This is an advanced use case, but might turn out to be useful in non browser environments. For this you'll need to investigate how BrowserLocation is implemented.
 
 ```js
-var router = cherrytree({
+var router = new Router({
   location: myCustomLocation()
 })
 ```
@@ -313,7 +343,7 @@ var router = cherrytree({
 
 ## Intercepting Links
 
-Cherrytree intercepts all link clicks when using pushState, because without this functionality - the browser would just do a full page refresh on every click of a link.
+Slick Router intercepts all link clicks when using pushState, because without this functionality - the browser would just do a full page refresh on every click of a link.
 
 The clicks **are** intercepted only if:
 

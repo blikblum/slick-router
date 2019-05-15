@@ -1,12 +1,13 @@
-# Cherrytree guide
+# Usage guide
 
 When your application starts, the router is responsible for loading data, rendering views and otherwise setting up application state. It does so by translating every URL change to a transition object and a list of matching routes. You then need to apply a middleware function to translate the transition data into the desired state of your application.
 
 First create an instance of the router.
 
 ```js
-var cherrytree = require("cherrytree");
-var router = cherrytree({
+import Router from "slick-router";
+
+const router = new Router({
   pushState: true
 });
 ```
@@ -34,7 +35,7 @@ router.use(function activate (transition) {
 })
 ```
 
-Now, when the user enters `/about` page, Cherrytree will call the middleware with the transition object and `transition.routes` will be the route descriptors of `application` and `about` routes.
+Now, when the user enters `/about` page, Slick Router will call the middleware with the transition object and `transition.routes` will be the route descriptors of `application` and `about` routes.
 
 Note that you can leave off the path if you want to use the route name as the path. For example, these are equivalent
 
@@ -84,7 +85,7 @@ See what other types of dynamic routes is supported in the [api docs](api.md#dyn
 
 ### Route Nesting
 
-Route nesting is one of the core features of cherrytree. It's useful to nest routes when you want to configure each route to perform a different role in rendering the page - e.g. the root `application` route can do some initial data loading/initialization, but you can avoid redoing that work on subsequent transitions by checking if the route is already in the middleware. The nested routes can then load data specific for a given page. Nesting routes is also very useful for rendering nested UIs, e.g. if you're building an email application, you might have the following route map
+Route nesting is one of the core features of slick-router. It's useful to nest routes when you want to configure each route to perform a different role in rendering the page - e.g. the root `application` route can do some initial data loading/initialization, but you can avoid redoing that work on subsequent transitions by checking if the route is already in the middleware. The nested routes can then load data specific for a given page. Nesting routes is also very useful for rendering nested UIs, e.g. if you're building an email application, you might have the following route map
 
 ```js
 router.map(function(route) {

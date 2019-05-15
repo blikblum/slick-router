@@ -2,14 +2,14 @@
 import { assert, sinon } from '@sinonjs/referee-sinon'
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
-import Cherrytree from '../../lib/router'
+import Router from '../../lib/router'
 import { refute } from '@sinonjs/referee'
 
 let { suite, test, beforeEach, afterEach } = window
 
 let delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
 
-suite('Cherrytree')
+suite('Slick Router')
 
 let router
 
@@ -23,7 +23,7 @@ let routes = (route) => {
 
 beforeEach(() => {
   window.location.hash = ''
-  router = new Cherrytree()
+  router = new Router()
 })
 
 afterEach(() => {
@@ -221,7 +221,7 @@ test('#map registers the routes defined with an array', () => {
 })
 
 test('routes can be registered using routes option', () => {
-  let localRouter = new Cherrytree({
+  let localRouter = new Router({
     routes
   })
 
@@ -527,7 +527,7 @@ test('#location URL is reset to previous one when a transition started by URL in
 suite('route maps')
 
 beforeEach(() => {
-  router = new Cherrytree()
+  router = new Router()
 })
 
 afterEach(() => {

@@ -6,7 +6,7 @@ import TestApp from './testApp'
 let { suite, test, beforeEach, afterEach } = window
 let app, router
 
-suite('Cherrytree app')
+suite('app')
 
 beforeEach(() => {
   window.location.hash = '/'

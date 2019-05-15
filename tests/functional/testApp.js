@@ -1,11 +1,11 @@
 import $ from './nanodom'
-import Cherrytree from '../../lib/router'
+import Router from '../../lib/router'
 
 export default function TestApp (options) {
   options = options || {}
 
   // create the router
-  var router = this.router = new Cherrytree(options)
+  var router = this.router = new Router(options)
 
   // provide the route map
   router.map(function (route) {
@@ -23,11 +23,11 @@ export default function TestApp (options) {
   var handlers = {}
 
   handlers['application'] = {
-    // this is a cherrytree hook for 'performing'
+    // this is a hook for 'performing'
     // actions upon entering this state
     activate: function () {
       this.$view = $('<div class="application" style="margin: 100px; test-align: center; border: 10px solid #333;"></div>')
-      this.$view.html('<h1>Cherrytree Application</h1><div class="outlet"></div>')
+      this.$view.html('<h1>Slick Router Application</h1><div class="outlet"></div>')
       this.$outlet = this.$view.find('.outlet')
       this.$outlet.html('Welcome to this application')
       $(document.body).html(this.$view)
