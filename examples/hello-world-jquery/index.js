@@ -1,10 +1,10 @@
-let $ = require('jquery')
-let cherrytree = require('cherrytree')
+import $ from 'jquery'
+import Router from 'slick-router'
 
 require('./style.css')
 
 // create the router
-let router = cherrytree({
+let router = new Router({
   log: true
 })
 
