@@ -16,13 +16,13 @@
     "type": "git",
     "url": "git://github.com/blikblum/slick-router.git"
   },
-  "author": "Luiz Américo Pereira Câmara",  
+  "author": "Luiz Américo Pereira Câmara",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/blikblum/slick-router/issues"
   },
   "dependencies": {
-    "path-to-regexp": "^2.1.0"
+    "path-to-regexp": "^3.0.0"
   },
   "keywords": [
     "router",

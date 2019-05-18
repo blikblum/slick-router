@@ -40,7 +40,7 @@ test('Path.extractParams', () => {
   assert.equals(Path.extractParams('/files/:path*.:ext', '/files/my/photo.jpg'), { path: 'my/photo', ext: 'jpg' })
 
   // multiple splats
-  assert.equals(Path.extractParams('/files/:path*.:ext*', '/files/my/photo.jpg/gif'), { path: 'my/photo', ext: 'jpg/gif' })
+  assert.equals(Path.extractParams('/files/:path*\\.:ext*', '/files/my/photo.jpg/gif'), { path: 'my/photo', ext: 'jpg/gif' })
 
   // one more more segments
   assert.equals(Path.extractParams('/files/:path+', '/files/my/photo.jpg'), { path: 'my/photo.jpg' })
