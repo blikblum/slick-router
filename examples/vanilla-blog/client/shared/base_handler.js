@@ -1,6 +1,5 @@
 var $ = require('jquery')
 var _ = require('lodash')
-var Promise = require('when').Promise
 
 module.exports = {
   template: _.template('<div class="outlet"></div>'),

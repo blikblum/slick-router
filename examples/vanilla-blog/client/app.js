@@ -1,11 +1,9 @@
-var Promise = require('when').Promise
-var cherrytree = require('cherrytree')
+var Router = require('slick-router').default
 var getHandler = require('./handler')
 
-require('./styles/app.css')
 
 // create the router
-var router = window.router = cherrytree({
+var router = window.router = new Router({
   log: true
 })
 

@@ -1,20 +1,19 @@
+const path = require('path')
+
 module.exports = {
   context: __dirname,
   entry: './index',
   output: {
-    path: 'dist',
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   devtool: 'source-map',
   resolve: {
-    modulesDirectories: ['node_modules', 'shared']
+    modules: [path.resolve(__dirname, './client/shared'), 'node_modules'],
   },
   module: {
-    loaders: [
-      { test: /.*\.js$/, exclude: /node_modules/, loader: 'babel' },
-      { test: /.*node_modules\/cherrytree\/.*\.js$/, loader: 'babel' },
-      { test: /\.css$/, loader: 'style!css' },
-      { test: /\.html$/, loader: 'underscore-template' }
+    rules: [
+      { test: /\.html$/, loader: 'underscore-template-loader' }
     ]
   }
 }
