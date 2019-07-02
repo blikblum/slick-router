@@ -1,13 +1,9 @@
-let React = require('react')
+import React from 'react'
 
 // create some components, these could be split into
 // multiple files, but keeping them here to simplify the example
-module.exports.Application = React.createClass({
-  propTypes: {
-    link: React.PropTypes.func,
-    children: React.PropTypes.any
-  },
-  render: function () {
+export class Application extends React.Component {
+  render() {
     return (
       <div className='App'>
         <div className='App-header'>
@@ -24,13 +20,10 @@ module.exports.Application = React.createClass({
       </div>
     )
   }
-})
+}
 
-module.exports.Home = React.createClass({
-  propTypes: {
-    link: React.PropTypes.func
-  },
-  render: function () {
+export class Home extends React.Component {  
+  render () {
     return (
       <div className='Home'>
         <h2>Tweets</h2>
@@ -58,10 +51,10 @@ module.exports.Home = React.createClass({
       </div>
     )
   }
-})
+}
 
-module.exports.Messages = React.createClass({
-  render: function () {
+export class Messages extends React.Component {
+  render() {
     return (
       <div className='Messages'>
         <h2>Messages</h2>
@@ -69,30 +62,24 @@ module.exports.Messages = React.createClass({
       </div>
     )
   }
-})
+}
 
-module.exports.Profile = React.createClass({
-  propTypes: {
-    children: React.PropTypes.any
-  },
-  render: function () {
+export class Profile extends React.Component { 
+  render () {
     return (
       <div className='Profile'>
         <div className='Container'>{this.props.children}</div>
       </div>
     )
   }
-})
+}
 
-module.exports.ProfileIndex = React.createClass({
-  propTypes: {
-    params: React.PropTypes.object
-  },
-  render: function () {
+export class ProfileIndex extends React.Component {
+  render () {
     return (
       <div className='ProfileIndex'>
         <h2>{this.props.params.user} profile</h2>
       </div>
     )
   }
-})
+}

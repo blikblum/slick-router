@@ -1,15 +1,16 @@
+const path = require('path')
+
 module.exports = {
   context: __dirname,
   entry: './index',
   output: {
-    path: 'dist',
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
+  devtool: 'source-map',  
   module: {
-    loaders: [
-      { test: /.*\.js$/, exclude: /node_modules/, loader: 'babel' },
-      { test: /.*node_modules\/cherrytree\/.*\.js$/, loader: 'babel' }
+    rules: [
+      { test: /.*\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
     ]
   }
 }

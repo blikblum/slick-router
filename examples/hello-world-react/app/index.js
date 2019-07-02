@@ -1,14 +1,9 @@
-let cherrytree = require('cherrytree')
-let React = require('react')
-let components = require('./components')
+import Router from 'slick-router'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Application, Home, Messages, Profile, ProfileIndex } from './components'
 
-let Application = components.Application
-let Home = components.Home
-let Messages = components.Messages
-let Profile = components.Profile
-let ProfileIndex = components.ProfileIndex
-
-let router = cherrytree({log: true})
+let router = new Router({log: true})
 
 // This is how we define the route map or app structure.
 // The nesting here means that all routes in that branch
@@ -53,7 +48,7 @@ router.use(function render (transition) {
       return element
     }
   }, null)
-  React.render(el, document.querySelector('#app'))
+  ReactDOM.render(el, document.querySelector('#app'))
 })
 
 // Finally, now that everything is set up
