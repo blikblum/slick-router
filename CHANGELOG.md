@@ -5,6 +5,9 @@
 ### [v0.9.0] - 2019-05-15
   * reset version to 0.9
   * renamed project to Slick Router (published as slick-router)
+  * update path-to-regexp to v3
+  * use path-to-regexp-es instead of path-to-regexp
+  * improve default logging
 
 ---
 ## Cherrytree fork (published as cherrytreex)
