@@ -25,16 +25,8 @@ The size excluding path-to-regexp dependency is ~40kB (without minification and 
     $ npm install --save slick-router
 
 
-In an ES6 environment
-
 ```js
 import Router from 'slick-router';
-```
-
-In a CJS/AMD environment
-
-```js
-const Router = require('slick-router');
 ```
 
 ## Docs
@@ -42,11 +34,6 @@ const Router = require('slick-router');
 * [Intro Guide](docs/intro.md)
 * [API Docs](docs/api.md)
 * [Changelog](CHANGELOG.md)
-
-
-## Demo
-
-TBD
 
 
 ## Buitins middlewares
@@ -117,10 +104,10 @@ router.listen()
 
 You can clone this repo if you want to run the `examples` locally:
 
-* [hello-world-jquery](examples/hello-world-jquery) - a single file example
-* [slick-pick](examples/slick-pick) - a mini GitHub clone written with web components
+* [hello-world-jquery](examples/hello-world-jquery) - minimal example with good old jquery
+* [hello-world-react](hello-world-react) - minimal example with React
+* [hello-world-wc](hello-world-react) - minimal example with Web Component (no build required)
 * [vanilla-blog](examples/vanilla-blog) - a small static demo of blog like app that uses no framework
-
 
 ## Browser Support
 

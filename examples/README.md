@@ -1,7 +1,7 @@
 # Usage
-
-    $ git clone git@github.com:QubitProducts/cherrytree.git
-    $ cd cherrytre/examples/cherry-pick
-    $ npm install
-    $ npm start
-    $ open http://localhost:8000
+ 
+ * all: ensure library is built (`npm run build` on root folder)
+ * hello-world-jquery, hello-world-react and vanilla-blog:
+   * Go to example directory and run `npm install` and `npm run start`
+ * hello-world-wc:
+   * No build needed, just load `index.html` using a local server
