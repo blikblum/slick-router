@@ -1,4 +1,4 @@
-import pathToRegexp from 'path-to-regexp';
+import pathToRegexp from 'path-to-regexp-es';
 
 var toString = Object.prototype.toString;
 var keys = Object.keys;
@@ -745,7 +745,7 @@ function transition(options) {
   }).catch(function (err) {
     if (err.type !== TRANSITION_REDIRECTED && err.type !== TRANSITION_CANCELLED) {
       log('Transition #' + id, 'FAILED');
-      logError(err.message || err);
+      logError(err);
     }
   });
   var cancelled = false;
@@ -1000,17 +1000,9 @@ function which(e) {
   return e.which === null ? e.button : e.which;
 }
 
-function createLogger(log, options) {
-  options = options || {}; // falsy means no logging
-
-  if (!log) return function () {}; // custom logging function
-
-  if (log !== true) return log; // true means use the default logger - console
-
-  var fn = options.error ? console.error : console.info;
-  return function () {
-    fn.apply(console, arguments);
-  };
+function defineLogger(router, method, fn) {
+  if (fn === true) return;
+  router[method] = typeof fn === 'function' ? fn : function () {};
 }
 
 var qs = {
@@ -1032,7 +1024,7 @@ var qs = {
   }
 };
 
-function Cherrytree() {
+function Router() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   this.nextId = 1;
   this.state = {};
@@ -1043,10 +1035,8 @@ function Cherrytree() {
     logError: true,
     qs: qs
   }, options);
-  this.log = createLogger(this.options.log);
-  this.logError = createLogger(this.options.logError, {
-    error: true
-  });
+  defineLogger(this, 'log', this.options.log);
+  defineLogger(this, 'logError', this.options.logError);
 
   if (options.routes) {
     this.map(options.routes);
@@ -1060,7 +1050,7 @@ function Cherrytree() {
  */
 
 
-Cherrytree.prototype.use = function (middleware) {
+Router.prototype.use = function (middleware) {
   var m = typeof middleware === 'function' ? {
     next: middleware
   } : middleware;
@@ -1075,7 +1065,7 @@ Cherrytree.prototype.use = function (middleware) {
  */
 
 
-Cherrytree.prototype.map = function (routes) {
+Router.prototype.map = function (routes) {
   // create the route tree
   this.routes = Array.isArray(routes) ? arrayDsl(routes) : functionDsl(routes); // create the matcher list, which is like a flattened
   // list of routes = a list of all branches of the route tree
@@ -1158,7 +1148,7 @@ Cherrytree.prototype.map = function (routes) {
  */
 
 
-Cherrytree.prototype.listen = function (path) {
+Router.prototype.listen = function (path) {
   var _this = this;
 
   var location = this.location = this.createLocation(path || ''); // setup the location onChange handler
@@ -1196,7 +1186,7 @@ Cherrytree.prototype.listen = function (path) {
  */
 
 
-Cherrytree.prototype.transitionTo = function () {
+Router.prototype.transitionTo = function () {
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -1219,7 +1209,7 @@ Cherrytree.prototype.transitionTo = function () {
  */
 
 
-Cherrytree.prototype.replaceWith = function () {
+Router.prototype.replaceWith = function () {
   for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
     args[_key2] = arguments[_key2];
   }
@@ -1237,7 +1227,7 @@ Cherrytree.prototype.replaceWith = function () {
  */
 
 
-Cherrytree.prototype.generate = function (name, params, query) {
+Router.prototype.generate = function (name, params, query) {
   invariant(this.location, 'call .listen() before using .generate()');
   var matcher;
   query = query || {};
@@ -1260,7 +1250,7 @@ Cherrytree.prototype.generate = function (name, params, query) {
  */
 
 
-Cherrytree.prototype.destroy = function () {
+Router.prototype.destroy = function () {
   if (this.location && this.location.destroy) {
     this.location.destroy();
   }
@@ -1286,7 +1276,7 @@ Cherrytree.prototype.destroy = function () {
  */
 
 
-Cherrytree.prototype.isActive = function (name, params, query) {
+Router.prototype.isActive = function (name, params, query) {
   params = params || {};
   query = query || {};
   var activeRoutes = this.state.routes || [];
@@ -1308,7 +1298,7 @@ Cherrytree.prototype.isActive = function (name, params, query) {
  */
 
 
-Cherrytree.prototype.doTransition = function (method, params) {
+Router.prototype.doTransition = function (method, params) {
   var _this2 = this;
 
   var previousUrl = this.location.getURL();
@@ -1348,7 +1338,7 @@ Cherrytree.prototype.doTransition = function (method, params) {
  */
 
 
-Cherrytree.prototype.match = function (path) {
+Router.prototype.match = function (path) {
   path = (path || '').replace(/\/$/, '') || '/';
   var params;
   var routes = [];
@@ -1385,7 +1375,7 @@ Cherrytree.prototype.match = function (path) {
   }
 };
 
-Cherrytree.prototype.dispatch = function (path) {
+Router.prototype.dispatch = function (path) {
   var match = this.match(path);
   var query = match.query;
   var pathname = match.pathname;
@@ -1440,7 +1430,7 @@ Cherrytree.prototype.dispatch = function (path) {
  */
 
 
-Cherrytree.prototype.createLocation = function (path) {
+Router.prototype.createLocation = function (path) {
   var location = this.options.location;
 
   if (!isString(location)) {
@@ -1464,7 +1454,7 @@ Cherrytree.prototype.createLocation = function (path) {
  */
 
 
-Cherrytree.prototype.interceptLinks = function () {
+Router.prototype.interceptLinks = function () {
   var _this3 = this;
 
   var clickHandler = typeof this.options.interceptLinks === 'function' ? this.options.interceptLinks : defaultClickHandler;
@@ -1478,5 +1468,13 @@ Cherrytree.prototype.interceptLinks = function () {
   }
 };
 
-export default Cherrytree;
+Router.prototype.log = function () {
+  console.info.apply(console, arguments);
+};
+
+Router.prototype.logError = function () {
+  console.error.apply(console, arguments);
+};
+
+export default Router;
 //# sourceMappingURL=slick-router.js.map

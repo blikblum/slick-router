@@ -1,6 +1,6 @@
 {
   "name": "slick-router",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "A flexible hierarchical client side router",
   "main": "slick-router.js",
   "module": "slick-router.js",
@@ -14,7 +14,7 @@
     "url": "https://github.com/blikblum/slick-router/issues"
   },
   "dependencies": {
-    "path-to-regexp": "^2.1.0"
+    "path-to-regexp-es": "^3.0.0"
   },
   "keywords": [
     "router",
