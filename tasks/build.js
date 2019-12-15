@@ -3,7 +3,6 @@
 const fs = require('fs')
 const del = require('del')
 const rollup = require('rollup')
-const babel = require('rollup-plugin-babel')
 const pkg = require('../package.json')
 
 const BUILD_DIR = 'build'
@@ -19,11 +18,7 @@ promise = promise.then(() => del([`${BUILD_DIR}/*`]))
 
 promise.then(() => rollup.rollup({
   input: 'lib/router.js',
-  external: Object.keys(pkg.dependencies),
-  plugins: [babel({
-    exclude: 'node_modules/**',
-    sourceMaps: true
-  })]
+  external: Object.keys(pkg.dependencies)
 }).then(bundle => bundle.write({
   file: 'build/slick-router.js',
   format: 'es',

@@ -2,7 +2,6 @@
  * Run karma start --no-coverage to get non instrumented code to show up in the dev tools
  */
 
-const babel = require('rollup-plugin-babel')
 const nodeResolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 
@@ -32,22 +31,6 @@ function config (c) {
        * except that `input` is handled for you.
        */
       plugins: [
-        babel({
-          babelrc: false,
-          exclude: ['node_modules/**'],
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                targets: {
-                  browsers: [
-                    'chrome 60'
-                  ]
-                }
-              }
-            ]
-          ]
-        }),
         nodeResolve(),
         commonjs({
           namedExports: {
