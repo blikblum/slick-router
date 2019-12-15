@@ -1,5 +1,5 @@
 export default function fakeHistory (location) {
-  let history = []
+  const history = []
 
   var originalPushState = window.history.pushState
   window.history.pushState = function (state, title, url) {

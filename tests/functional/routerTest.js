@@ -3,7 +3,7 @@ import $ from './nanodom'
 import { assert } from '@sinonjs/referee'
 import TestApp from './testApp'
 
-let { suite, test, beforeEach, afterEach } = window
+const { suite, test, beforeEach, afterEach } = window
 let app, router
 
 suite('app')
@@ -172,7 +172,7 @@ test('navigating around the app', async function () {
 
 test('url behaviour during transitions', async function () {
   assert.equals(window.location.hash, '#/')
-  let transition = router.transitionTo('about')
+  const transition = router.transitionTo('about')
   assert.equals(window.location.hash, '#about')
   await transition
   assert.equals(window.location.hash, '#about')

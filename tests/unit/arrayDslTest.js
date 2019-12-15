@@ -1,7 +1,7 @@
 import { assert } from '@sinonjs/referee'
 import dsl from '../../lib/array-dsl'
 
-let { suite, test } = window
+const { suite, test } = window
 
 suite('array-dsl')
 

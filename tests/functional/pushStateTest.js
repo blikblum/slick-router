@@ -2,7 +2,7 @@ import $ from './nanodom'
 import { assert } from '@sinonjs/referee'
 import fakeHistory from '../lib/fakeHistory'
 import TestApp from './testApp'
-let { suite, test, beforeEach, afterEach } = window
+const { suite, test, beforeEach, afterEach } = window
 let app, router, history
 
 // This is to avoid running these tests in IE9 in CI

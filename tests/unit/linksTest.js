@@ -2,7 +2,7 @@ import $ from '../functional/nanodom'
 import { assert } from '@sinonjs/referee'
 import { intercept } from '../../lib/links'
 
-let { suite, test, beforeEach, afterEach } = window
+const { suite, test, beforeEach, afterEach } = window
 let $container
 let clickHandler
 
@@ -17,14 +17,14 @@ afterEach(() => {
 })
 
 test('intercepts link clicks', () => {
-  let $a = $('<a href="/foo">foo</a>').appendTo($container)
+  const $a = $('<a href="/foo">foo</a>').appendTo($container)
   // prevent navigation
 
-  let calledWith = []
-  let cb = (event, el) => calledWith.push({ event, el })
+  const calledWith = []
+  const cb = (event, el) => calledWith.push({ event, el })
 
   // proxy all clicks via this callback
-  let dispose = intercept(cb)
+  const dispose = intercept(cb)
 
   // install another click handler that will prevent
   // the navigation, we must install this after the

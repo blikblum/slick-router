@@ -2,7 +2,7 @@ import { assert } from '@sinonjs/referee'
 import qs from '../../lib/qs'
 import * as Path from '../../lib/path'
 
-let { suite, test } = window
+const { suite, test } = window
 
 suite('Path')
 

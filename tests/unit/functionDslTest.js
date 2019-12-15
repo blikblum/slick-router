@@ -1,7 +1,7 @@
 import { assert } from '@sinonjs/referee'
 import functionDsl from '../../lib/function-dsl'
 
-let { suite, test } = window
+const { suite, test } = window
 
 suite('function-dsl')
 

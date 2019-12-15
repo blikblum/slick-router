@@ -22,7 +22,7 @@ export default function TestApp (options) {
 
   var handlers = {}
 
-  handlers['application'] = {
+  handlers.application = {
     // this is a hook for 'performing'
     // actions upon entering this state
     activate: function () {
@@ -34,19 +34,19 @@ export default function TestApp (options) {
     }
   }
 
-  handlers['about'] = {
+  handlers.about = {
     activate: function () {
       this.parent.$outlet.html('This is about page')
     }
   }
 
-  handlers['faq'] = {
+  handlers.faq = {
     activate: function (params, query) {
       this.parent.$outlet.html('FAQ. Sorted By: ' + query.sortBy)
     }
   }
 
-  handlers['posts'] = {
+  handlers.posts = {
     activate: function () {}
   }
 
@@ -62,8 +62,8 @@ export default function TestApp (options) {
 
   router.use((transition) => {
     transition.routes.forEach((route, i) => {
-      let handler = handlers[route.name]
-      let parentRoute = transition.routes[i - 1]
+      const handler = handlers[route.name]
+      const parentRoute = transition.routes[i - 1]
       handler.parent = parentRoute ? handlers[parentRoute.name] : null
       handler.activate(transition.params, transition.query)
     })

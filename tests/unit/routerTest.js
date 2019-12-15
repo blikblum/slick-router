@@ -5,15 +5,15 @@ import { extend } from '../../lib/dash'
 import Router from '../../lib/router'
 import { refute } from '@sinonjs/referee'
 
-let { suite, test, beforeEach, afterEach } = window
+const { suite, test, beforeEach, afterEach } = window
 
-let delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
+const delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
 
 suite('Slick Router')
 
 let router
 
-let routes = (route) => {
+const routes = (route) => {
   route('application', () => {
     route('notifications')
     route('messages')
@@ -33,14 +33,14 @@ afterEach(() => {
 // @api public
 
 test('#use registers function middleware', () => {
-  let m = () => {}
+  const m = () => {}
   router.use(m)
   assert(router.middleware.length === 1)
   assert(router.middleware[0].next === m)
 })
 
 test('#use registers object middleware ', () => {
-  let m = {
+  const m = {
     next: function () {},
     done: function () {},
     error: function () {}
@@ -51,10 +51,10 @@ test('#use registers object middleware ', () => {
 })
 
 test('#use middleware gets passed a transition object', (done) => {
-  let m = (transition) => {
-    let t = extend({}, transition)
+  const m = (transition) => {
+    const t = extend({}, transition)
     ;['catch', 'then', 'redirectTo', 'cancel', 'retry', 'followRedirects'].forEach(attr => delete t[attr])
-    let et = {
+    const et = {
       id: 3,
       prev: {
         routes: [{
@@ -221,7 +221,7 @@ test('#map registers the routes defined with an array', () => {
 })
 
 test('routes can be registered using routes option', () => {
-  let localRouter = new Router({
+  const localRouter = new Router({
     routes
   })
 
@@ -302,7 +302,7 @@ test('#generate succeeds when called with an abstract route that has a child ind
       route('bar', { path: '' })
     })
   }).listen()
-  let url = router.generate('foo')
+  const url = router.generate('foo')
   assert.equals(url, '#foo')
 })
 
@@ -344,7 +344,7 @@ test('#use transition fails if a middleware returns a transition', (done) => {
 
 test('#match matches a path against the routes', () => {
   router.map(routes)
-  let match = router.match('/application/KidkArolis/status/42')
+  const match = router.match('/application/KidkArolis/status/42')
   assert.equals(match.params, {
     user: 'KidkArolis',
     id: '42'
@@ -354,7 +354,7 @@ test('#match matches a path against the routes', () => {
 
 test('#match matches a path with query params', () => {
   router.map(routes)
-  let match = router.match('/application/KidkArolis/status/42?withReplies=true&foo=bar')
+  const match = router.match('/application/KidkArolis/status/42?withReplies=true&foo=bar')
   assert.equals(match.params, {
     user: 'KidkArolis',
     id: '42'
@@ -371,7 +371,7 @@ test('#match returns an array of route descriptors', () => {
       route('bar', { customData: 2 })
     })
   })
-  let match = router.match('/foo/bar')
+  const match = router.match('/foo/bar')
   assert.equals(match.routes, [{
     name: 'foo',
     path: 'foo',
@@ -399,13 +399,13 @@ test('#match ignores the trailing slash', () => {
 
 test('#match returns an empty route array if nothing matches', () => {
   router.map(routes)
-  let match = router.match('/foo/bar')
+  const match = router.match('/foo/bar')
   assert.equals(match, { routes: [], params: {}, pathname: '/foo/bar', query: {} })
 })
 
 test('#match always parses query parameters even if a route does not match', () => {
   router.map(routes)
-  let match = router.match('/foo/bar?hello=world')
+  const match = router.match('/foo/bar?hello=world')
   assert.equals(match, { routes: [], params: {}, pathname: '/foo/bar', query: { hello: 'world' } })
 })
 
@@ -426,7 +426,7 @@ test('#transitionTo called on the same route, returns a completed transition', (
     return router.transitionTo('status', { user: 'me', id: 1 })
   }).then(() => {
     router.use(() => called = true)
-    let t = router.transitionTo('status', { user: 'me', id: 1 })
+    const t = router.transitionTo('status', { user: 'me', id: 1 })
     assert.equals(t.noop, true)
     return t
   }).then(() => {
@@ -511,13 +511,14 @@ test('#location URL is reset to previous one when a transition started by URL in
   router.listen().then(() => {
     router.transitionTo('messages').then(() => {
       beforeTransitionHash = router.location.getURL()
-      router.use({ cancel: function (transition) {
-        transition.catch(() => {
-          assert.equals(beforeTransitionHash, router.location.getURL())
-          refute.equals(beforeCancelHash, router.location.getURL())
-          done()
-        })
-      }
+      router.use({
+        cancel: function (transition) {
+          transition.catch(() => {
+            assert.equals(beforeTransitionHash, router.location.getURL())
+            refute.equals(beforeCancelHash, router.location.getURL())
+            done()
+          })
+        }
       })
       window.location.hash = '#application/notifications'
     })
@@ -643,7 +644,7 @@ if (window.history && window.history.pushState) {
     }
     router.map(routes)
     await router.listen('foobar')
-    let a = document.createElement('a')
+    const a = document.createElement('a')
     a.href = '/hello/world'
     a.innerHTML = 'hello'
     document.body.appendChild(a)

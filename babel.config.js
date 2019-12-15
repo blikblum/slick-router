@@ -1,25 +1,25 @@
 module.exports = {
-  'presets': [
+  presets: [
     [
       '@babel/preset-env',
       {
-        'targets': {
-          'browsers': [
+        targets: {
+          browsers: [
             'ie 11'
           ]
         },
-        'modules': false
+        modules: false
       }
     ]
   ],
-  'env': {
-    'test': {
-      'presets': [
+  env: {
+    test: {
+      presets: [
         [
           '@babel/preset-env',
           {
-            'targets': {
-              'browsers': [
+            targets: {
+              browsers: [
                 'ie 11'
               ]
             }

@@ -35,12 +35,12 @@ function config (c) {
         babel({
           babelrc: false,
           exclude: ['node_modules/**'],
-          'presets': [
+          presets: [
             [
               '@babel/preset-env',
               {
-                'targets': {
-                  'browsers': [
+                targets: {
+                  browsers: [
                     'chrome 60'
                   ]
                 }

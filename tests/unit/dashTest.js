@@ -1,21 +1,21 @@
 import { assert, refute } from '@sinonjs/referee'
 import { clone, pick, isEqual, extend } from '../../lib/dash'
 
-let { suite, test } = window
+const { suite, test } = window
 
 suite('dash')
 
 test('clone arrays', () => {
-  let a = [1, 2, 3]
-  let b = clone(a)
+  const a = [1, 2, 3]
+  const b = clone(a)
   b.push(4)
   assert.equals(a, [1, 2, 3])
   assert.equals(b, [1, 2, 3, 4])
 })
 
 test('clone objects', () => {
-  let a = { a: 1, b: 2 }
-  let b = clone(a)
+  const a = { a: 1, b: 2 }
+  const b = clone(a)
   b.c = 3
   assert.equals(a, { a: 1, b: 2 })
   assert.equals(b, { a: 1, b: 2, c: 3 })
@@ -34,7 +34,7 @@ test('pick', () => {
 })
 
 test('isEqual', () => {
-  let arr = []
+  const arr = []
   assert(isEqual({ a: 1, b: 2 }, { a: 1, b: 2 }))
   assert(isEqual({ a: 1, b: arr }, { a: 1, b: arr }))
   refute(isEqual({ a: 1, b: 2 }, { a: 1, b: '2' }))
@@ -45,8 +45,8 @@ test('isEqual', () => {
 test('extend', () => {
   assert.equals(extend({}, { a: 1, b: 2 }, null, { c: 3 }), { a: 1, b: 2, c: 3 })
 
-  let obj = { d: 4 }
-  let target = {}
+  const obj = { d: 4 }
+  const target = {}
   extend(target, obj)
   target.a = 1
   obj.b = 2
