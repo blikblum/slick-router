@@ -2,6 +2,11 @@
 
 ### Unreleased
 
+### [v1.0.0] - 2019-07-02
+  * replace path-to-regexp by path-to-regexp-es 
+  * improve log messages
+  * update examples
+
 ### [v0.9.0] - 2019-05-15
   * reset version to 0.9
   * renamed project to Slick Router (published as slick-router)
