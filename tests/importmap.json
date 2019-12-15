@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "/base/node_modules/@sinonjs/referee/lib/referee.js": "/base/tests/referee-es.js"
+  }
+}
