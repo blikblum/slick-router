@@ -26,7 +26,7 @@
     "url": "https://github.com/blikblum/slick-router/issues"
   },
   "dependencies": {
-    "path-to-regexp-es": "^3.0.0"
+    "path-to-regexp": "5.0.0"
   },
   "keywords": [
     "router",
