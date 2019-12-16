@@ -9,8 +9,12 @@
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
     "test-coverage": "karma start --browsers ChromeHeadless --single-run",
-    "test": "karma start --browsers ChromeHeadless --single-run --no-coverage",
-    "test:debug": "karma start --browsers ChromeDebugging --no-single-run --no-coverage"
+    "test": "karma start --coverage",
+    "test:debug": "karma start --browsers ChromeDebugging --no-single-run --no-coverage",
+    "test:watch": "karma start --auto-watch=true --single-run=false",
+    "test:update-snapshots": "karma start --update-snapshots",
+    "test:prune-snapshots": "karma start --prune-snapshots",
+    "test:bs": "karma start karma.bs.config.js --coverage"
   },
   "repository": {
     "type": "git",
@@ -33,19 +37,14 @@
     "nested"
   ],
   "devDependencies": {
-    "@sinonjs/referee": "^3.2.0",
-    "@sinonjs/referee-sinon": "^5.0.0",
+    "@open-wc/testing": "^2.0.0",
+    "@open-wc/testing-karma": "^3.0.0",
+    "deepmerge": "^4.2.2",
     "del": "^5.1.0",
     "karma": "^4.4.1",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-cli": "^2.0.0",
-    "karma-coverage": "^2.0.1",
-    "karma-mocha": "^1.3.0",
-    "karma-rollup-preprocessor": "^7.0.2",
     "mocha": "^6.2.2",
     "rollup": "^1.27.13",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
+    "sinon": "^7.5.0",
     "snazzy": "^8.0.0",
     "standard": "^14.3.1"
   },

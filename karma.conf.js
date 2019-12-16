@@ -1,82 +1,41 @@
-/**
- * Run karma start --no-coverage to get non instrumented code to show up in the dev tools
- */
+/* eslint-disable import/no-extraneous-dependencies */
+const { createDefaultConfig } = require('@open-wc/testing-karma')
+const merge = require('deepmerge')
 
-const nodeResolve = require('rollup-plugin-node-resolve')
-const commonjs = require('rollup-plugin-commonjs')
-
-function config (c) {
-  return {
-
-    frameworks: ['mocha'],
-
-    plugins: ['karma-mocha', 'karma-rollup-preprocessor', 'karma-chrome-launcher'],
-
-    preprocessors: {
-      'tests/index.js': ['rollup']
-    },
-
-    files: [
-      'tests/index.js'
-    ],
-
-    reporters: c.coverage ? ['progress', 'coverage'] : ['progress'],
-
-    // this watcher watches when bundled files are updated
-    autoWatch: true,
-
-    rollupPreprocessor: {
-      /**
-       * This is just a normal Rollup config object,
-       * except that `input` is handled for you.
-       */
-      plugins: [
-        nodeResolve(),
-        commonjs({
-          namedExports: {
-            '@sinonjs/referee': ['assert', 'refute'],
-            '@sinonjs/referee-sinon': ['assert', 'sinon']
-          }
-        })
+module.exports = config => {
+  config.set(
+    merge(createDefaultConfig(config), {
+      files: [
+        // runs all files ending with .test in the test folder,
+        // can be overwritten by passing a --grep flag. examples:
+        //
+        // npm run test -- --grep test/foo/bar.test.js
+        // npm run test -- --grep test/bar/*
+        { pattern: config.grep ? config.grep : 'tests/**/*Test.js', type: 'module' }
       ],
 
-      output: {
-        format: 'iife', // Helps prevent naming collisions.
-        name: 'cherrytreeTests', // Required for 'iife' format.
-        sourcemap: 'inline' // Sensible for testing.
+      customLaunchers: {
+        ChromeHeadlessNoSandbox: {
+          base: 'ChromeHeadless',
+          flags: [
+            '--no-sandbox', // default karma-esm configuration
+            '--disable-setuid-sandbox', // default karma-esm configuration
+            '--enable-experimental-web-platform-features' // necessary when using importMap option
+          ]
+        },
+        ChromeExt: {
+          base: 'Chrome',
+          flags: [
+            '--enable-experimental-web-platform-features' // necessary when using importMap option
+          ]
+        }
+      },
+
+      esm: {
+        nodeResolve: true
       }
-    },
-
-    client: {
-      useIframe: true,
-      captureConsole: true,
-      mocha: {
-        ui: 'qunit'
-      }
-    },
-
-    browsers: ['Chrome'],
-    browserNoActivityTimeout: 30000,
-
-    customLaunchers: {
-      ChromeDebugging: {
-        base: 'Chrome',
-        flags: ['--remote-debugging-port=9333']
-      }
-    },
-
-    coverageReporter: c.coverage ? {
-      reporters: [
-        { type: 'html', dir: 'coverage/' },
-        { type: 'text-summary' }
-      ]
-    } : {}
-  }
+      // you can overwrite/extend the config further
+    })
+  )
+  return config
 }
-
-module.exports = function (c) {
-  c.coverage = c.coverage !== false
-  c.set(config(c))
-}
-
-module.exports.config = config
