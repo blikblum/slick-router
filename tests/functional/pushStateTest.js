@@ -1,49 +1,52 @@
 import $ from './nanodom'
-import { assert } from '@sinonjs/referee'
 import fakeHistory from '../lib/fakeHistory'
 import TestApp from './testApp'
-const { suite, test, beforeEach, afterEach } = window
+import 'chai/chai.js'
+
+const { assert } = window.chai
+const { describe, it, beforeEach, afterEach } = window
+
 let app, router, history
 
 // This is to avoid running these tests in IE9 in CI
 if (window.history && window.history.pushState) {
-  suite('app using pushState')
-
-  beforeEach(() => {
-    window.location.hash = ''
-    app = new TestApp({
-      pushState: true,
-      root: '/app'
-    })
-    router = app.router
-    // eslint-disable-next-line no-return-assign
-    return app.start().then(() => history = fakeHistory(router.location))
-  })
-
-  afterEach(() => {
-    app.destroy()
-    history.restore()
-  })
-
-  test('transition occurs when location.hash changes', (done) => {
-    router.use((transition) => {
-      transition.then(() => {
-        assert.equals(transition.path, '/about')
-        assert.equals($('.application .outlet').html(), 'This is about page')
-        done()
-      }).catch(done, done)
+  describe('app using pushState', () => {
+    beforeEach(() => {
+      window.location.hash = ''
+      app = new TestApp({
+        pushState: true,
+        root: '/app'
+      })
+      router = app.router
+      // eslint-disable-next-line no-return-assign
+      return app.start().then(() => history = fakeHistory(router.location))
     })
 
-    history.setURL('/app/about')
-  })
+    afterEach(() => {
+      app.destroy()
+      history.restore()
+    })
 
-  test('programmatic transition via url and route names', async function () {
-    await router.transitionTo('about')
-    assert.equals(history.getURL(), '/app/about')
-    await router.transitionTo('/faq?sortBy=date')
-    assert.equals(history.getURL(), '/app/faq?sortBy=date')
-    assert.equals($('.application .outlet').html(), 'FAQ. Sorted By: date')
-    await router.transitionTo('faq', {}, { sortBy: 'user' })
-    assert.equals($('.application .outlet').html(), 'FAQ. Sorted By: user')
+    it('transition occurs when location.hash changes', (done) => {
+      router.use((transition) => {
+        transition.then(() => {
+          assert.equal(transition.path, '/about')
+          assert.equal($('.application .outlet').html(), 'This is about page')
+          done()
+        }).catch(done, done)
+      })
+
+      history.setURL('/app/about')
+    })
+
+    it('programmatic transition via url and route names', async function () {
+      await router.transitionTo('about')
+      assert.equal(history.getURL(), '/app/about')
+      await router.transitionTo('/faq?sortBy=date')
+      assert.equal(history.getURL(), '/app/faq?sortBy=date')
+      assert.equal($('.application .outlet').html(), 'FAQ. Sorted By: date')
+      await router.transitionTo('faq', {}, { sortBy: 'user' })
+      assert.equal($('.application .outlet').html(), 'FAQ. Sorted By: user')
+    })
   })
 }
