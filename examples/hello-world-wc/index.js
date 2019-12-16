@@ -1,4 +1,4 @@
-import Router from 'slick-router'
+import { Router } from 'slick-router'
 import './components.js'
 
 // create the router

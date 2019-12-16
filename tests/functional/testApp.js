@@ -1,5 +1,5 @@
 import $ from './nanodom'
-import Router from '../../lib/router'
+import { Router } from '../../lib/router'
 
 export default function TestApp (options) {
   options = options || {}
