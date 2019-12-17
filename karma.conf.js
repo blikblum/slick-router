@@ -14,23 +14,6 @@ module.exports = config => {
         { pattern: config.grep ? config.grep : 'tests/**/*Test.js', type: 'module' }
       ],
 
-      customLaunchers: {
-        ChromeHeadlessNoSandbox: {
-          base: 'ChromeHeadless',
-          flags: [
-            '--no-sandbox', // default karma-esm configuration
-            '--disable-setuid-sandbox', // default karma-esm configuration
-            '--enable-experimental-web-platform-features' // necessary when using importMap option
-          ]
-        },
-        ChromeExt: {
-          base: 'Chrome',
-          flags: [
-            '--enable-experimental-web-platform-features' // necessary when using importMap option
-          ]
-        }
-      },
-
       esm: {
         nodeResolve: true
       }
