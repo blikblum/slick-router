@@ -37,5 +37,10 @@ module.exports = config => {
       // you can overwrite/extend the config further
     })
   )
+  // remove snapshot support
+  delete config.preprocessors
+  config.frameworks = config.frameworks.filter(framework => !framework.includes('snapshot'))
+  config.files = config.files.filter(file => typeof file !== 'string' || !file.includes('__snapshots__'))
+  config.plugins = config.plugins.filter(path => !path.includes('snapshot'))
   return config
 }
