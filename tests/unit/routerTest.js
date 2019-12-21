@@ -458,6 +458,19 @@ describe('Slick Router', () => {
     assert.equal(router.state.path, '/foo')
   })
 
+  it('#transitionTo called on an route with a child index route should activate the index route', async () => {
+    router.map((route) => {
+      route('foo', () => {
+        route('bar', { path: '' })
+      })
+    }).listen()
+    await router.transitionTo('foo')
+    assert.equal(router.isActive('foo'), true)
+    assert.equal(router.isActive('bar'), true)
+    assert.equal(router.state.routes.length, 2)
+    assert.equal(router.state.path, '/foo')
+  })
+
   it('#isActive returns true if arguments match current state and false if not', async () => {
     router.map(routes)
     await router.listen()
