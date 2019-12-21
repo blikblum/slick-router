@@ -24,7 +24,7 @@ describe('links', () => {
     const cb = (event, el) => calledWith.push({ event, el })
 
     // proxy all clicks via this callback
-    const dispose = intercept(cb)
+    const dispose = intercept(document, cb)
 
     // install another click handler that will prevent
     // the navigation, we must install this after the
