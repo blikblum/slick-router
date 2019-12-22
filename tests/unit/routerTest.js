@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/dash'
-import { Router } from '../../lib/router'
+import { Router, interceptLinks } from '../../lib/router'
 import sinon from 'sinon'
 import 'chai/chai.js'
 
@@ -642,11 +642,12 @@ describe('Slick Router', () => {
       it('custom link intercept click handler', async function () {
         let interceptCalledWith = false
         router.options.pushState = true
-        router.options.interceptLinks = function (event, link) {
+        const clickHandler = function (event, link) {
           event.preventDefault()
           interceptCalledWith = link.getAttribute('href')
         }
         router.map(routes)
+        interceptLinks(router, document, clickHandler)
         await router.listen('foobar')
         const a = document.createElement('a')
         a.href = '/hello/world'
