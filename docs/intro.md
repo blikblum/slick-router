@@ -5,7 +5,7 @@ When your application starts, the router is responsible for loading data, render
 First create an instance of the router.
 
 ```js
-import Router from "slick-router";
+import { Router } from 'slick-router';
 
 const router = new Router({
   pushState: true

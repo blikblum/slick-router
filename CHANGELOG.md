@@ -1,6 +1,13 @@
-## Slick Router changelog
+## Slick Router Changelog
 
 ### Unreleased
+  * Export Router as named export instead of as default
+  * Convert classes to ES6 syntax
+  * Do not transpile to ES5 (publishes package as ES6)
+  * Use path-to-regexp instead of path-to-regexp-es
+  * Allow to create index routes without using abstract option
+  * Extract intercepLinks funcionality from Router class
+  * Add `at` option to control middleware insert position
 
 ### [v1.0.0] - 2019-07-02
   * replace path-to-regexp by path-to-regexp-es 

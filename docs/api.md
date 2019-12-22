@@ -11,7 +11,6 @@ const router = new Router(options)
 * **options.logError** - default is true. A function that is called when transitions error (except for the special `TransitionRedirected` and `TransitionCancelled` errors). Pass in `true`/`false` or a custom error handling function.
 * **options.pushState** - default is false, which means using hashchange events. Set to `true` to use pushState.
 * **options.root** - default is `/`. Use in combination with `pushState: true` if your application is not being served from the root url /.
-* **options.interceptLinks** - default is true. When pushState is used - intercepts all link clicks when appropriate, prevents the default behaviour and instead uses pushState to update the URL and handle the transition via the router. You can also set this option to a custom function that will get called whenever a link is clicked if you want to customize the behaviour. Read more on [intercepting links below](#intercepting-links).
 * **options.qs** - default is a simple built in query string parser. Pass in an object with `parse` and `stringify` functions to customize how query strings get treated.
 
 ### Router#map
@@ -166,7 +165,7 @@ route('foo.bar')
 route('foo.bar', {path: 'bar'})
 ```
 
-### router.use(fn)
+### router.use(fn, options)
 
 Add a transition middleware. Every time a transition takes place this middleware will be called with a transition as the argument. You can call `use` multiple times to add more middlewares. The middleware function can return a promise and the next middleware will not be called until the promise of the previous middleware is resolved. The result of the promise is passed in as a second argument to the next middleware. E.g.
 
@@ -182,6 +181,13 @@ router.use(function (transition, datas) {
     route.options.handler.activate(datas[i])
   })
 })
+```
+
+Its possible to control the order which the middleware is inserted in internal queue by using `options.at`:
+
+```js
+// ensure middleware will be executed first
+router.use(() => { console.log('my middleware') }, { at: 0 })
 ```
 
 #### transition
@@ -305,7 +311,7 @@ If you have some error handling middleware - you most likely want to check for t
 
 ## BrowserLocation
 
-Is possible to configure hoe browser's URL/history is managed. By default, Slick Router will use a very versatile implementation - `slick-router/lib/locations/browser` which supports `pushState` and `hashChange` based URL management with graceful fallback of `pushState` -> `hashChange` -> `polling` depending on browser's capabilities.
+Is possible to configure how browser's URL/history is managed. By default, Slick Router will use a very versatile implementation - `slick-router/lib/locations/browser` which supports `pushState` and `hashChange` based URL management with graceful fallback of `pushState` -> `hashChange` -> `polling` depending on browser's capabilities.
 
 Configure BrowserLocation by passing options directly to the router.
 
@@ -343,11 +349,13 @@ var router = new Router({
 
 ## Intercepting Links
 
-Slick Router intercepts all link clicks when using pushState, because without this functionality - the browser would just do a full page refresh on every click of a link.
+By default, when using pushState, the server must be configured to support it (i.e. redirect all non static resources to index html) otherwise the browser would just do a full page refresh on every click of a link.
+
+Slick Router provides `interceptLinks` function which allows to use pushState without server configuration
 
 The clicks **are** intercepted only if:
 
-  * router is passed a `interceptLinks: true` (default)
+  * `interceptLinks(router)` is called
   * the currently used location and browser supports pushState
   * clicked with the left mouse button with no cmd or shift key
 
@@ -368,7 +376,17 @@ function defaultClickHandler (event, link, router) {
 }
 ```
 
-You can pass in a custom function as the `interceptLinks` router option to customize this behaviour. E.g. to use `replaceWith` instead of `transitionTo`.
+You can pass the root element to look for links and a custom function as `interceptLinks` params:
+
+```js
+function customClickHandler (event, link, router) {
+  event.preventDefault()
+  router.replaceWith(router.location.removeRoot(link.getAttribute('href')))
+}
+
+interceptLinks(router, document, customClickHandler)
+```
+
 
 
 ## Handling 404

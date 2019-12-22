@@ -26,7 +26,7 @@ The size excluding path-to-regexp dependency is ~40kB (without minification and 
 
 
 ```js
-import Router from 'slick-router';
+import { Router } from 'slick-router';
 ```
 
 ## Docs
@@ -43,12 +43,12 @@ TBD
 ## Usage
 
 ```js
-import Router from 'slick-router';
+import { Router } from 'slick-router';
 import handlers from './handlers';
 
 // route tree definition
 const routes = function (route) {
-  route('application', {path: '/', abstract: true}, function () {
+  route('application', {path: '/'}, function () {
     route('feed', {path: ''})
     route('messages')
     route('status', {path: ':user/status/:id'})
