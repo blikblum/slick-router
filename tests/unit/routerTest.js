@@ -39,7 +39,7 @@ describe('Slick Router', () => {
     assert(router.middleware[0].next === m)
   })
 
-  it('#use registers object middleware ', () => {
+  it('#use registers object middleware', () => {
     const m = {
       next: function () {},
       done: function () {},
@@ -48,6 +48,20 @@ describe('Slick Router', () => {
     router.use(m)
     assert(router.middleware.length === 1)
     assert(router.middleware[0] === m)
+  })
+
+  it('#use accepts at option', () => {
+    const m1 = () => {}
+    const m2 = {
+      next: function () {},
+      done: function () {},
+      error: function () {}
+    }
+    router.use(m1)
+    router.use(m2, { at: 0 })
+    assert(router.middleware.length === 2)
+    assert(router.middleware[0] === m2)
+    assert(router.middleware[1].next === m1)
   })
 
   it('#use middleware gets passed a transition object', (done) => {
