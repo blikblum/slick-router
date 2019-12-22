@@ -5,6 +5,7 @@
   "description": "A flexible hierarchical client side router",
   "main": "slick-router.js",
   "module": "slick-router.js",
+  "sideEffects": false,
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
