@@ -132,7 +132,14 @@ describe('app', () => {
     // the url is still posts.filter
     assert.equal(window.location.hash, '#posts/filter/foo')
 
-    // going back should now take as to faq
+    // at first look going back now should take to #faq but it does not:
+    // the initial steps creates this history: #faq > #posts/filter/foo > #about
+    // calling cancel replaces #about by #posts/filter/foo so the history is now
+    // #faq > #posts/filter/foo > #posts/filter/foo
+    // calling history.back goes from #posts/filter/foo to #posts/filter/foo which is ignored
+    // the native history API does not provide a way to cancel a navigation
+    // or to go back synchronously and without triggering the events
+    // the solution would be to handle router own history
     await new Promise((resolve, reject) => {
       router.use((transition) => {
         transition.then(() => {
