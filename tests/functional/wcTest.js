@@ -78,7 +78,7 @@ const routes = function (route) {
     })
     route('sibling', { component: 'sibling-view' })
   })
-  route('root', { component: 'parent-view' })
+  route('root', { component: ParentView })
 }
 
 describe('wc middleware', () => {
@@ -100,6 +100,11 @@ describe('wc middleware', () => {
 
   it('should render a root route', async () => {
     await router.transitionTo('parent')
+    expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
+  })
+
+  it('should accept a HTMLElement constructor as component', async () => {
+    await router.transitionTo('root')
     expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
   })
 
