@@ -73,7 +73,18 @@ customElements.define('sibling-view', SiblingView)
 
 const LazyParent = function () {
   return new Promise((resolve) => {
-    setTimeout(resolve(ParentView), 50)
+    setTimeout(resolve({ default: ParentView, __esModule: true }), 50)
+  })
+}
+
+const viewMap = {
+  lazydynamic: SiblingView,
+  lazydynamic2: GrandChildView
+}
+
+const LazyDynamic = function (route) {
+  return new Promise((resolve) => {
+    setTimeout(resolve(viewMap[route.name]), 50)
   })
 }
 
@@ -86,6 +97,8 @@ const routes = function (route) {
   })
   route('root', { component: ParentView })
   route('lazy', { component: LazyParent })
+  route('lazydynamic', { component: LazyDynamic })
+  route('lazydynamic2', { component: LazyDynamic })
 }
 
 describe('wc middleware', () => {
@@ -118,6 +131,13 @@ describe('wc middleware', () => {
   it('should accept a function that returns a promise as component', async () => {
     await router.transitionTo('lazy')
     expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
+  })
+
+  it('should pass route as a parameter to lazy components', async () => {
+    await router.transitionTo('lazydynamic')
+    expect(outlet).lightDom.to.equal('<sibling-view></sibling-view>')
+    await router.transitionTo('lazydynamic2')
+    expect(outlet).lightDom.to.equal('<grandchild-view></grandchild-view>')
   })
 
   it('should render a nested route in shadow dom parent', async () => {
