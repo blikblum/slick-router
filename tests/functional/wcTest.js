@@ -71,6 +71,12 @@ class SiblingView extends LitElement {
 
 customElements.define('sibling-view', SiblingView)
 
+const LazyParent = function () {
+  return new Promise((resolve) => {
+    setTimeout(resolve(ParentView), 50)
+  })
+}
+
 const routes = function (route) {
   route('parent', { component: 'parent-view', beforeEnter: parentBeforeEnter, beforeLeave: parentBeforeLeave }, function () {
     route('child', { component: 'child-view' }, function () {
@@ -79,6 +85,7 @@ const routes = function (route) {
     route('sibling', { component: 'sibling-view' })
   })
   route('root', { component: ParentView })
+  route('lazy', { component: LazyParent })
 }
 
 describe('wc middleware', () => {
@@ -105,6 +112,11 @@ describe('wc middleware', () => {
 
   it('should accept a HTMLElement constructor as component', async () => {
     await router.transitionTo('root')
+    expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
+  })
+
+  it('should accept a function that returns a promise as component', async () => {
+    await router.transitionTo('lazy')
     expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
   })
 
