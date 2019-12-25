@@ -107,14 +107,12 @@ describe('wc middleware', () => {
     outlet = document.createElement('div')
     document.body.appendChild(outlet)
     router = new Router({ location: 'memory', outlet, routes })
-    wc.create(router)
     router.use(wc)
     router.listen()
   })
 
   afterEach(() => {
     outlet.remove()
-    wc.destroy(router)
     router.destroy()
   })
 
