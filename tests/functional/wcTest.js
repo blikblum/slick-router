@@ -10,8 +10,13 @@ const { describe, it, beforeEach, afterEach } = window
 
 const parentBeforeEnter = stub()
 const grandchildBeforeEnter = spy()
+const parentAfterEnter = stub()
+const grandchildAfterEnter = spy()
+
 const parentBeforeLeave = spy()
 const grandchildBeforeLeave = stub()
+const parentAfterLeave = spy()
+const grandchildAfterLeave = stub()
 
 //
 const parentBeforeEnterMethod = stub()
@@ -89,9 +94,21 @@ const LazyDynamic = function (route) {
 }
 
 const routes = function (route) {
-  route('parent', { component: 'parent-view', beforeEnter: parentBeforeEnter, beforeLeave: parentBeforeLeave }, function () {
+  route('parent', {
+    component: 'parent-view',
+    beforeEnter: parentBeforeEnter,
+    beforeLeave: parentBeforeLeave,
+    afterEnter: parentAfterEnter,
+    afterLeave: parentAfterLeave
+  }, function () {
     route('child', { component: 'child-view' }, function () {
-      route('grandchild', { component: 'grandchild-view', beforeEnter: grandchildBeforeEnter, beforeLeave: grandchildBeforeLeave })
+      route('grandchild', {
+        component: 'grandchild-view',
+        beforeEnter: grandchildBeforeEnter,
+        beforeLeave: grandchildBeforeLeave,
+        afterEnter: grandchildAfterEnter,
+        afterLeave: grandchildAfterLeave
+      })
     })
     route('sibling', { component: 'sibling-view' })
   })
@@ -181,12 +198,16 @@ describe('wc middleware', () => {
       // route config lifecycle
       parentBeforeEnter.resetHistory()
       parentBeforeEnter.resetBehavior()
+      parentAfterEnter.resetHistory()
 
       grandchildBeforeLeave.resetHistory()
       grandchildBeforeLeave.resetBehavior()
+      grandchildAfterLeave.resetHistory()
 
       grandchildBeforeEnter.resetHistory()
+      grandchildAfterEnter.resetHistory()
       parentBeforeLeave.resetHistory()
+      parentAfterLeave.resetHistory()
 
       // component lifecycle
       parentBeforeEnterMethod.resetHistory()
@@ -269,15 +290,56 @@ describe('wc middleware', () => {
       })
     })
 
-    describe('beforeLeave', () => {
+    describe('afterEnter', () => {
       it('should be called when entering a route', async () => {
+        const transition = router.transitionTo('parent')
+        await transition
+        expect(parentAfterEnter).to.be.calledOnceWithExactly(transition)
+      })
+
+      it('should be called in all activated routes from parent to child', async () => {
+        const transition = router.transitionTo('grandchild')
+        await transition
+        expect(parentAfterEnter).to.be.calledOnceWithExactly(transition)
+        expect(grandchildAfterEnter).to.be.calledOnceWithExactly(transition)
+        expect(grandchildAfterEnter).to.be.calledAfter(parentAfterEnter)
+      })
+
+      it('should not cancel transition when transition.cancel is called inside it', async () => {
+        parentAfterEnter.callsFake((transition) => {
+          transition.cancel()
+        })
+        return router.transitionTo('parent')
+      })
+
+      it('should not cancel transition when returns false', async () => {
+        parentAfterEnter.returns(false)
+        return router.transitionTo('parent')
+      })
+
+      it('should call child beforeEnter when transition is cancelled in parent', async () => {
+        parentAfterEnter.returns(false)
+        await router.transitionTo('grandchild')
+        expect(grandchildAfterEnter).to.be.called
+      })
+
+      it('should not be called when route is matched but not activated', async () => {
+        await router.transitionTo('child')
+        parentAfterEnter.resetHistory()
+        await router.transitionTo('sibling')
+        expect(parentAfterEnter).to.not.be.called
+      })
+    })
+
+    describe('beforeLeave', () => {
+      it('should be called when leaving a route', async () => {
         await router.transitionTo('parent')
         const transition = router.transitionTo('root')
         await transition
         expect(parentBeforeLeave).to.be.calledOnceWithExactly(transition)
       })
 
-      it('should be called in all activated routes from child to parent', async () => {
+      it('should be called in all deactivated routes from child to parent', async () => {
         await router.transitionTo('grandchild')
         const transition = router.transitionTo('root')
         await transition
@@ -342,6 +404,52 @@ describe('wc middleware', () => {
         parentBeforeLeave.resetHistory()
         await router.transitionTo('sibling')
         expect(parentBeforeLeave).to.not.be.called
+      })
+    })
+
+    describe('afterLeave', () => {
+      it('should be called when leaving a route', async () => {
+        await router.transitionTo('parent')
+        const transition = router.transitionTo('root')
+        await transition
+        expect(parentAfterLeave).to.be.calledOnceWithExactly(transition)
+      })
+
+      it('should be called in all deactivated routes from child to parent', async () => {
+        await router.transitionTo('grandchild')
+        const transition = router.transitionTo('root')
+        await transition
+        expect(parentAfterLeave).to.be.calledOnceWithExactly(transition)
+        expect(grandchildAfterLeave).to.be.calledOnceWithExactly(transition)
+        expect(grandchildAfterLeave).to.be.calledBefore(parentAfterLeave)
+      })
+
+      it('should not cancel transition when transition.cancel is called inside it', async () => {
+        grandchildAfterLeave.callsFake((transition) => {
+          transition.cancel()
+        })
+        await router.transitionTo('grandchild')
+        return router.transitionTo('root')
+      })
+
+      it('should not cancel transition when returns false', async () => {
+        grandchildAfterLeave.returns(false)
+        await router.transitionTo('grandchild')
+        return router.transitionTo('root')
+      })
+
+      it('should call parent afterLeave when transition is cancelled in child', async () => {
+        grandchildAfterLeave.returns(false)
+        await router.transitionTo('grandchild')
+        await router.transitionTo('root')
+        expect(parentAfterLeave).to.be.called
+      })
+
+      it('should not be called when route is matched but not deactivated', async () => {
+        await router.transitionTo('child')
+        parentAfterLeave.resetHistory()
+        await router.transitionTo('sibling')
+        expect(parentAfterLeave).to.not.be.called
       })
     })
 

@@ -62,6 +62,14 @@ const routes = [
 
 > If `beforeEnter` returns false, the transition is cancelled
 
+### `afterEnter`
+
+Function that is called after the route is entered. A `transition` instance is passed as argument but trying to manipulate it, e.g., cancel or redirect will not have effect 
+
+In nested routes, is called from parent to child
+
+Even if is an async function it will not be awaited before proceeding.
+
 ### `beforeLeave`
 
 Function that is called before the route is about to leave. A `transition` instance is passed as argument allowing to manipulate it, e.g., cancel or redirect. 
@@ -83,6 +91,14 @@ const routes = [
 
 > If `beforeLeave` returns false, the transition is cancelled
 
+### `afterLeave`
+
+Function that is called after the route is leave. A `transition` instance is passed as argument but trying to manipulate it, e.g., cancel or redirect will not have effect 
+
+In nested routes, is called from child to parent
+
+Even if is an async function it will not be awaited before proceeding.
+
 ## Component Lifecycle Methods
 
 Routing state can be acessed in component instance methods
@@ -99,6 +115,11 @@ class HomeView extends HTMLElement {
 }
 ```
 
+### `afterRouteEnter`
+
+Called with `transition` instance as argument before is inserted in the dom tree. Exhibits same behavior as [`afterEnter`](#afterenter)
+
+
 ### `beforeRouteLeave`
 
 Called with `transition` instance as argument before is removed from the dom tree. Exhibits same behavior as [`beforeLeave`](#beforeleave)
@@ -112,6 +133,11 @@ class FormView extends HTMLElement {
   }
 }
 ```
+
+### `afterRouteLeave`
+
+Called with `transition` instance as argument after is removed in the dom tree. Exhibits same behavior as [`afterLeave`](#afterleave)
+
 
 ## Component Properties
 
