@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-/* global describe,beforeEach,afterEach,it,sinon */
+/* global describe,beforeEach,afterEach,it,$ */
 
 import { Router } from '../../lib/router'
 import { wc } from '../../lib/middlewares/wc'
@@ -20,7 +20,7 @@ const BaseParentView = withRouterLinks(LitElement, {
 })
 
 class ParentView extends BaseParentView {
-  rootId = 5
+  get rootId () { return 5 }
 
   createRenderRoot () {
     return this
@@ -52,7 +52,6 @@ class ParentView extends BaseParentView {
 }
 const parentTag = defineCE(ParentView)
 
-
 const BaseGrandChildView = withRouterLinks(LitElement, {
   query: {
     other: 'xx'
@@ -70,8 +69,7 @@ class ChildView extends LitElement {
     `
   }
 }
-const childTag = defineCE(ChildView)
-
+defineCE(ChildView)
 
 class GrandChildView extends BaseGrandChildView {
   createRenderRoot () {
@@ -99,7 +97,7 @@ describe('routerLinks', () => {
           route('grandchild', { component: GrandChildView })
         })
       })
-      route('root', { path: 'root/:id',  component: ParentView  })
+      route('root', { path: 'root/:id', component: ParentView })
     }
     parentComponent = ParentView
     router = new Router({ location: 'memory', outlet, routes })
@@ -402,7 +400,7 @@ describe('routerLinks', () => {
     const customSelectorOptions = {}
 
     class ParentCustomSelectorView extends withRouterLinks(LitElement, customSelectorOptions) {
-      rootId = 5
+      get rootId () { return 5 }
 
       createRenderRoot () {
         return this
