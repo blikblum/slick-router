@@ -47,6 +47,7 @@
     "lit-element": "^2.2.1",
     "mocha": "^6.2.2",
     "rollup": "^1.27.14",
+    "rollup-plugin-cpy": "^2.0.1",
     "sinon": "^8.0.1",
     "snazzy": "^8.0.0",
     "standard": "^14.3.1"

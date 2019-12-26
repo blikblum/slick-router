@@ -4,6 +4,7 @@ const fs = require('fs')
 const del = require('del')
 const rollup = require('rollup')
 const pkg = require('../package.json')
+const copy = require('rollup-plugin-cpy')
 
 const BUILD_DIR = 'build'
 
@@ -18,7 +19,14 @@ promise = promise.then(() => del([`${BUILD_DIR}/*`]))
 
 promise.then(() => rollup.rollup({
   input: 'lib/router.js',
-  external: Object.keys(pkg.dependencies)
+  external: Object.keys(pkg.dependencies),
+  plugins: [
+    copy({
+      files: 'lib/middlewares/*',
+      dest: 'build/middlewares',
+      parents: true
+    })
+  ]
 }).then(bundle => bundle.write({
   file: 'build/slick-router.js',
   format: 'es',
