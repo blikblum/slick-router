@@ -36,12 +36,12 @@ describe('Slick Router', () => {
     const m = () => {}
     router.use(m)
     assert(router.middleware.length === 1)
-    assert(router.middleware[0].next === m)
+    assert(router.middleware[0].resolve === m)
   })
 
   it('#use registers object middleware', () => {
     const m = {
-      next: function () {},
+      resolve: function () {},
       done: function () {},
       error: function () {}
     }
@@ -53,7 +53,7 @@ describe('Slick Router', () => {
   it('#use accepts at option', () => {
     const m1 = () => {}
     const m2 = {
-      next: function () {},
+      resolve: function () {},
       done: function () {},
       error: function () {}
     }
@@ -61,7 +61,7 @@ describe('Slick Router', () => {
     router.use(m2, { at: 0 })
     assert(router.middleware.length === 2)
     assert(router.middleware[0] === m2)
-    assert(router.middleware[1].next === m1)
+    assert(router.middleware[1].resolve === m1)
   })
 
   it('#use middleware gets passed a transition object', (done) => {
@@ -130,18 +130,18 @@ describe('Slick Router', () => {
       }).catch(done)
   })
 
-  it('#use middleware next and done hooks are called on successful transition', (done) => {
+  it('#use middleware resolve and done hooks are called on successful transition', (done) => {
     router.map(routes)
     var m = {
-      next: sinon.spy(),
+      resolve: sinon.spy(),
       done: sinon.spy()
     }
     router.use(m)
     router.listen()
     router.transitionTo('messages').then(() => {
-      sinon.assert.calledOnce(m.next)
+      sinon.assert.calledOnce(m.resolve)
       sinon.assert.calledOnce(m.done)
-      sinon.assert.callOrder(m.next, m.done)
+      sinon.assert.callOrder(m.resolve, m.done)
       done()
     })
   })

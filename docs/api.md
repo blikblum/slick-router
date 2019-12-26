@@ -194,7 +194,7 @@ router.use(function () { console.log('my middleware') }, { at: 0 })
 
 The middleware can be defined also as an object defining one or more of following hooks:
 
-- `next(transition, prevData)`: called once per transition after previous middleware, if any, is resolved. Main action should be done here.
+- `resolve(transition, prevData)`: called once per transition after previous middleware, if any, is resolved. Main action should be done here.
 - `done(transition)`: called when transition succeeds and after all middlewares are resolved
 - `cancel(transition, err)`: called if transition is cancelled / redirected
 - `error(transition, err)`: called if an error occurs while executing the trasition
