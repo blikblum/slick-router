@@ -1,6 +1,8 @@
 ## Slick Router Changelog
 
 ### Unreleased
+  * Add wc middleware (render web components)
+  * Add routerLinks middleware
   * Export Router as named export instead of as default
   * Convert classes to ES6 syntax
   * Do not transpile to ES5 (publishes package as ES6)

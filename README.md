@@ -1,21 +1,20 @@
 # Slick Router
 
-Slick Router is a flexible hierarchical router that translates every URL change into a transition descriptor object and calls your middleware functions that put the application into a desired state. It is derived from [cherrytree](https://github.com/QubitProducts/cherrytree) library (see [differences](docs/versions-differences.md)).
+Slick Router is a powerful, flexible router that translates URL changes into route transitions allowing to put the application into a desired state. It is derived from [cherrytree](https://github.com/QubitProducts/cherrytree) library (see [differences](docs/versions-differences.md)).
 
 ## Features
 
 * can be used with any view and data framework
-* nested routes are great for nested UIs
+* can nest routes allowing to create nested UI and/or state
 * generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
-* use pushState with automatic hashchange fallback
-* all urls are generated with or without `#` as appropriate
-* link clicks on the page are intercepted automatically when using pushState
+* use pushState or hashchange for URL change detection
 * dynamically load parts of your app during transitions
 * dynamic segments, optional params and query params
 * support for custom query string parser
 * transition is a first class citizen - abort, pause, resume, retry. E.g. pause the transition to display "There are unsaved changes" message if the user clicked some link on the page or used browser's back/forward buttons
 * navigate around the app programatically, e.g. `router.transitionTo('commits')`
 * easily rename URL segments in a single place (e.g. /account -> /profile)
+* link clicks can be intercepted when using pushState without server support
 
 
 ## Installation
@@ -24,10 +23,6 @@ The size excluding path-to-regexp dependency is ~40kB (without minification and 
 
     $ npm install --save slick-router
 
-
-```js
-import { Router } from 'slick-router';
-```
 
 ## Docs
 
@@ -38,23 +33,23 @@ import { Router } from 'slick-router';
 
 ## Buitins middlewares
 
-TBD
+ * [wc](docs/middlewares/wc.md) (advanced Web Component rendering and lifecycle)
+ * [routerLinks](docs/middlewares/router-links.md) (handle route related links state)
 
 ## Usage
 
 ```js
 import { Router } from 'slick-router';
-import handlers from './handlers';
 
 // route tree definition
 const routes = function (route) {
-  route('application', {path: '/'}, function () {
+  route('application', {path: '/', component: 'my-app'}, function () {
     route('feed', {path: ''})
     route('messages')
     route('status', {path: ':user/status/:id'})
-    route('profile', {path: ':user'}, function () {
-      route('profile.lists')
-      route('profile.edit')
+    route('profile', {path: ':user', private: true}, function () {
+      route('profile.lists', {component: 'profile-lists'})
+      route('profile.edit', {component: 'profile-edit'})
     })
   })
 }
@@ -64,17 +59,29 @@ var router = new Router({
   routes
 })
 
-// render middleware
-router.use(function render (transition) {
-  transition.routes.forEach(function (route, i) {
-    route.view = handlers[route.name]({
-      params: transition.params,
-      query: transition.query
-    })
-    var parent = transition.routes[i-1]
-    var containerEl = parent ? parent.view.el.querySelector('.outlet') : document.body
-    containerEl.appendChild(view.render().el)
-  })
+// renders a web component defined through component option
+// or using route name suffixed with "-view"
+// for advanced features use builtin wc middleware
+router.use(async function render (transition) {
+  const routes = transition.routes
+  for (const route of routes) {
+    const parent = routes[routes.indexOf(route) - 1]
+    const tagName = route.options.component || `${route.name}-view`
+    const el = route.el = document.createElement(tagName)
+    const containerEl = parent ? parent.el.querySelector('.outlet') : document.body
+    containerEl.appendChild(el)
+    // supports lazy rendering e.g. LitElement and SkateJS
+    await (el.updateComplete || Promise.resolve())
+  }
+})
+
+// protect private routes
+router.use(function privateHandler (transition) {
+  if (transition.routes.some(route => route.options.private)) {
+    if (!userLogged()) {
+      transition.cancel()
+    }
+  }
 })
 
 // for error logging attach a catch handler to transition promise...

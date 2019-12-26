@@ -15,7 +15,9 @@ const router = new Router(options)
 
 ### Router#map
 
-Configure the router with a route tree which can be defined as an array or a callback. E.g.
+Configure the router with a route tree which can be defined as an array or a callback.
+
+> If routes option is passed to constructor is not nessecary call `map`
 
 ```js
 // route tree as callback
@@ -52,7 +54,7 @@ router.map([
       }
     ]
   }
-])
+]) 
 ```
 
 #### Nested paths
@@ -187,8 +189,17 @@ Its possible to control the order which the middleware is inserted in internal q
 
 ```js
 // ensure middleware will be executed first
-router.use(() => { console.log('my middleware') }, { at: 0 })
+router.use(function () { console.log('my middleware') }, { at: 0 })
 ```
+
+The middleware can be defined also as an object defining one or more of following hooks:
+
+- `next(transition, prevData)`: called once per transition after previous middleware, if any, is resolved. Main action should be done here.
+- `done(transition)`: called when transition succeeds and after all middlewares are resolved
+- `cancel(transition, err)`: called if transition is cancelled / redirected
+- `error(transition, err)`: called if an error occurs while executing the trasition
+- `create(router)`: called once at middleware registration. Useful to configure the middleware
+- `destroy(router)`: called once when router destroyed
 
 #### transition
 
