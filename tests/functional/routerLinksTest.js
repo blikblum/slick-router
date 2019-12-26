@@ -4,8 +4,9 @@
 import { Router } from '../../lib/router'
 import { wc } from '../../lib/middlewares/wc'
 import { routerLinks, bindRouterLinks, withRouterLinks } from '../../lib/middlewares/router-links'
-import { defineCE, expect } from '@open-wc/testing'
+import { defineCE, expect, fixtureSync } from '@open-wc/testing'
 import { LitElement, html } from 'lit-element'
+import sinon from 'sinon'
 import 'jquery'
 
 const BaseParentView = withRouterLinks(LitElement, {
@@ -117,9 +118,9 @@ describe('routerLinks', () => {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
 
-      expect($('#a-parentlink').attr('href')).to.be.equal('#parent')
-      expect($('#a-rootlink2').attr('href')).to.be.equal('#root/2')
-      expect($('#a-grandchildlink').attr('href')).to.be.equal('#parent/child/grandchild?name=test')
+      expect($('#a-parentlink').attr('href')).to.be.equal('/parent')
+      expect($('#a-rootlink2').attr('href')).to.be.equal('/root/2')
+      expect($('#a-grandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
     })
   })
 
@@ -133,8 +134,8 @@ describe('routerLinks', () => {
       rootLink.attr('param-id', '3')
       grandChildLink.attr('query-other', 'boo')
       return Promise.resolve().then(() => {
-        expect(rootLink.attr('href')).to.be.equal('#root/3')
-        expect(grandChildLink.attr('href')).to.be.equal('#parent/child/grandchild?name=test&other=boo')
+        expect(rootLink.attr('href')).to.be.equal('/root/3')
+        expect(grandChildLink.attr('href')).to.be.equal('/parent/child/grandchild?name=test&other=boo')
       })
     })
   })
@@ -143,7 +144,7 @@ describe('routerLinks', () => {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
-      expect($('#childanchor').attr('href')).to.be.equal('#parent')
+      expect($('#childanchor').attr('href')).to.be.equal('/parent')
       expect($('#childanchor2').attr('href')).to.be.equal(undefined)
       expect($('#childanchor3').attr('href')).to.be.equal(undefined)
     })
@@ -153,7 +154,7 @@ describe('routerLinks', () => {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
-      expect($('#a-rootlink4').attr('href')).to.be.equal('#root/10?test=xxx')
+      expect($('#a-rootlink4').attr('href')).to.be.equal('/root/10?test=xxx')
     })
   })
 
@@ -161,7 +162,7 @@ describe('routerLinks', () => {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
-      expect($('#a-rootlink3').attr('href')).to.be.equal('#root/5?tag=A')
+      expect($('#a-rootlink3').attr('href')).to.be.equal('/root/5?tag=A')
     })
   })
 
@@ -171,7 +172,7 @@ describe('routerLinks', () => {
       await parentEl.updateComplete
       const grandChildlEl = document.querySelector(grandChildTag)
       await grandChildlEl.updateComplete
-      expect($('#a-grandchildlink2').attr('href')).to.be.equal('#parent/child/grandchild?other=xx&name=test')
+      expect($('#a-grandchildlink2').attr('href')).to.be.equal('/parent/child/grandchild?other=xx&name=test')
     })
   })
 
@@ -285,9 +286,9 @@ describe('routerLinks', () => {
 
         // links are updated asynchronously by MutationObserver
         setTimeout(() => {
-          expect($('#a-dyn-parentlink').attr('href')).to.be.equal('#parent')
-          expect($('#a-dyn-rootlink2').attr('href')).to.be.equal('#root/2')
-          expect($('#a-dyn-grandchildlink').attr('href')).to.be.equal('#parent/child/grandchild?name=test')
+          expect($('#a-dyn-parentlink').attr('href')).to.be.equal('/parent')
+          expect($('#a-dyn-rootlink2').attr('href')).to.be.equal('/root/2')
+          expect($('#a-dyn-grandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
           done()
         }, 0)
       })
@@ -319,9 +320,9 @@ describe('routerLinks', () => {
   })
 
   describe('when calling bindRouterLinks in pre-rendered HTML', function () {
-    let unbind
+    let unbind, preRenderedEl
     beforeEach(function () {
-      $(`<div id="prerendered">
+      preRenderedEl = fixtureSync(`<div id="prerendered">
         <div routerlinks>
           <a id="a-prerootlink2" route="root" param-id="2"></a>
           <a id="a-preparentlink" route="parent"></a>
@@ -330,17 +331,17 @@ describe('routerLinks', () => {
           <div id="div-pregrandchildlink" route="grandchild" query-name="test"></div>
           <div id="div-preparentlink" route="parent"><div id="preinnerparent"></div></div>
         </div>
-      </div>`).appendTo(document.body)
-      unbind = bindRouterLinks(document.getElementById('prerendered'))
+      </div>`)
+      unbind = bindRouterLinks(preRenderedEl)
     })
 
     it('should generate href attributes in anchor tags with route attribute', function () {
       return router.transitionTo('parent').then(async function () {
         const parentEl = document.querySelector(parentTag)
         await parentEl.updateComplete
-        expect($('#a-preparentlink').attr('href')).to.be.equal('#parent')
-        expect($('#a-prerootlink2').attr('href')).to.be.equal('#root/2')
-        expect($('#a-pregrandchildlink').attr('href')).to.be.equal('#parent/child/grandchild?name=test')
+        expect($('#a-preparentlink').attr('href')).to.be.equal('/parent')
+        expect($('#a-prerootlink2').attr('href')).to.be.equal('/root/2')
+        expect($('#a-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
       })
     })
 
@@ -387,9 +388,9 @@ describe('routerLinks', () => {
 
           // links are updated asynchronously by MutationObserver
           setTimeout(() => {
-            expect($('#a-dyn-preparentlink').attr('href')).to.be.equal('#parent')
-            expect($('#a-dyn-prerootlink2').attr('href')).to.be.equal('#root/2')
-            expect($('#a-dyn-pregrandchildlink').attr('href')).to.be.equal('#parent/child/grandchild?name=test')
+            expect($('#a-dyn-preparentlink').attr('href')).to.be.equal('/parent')
+            expect($('#a-dyn-prerootlink2').attr('href')).to.be.equal('/root/2')
+            expect($('#a-dyn-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
             done()
           }, 0)
         })
@@ -430,7 +431,7 @@ describe('routerLinks', () => {
         const parentEl = document.querySelector(customParentTag)
         await parentEl.updateComplete
 
-        expect($('#a-parentlink').attr('href')).to.be.equal('#parent')
+        expect($('#a-parentlink').attr('href')).to.be.equal('/parent')
 
         expect($('#a-parentlink-outside').attr('href')).to.be.equal(undefined)
 
@@ -450,9 +451,9 @@ describe('routerLinks', () => {
         const parentEl = document.querySelector(customParentTag)
         await parentEl.updateComplete
 
-        expect($('#a-parentlink').attr('href')).to.be.equal('#parent')
+        expect($('#a-parentlink').attr('href')).to.be.equal('/parent')
 
-        expect($('#a-parentlink-outside').attr('href')).to.be.equal('#parent')
+        expect($('#a-parentlink-outside').attr('href')).to.be.equal('/parent')
 
         const spy = sinon.spy(router, 'transitionTo')
         $('#innerparent').click()
