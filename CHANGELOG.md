@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### [v2.1.1] - 2019-12-27
+  * Fix URL generation of index routes
+
 ### [v2.1.0] - 2019-12-27
   * Allow to customize outlet selector with outlet static property
   * Allow to define routes without component
