@@ -41,12 +41,16 @@ class ParentView extends LitElement {
 customElements.define('parent-view', ParentView)
 
 class ChildView extends LitElement {
+  static get outlet () {
+    return '.outlet'
+  }
+
   createRenderRoot () {
     return this
   }
 
   render () {
-    return html`<router-outlet></router-outlet>`
+    return html`<div class="outlet"></div>`
   }
 }
 
@@ -166,7 +170,7 @@ describe('wc middleware', () => {
     expect(parentEl).shadowDom.to.equal(`
     <router-outlet>
       <child-view>
-        <router-outlet></router-outlet>
+        <div class="outlet"></div>
       </child-view>
     </router-outlet>`)
   })
@@ -178,9 +182,9 @@ describe('wc middleware', () => {
     expect(parentEl).shadowDom.to.equal(`
     <router-outlet>
       <child-view>
-        <router-outlet>
-         <grandchild-view></grandchild-view>
-        </router-outlet>
+        <div class="outlet">
+          <grandchild-view></grandchild-view>
+        </div>
       </child-view>
     </router-outlet>`)
   })
@@ -204,7 +208,7 @@ describe('wc middleware', () => {
     expect(parentEl).shadowDom.to.equal(`
     <router-outlet>
       <child-view>
-        <router-outlet></router-outlet>
+        <div class="outlet"></div>
       </child-view>
     </router-outlet>`)
   })
