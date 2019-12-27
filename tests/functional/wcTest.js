@@ -112,7 +112,11 @@ const routes = function (route) {
     })
     route('sibling', { component: 'sibling-view' })
   })
-  route('root', { component: ParentView })
+  route('root', { component: ParentView }, function () {
+    route('noui', function () {
+      route('rootchild', { component: ChildView })
+    })
+  })
   route('lazy', { component: LazyParent })
   route('lazydynamic', { component: LazyDynamic })
   route('lazydynamic2', { component: LazyDynamic })
@@ -190,6 +194,18 @@ describe('wc middleware', () => {
     <router-outlet>
       <sibling-view>
       </sibling-view>
+    </router-outlet>`)
+  })
+
+  it('should render a nested route in closest parent with a component', async () => {
+    await router.transitionTo('rootchild')
+    expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
+    const parentEl = outlet.children[0]
+    expect(parentEl).shadowDom.to.equal(`
+    <router-outlet>
+      <child-view>
+        <router-outlet></router-outlet>
+      </child-view>
     </router-outlet>`)
   })
 
