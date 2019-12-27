@@ -11,7 +11,7 @@
     "lint": "standard",
     "test-coverage": "karma start --browsers ChromeHeadless --single-run",
     "test": "karma start --coverage",
-    "test:debug": "karma start --browsers ChromeDebugging --no-single-run --no-coverage",
+    "test:debug": "karma start --browsers ChromeDebugging --auto-watch=true --single-run=false",
     "test:watch": "karma start --auto-watch=true --single-run=false",
     "test:update-snapshots": "karma start --update-snapshots",
     "test:prune-snapshots": "karma start --prune-snapshots"
@@ -30,7 +30,7 @@
   },
   "keywords": [
     "router",
-    "history",
+    "web-components",
     "browser",
     "pushState",
     "hierarchical",

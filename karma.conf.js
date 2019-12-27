@@ -16,8 +16,14 @@ module.exports = config => {
 
       esm: {
         nodeResolve: true
+      },
+
+      customLaunchers: {
+        ChromeDebugging: {
+          base: 'Chrome',
+          flags: ['--remote-debugging-port=9333']
+        }
       }
-      // you can overwrite/extend the config further
     })
   )
   // remove snapshot support
