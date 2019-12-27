@@ -1,6 +1,13 @@
 ## Slick Router Changelog
 
 ### Unreleased
+
+### [v2.1.0] - 2019-12-27
+  * Allow to customize outlet selector with outlet static property
+  * Allow to define routes without component
+  * Accept a selector as router outlet
+
+### [v2.0.0] - 2019-12-26
   * Add wc middleware (render web components)
   * Add routerLinks middleware
   * Rename `next` middleware hook to `resolve`
