@@ -277,9 +277,11 @@ describe('routerLinks', () => {
       router.transitionTo('parent').then(async function () {
         const parentEl = document.querySelector(parentTag)
         await parentEl.updateComplete
-        $(`<a id="a-dyn-rootlink2" route="root" param-id="2"></a>
-          <a id="a-dyn-parentlink" route="parent"></a>
-          <a id="a-dyn-grandchildlink" route="grandchild" query-name="test"></a>
+        $(`<div>
+            <a id="a-dyn-rootlink2" route="root" param-id="2"></a>
+            <a id="a-dyn-parentlink" route="parent"></a>
+            <a id="a-dyn-grandchildlink" route="grandchild" query-name="test"></a>
+          </div> 
         `).appendTo(parentEl.renderRoot.querySelector('[routerlinks]'))
 
         // links are updated asynchronously by MutationObserver
