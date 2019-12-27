@@ -246,7 +246,7 @@ describe('routerLinks', () => {
     })
   })
 
-  it('should allow to customize the class to be set', function () {
+  it('should allow to avoid a class being set', function () {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
