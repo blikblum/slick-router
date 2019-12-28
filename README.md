@@ -19,7 +19,8 @@ Slick Router is a powerful, flexible router that translates URL changes into rou
 
 ## Installation
 
-The size excluding path-to-regexp dependency is ~40kB (without minification and compression)
+The main library size including path-to-regexp dependency is ~15kB minified (without gzip compression).
+wc and routerLinks middlewares accounts for 3kb each. See [webpack test project](examples/tree-shaking) for more results.
 
     $ npm install --save slick-router
 
