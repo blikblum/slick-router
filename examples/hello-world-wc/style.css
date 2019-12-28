@@ -15,6 +15,10 @@ body, html {
   border-bottom: 1px solid #eee;
 }
 
+.App-header .active {
+  font-weight: bolder;
+}
+
 .App h1 {
   display: inline-block;
 }
