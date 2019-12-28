@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit-element'
 import 'chai/chai.js'
 import { pick } from '../../lib/dash'
 import { Router } from '../../lib/router'
-import { wc } from '../../lib/middlewares/wc'
+import { wc, paramValue, queryValue } from '../../lib/middlewares/wc'
 import { expect, defineCE } from '@open-wc/testing'
 import { spy, stub } from 'sinon'
 
@@ -125,7 +125,11 @@ const routes = function (route) {
   route('lazy', { component: LazyParent })
   route('lazydynamic', { component: LazyDynamic })
   route('lazydynamic2', { component: LazyDynamic })
-  route('withparam', { component: ParentView, path: 'x/:id', properties: { x: 'y' } })
+  route('withparam', {
+    component: ParentView,
+    path: 'x/:id',
+    properties: { x: 'y', myQuery: queryValue('sort', val => val.toUpperCase()), myParam: paramValue('id', 'number') }
+  })
   route('temp', { component: LazyDynamic })
 }
 
@@ -256,6 +260,18 @@ describe('wc middleware', () => {
       await router.transitionTo('withparam', { id: 1 })
       const parentEl = outlet.children[0]
       expect(parentEl.x).to.equal('y')
+    })
+
+    it('should set query value when using queryValue', async () => {
+      await router.transitionTo('withparam', { id: 1 }, { sort: 'asc' })
+      const parentEl = outlet.children[0]
+      expect(parentEl.myQuery).to.equal('ASC')
+    })
+
+    it('should set param value when using paramValue', async () => {
+      await router.transitionTo('withparam', { id: 1 })
+      const parentEl = outlet.children[0]
+      expect(parentEl.myParam).to.equal(1)
     })
   })
 
