@@ -1,9 +1,10 @@
 /* eslint-disable no-return-assign, no-unused-expressions */
 import { LitElement, html } from 'lit-element'
 import 'chai/chai.js'
+import { pick } from '../../lib/dash'
 import { Router } from '../../lib/router'
 import { wc } from '../../lib/middlewares/wc'
-import { expect } from '@open-wc/testing'
+import { expect, defineCE } from '@open-wc/testing'
 import { spy, stub } from 'sinon'
 
 const { describe, it, beforeEach, afterEach } = window
@@ -124,6 +125,7 @@ const routes = function (route) {
   route('lazy', { component: LazyParent })
   route('lazydynamic', { component: LazyDynamic })
   route('lazydynamic2', { component: LazyDynamic })
+  route('temp', { component: LazyDynamic })
 }
 
 describe('wc middleware', () => {
@@ -211,6 +213,41 @@ describe('wc middleware', () => {
         <div class="outlet"></div>
       </child-view>
     </router-outlet>`)
+  })
+
+  describe('$route', () => {
+    function normalizeState (state) {
+      return pick(state, ['path', 'pathname', 'routes', 'params', 'query'])
+    }
+
+    it('should be set on rendered elements', async () => {
+      await router.transitionTo('child')
+      const parentEl = outlet.children[0]
+      expect(parentEl.$route).to.deep.equal(normalizeState(router.state))
+      const childEl = parentEl.shadowRoot.querySelector('child-view')
+      expect(childEl.$route).to.deep.equal(normalizeState(router.state))
+    })
+
+    it('should be updated on not rendered but active elements', async () => {
+      await router.transitionTo('child')
+      const parentEl = outlet.children[0]
+      const oldState = parentEl.$route
+      await router.transitionTo('sibling')
+      expect(parentEl.$route).to.deep.equal(normalizeState(router.state))
+      expect(parentEl.$route).to.not.deep.equal(normalizeState(oldState))
+    })
+
+    it('should be set before element is attached to dom tree', async () => {
+      let $route
+      class GrabRouteState extends HTMLElement {
+        connectedCallback () {
+          $route = this.$route
+        }
+      }
+      viewMap.temp = defineCE(GrabRouteState)
+      await router.transitionTo('temp')
+      expect($route).to.deep.equal(normalizeState(router.state))
+    })
   })
 
   describe('lifecycle', () => {
