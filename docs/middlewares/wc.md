@@ -37,6 +37,26 @@ const routes = [
 
 > When using [dynamic import](https://javascript.info/modules-dynamic-imports) with a tool like [webpack](webpack.js.org) the corresponding code is split from main bundle and lazy loaded
 
+### `reuse`
+
+By default, the routes elements are created each navigation even when the same route is matched.
+
+Setting `reuse` to false will make the router reuse the same element instance when the same route is matched
+
+```js
+const routes = [
+  {
+    name: 'person',
+    component: 'person-view',
+    path: 'person/:id',
+    reuse: true
+  }
+]
+```
+
+In the above example transitioning from 'person/1' to 'person/2' will not create a new 'person-view' element.
+The lifecycle hooks will be fired and `$route` property will be updated
+
 ### `properties`
 
 Defines the properties that are set to route element each time a transition occurs.

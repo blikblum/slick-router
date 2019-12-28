@@ -130,6 +130,11 @@ const routes = function (route) {
     path: 'x/:id',
     properties: { x: 'y', myQuery: queryValue('sort', val => val.toUpperCase()), myParam: paramValue('id', 'number') }
   })
+  route('reusable', {
+    component: ParentView,
+    path: 'y/:id',
+    reuse: true
+  })
   route('temp', { component: LazyDynamic })
 }
 
@@ -272,6 +277,16 @@ describe('wc middleware', () => {
       await router.transitionTo('withparam', { id: 1 })
       const parentEl = outlet.children[0]
       expect(parentEl.myParam).to.equal(1)
+    })
+  })
+
+  describe('reuse', () => {
+    it('should reuse element when reuse is true', async () => {
+      await router.transitionTo('reusable', { id: 1 })
+      const firstEl = outlet.children[0]
+      await router.transitionTo('reusable', { id: 2 })
+      const secondEl = outlet.children[0]
+      expect(firstEl).to.equal(secondEl)
     })
   })
 
