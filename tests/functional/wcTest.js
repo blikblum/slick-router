@@ -125,6 +125,7 @@ const routes = function (route) {
   route('lazy', { component: LazyParent })
   route('lazydynamic', { component: LazyDynamic })
   route('lazydynamic2', { component: LazyDynamic })
+  route('withparam', { component: ParentView, path: 'x/:id', properties: { x: 'y' } })
   route('temp', { component: LazyDynamic })
 }
 
@@ -247,6 +248,14 @@ describe('wc middleware', () => {
       viewMap.temp = defineCE(GrabRouteState)
       await router.transitionTo('temp')
       expect($route).to.deep.equal(normalizeState(router.state))
+    })
+  })
+
+  describe('properties', () => {
+    it('should be set on elements', async () => {
+      await router.transitionTo('withparam', { id: 1 })
+      const parentEl = outlet.children[0]
+      expect(parentEl.x).to.equal('y')
     })
   })
 
