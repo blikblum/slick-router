@@ -1,7 +1,5 @@
 # wc middleware
 
-## Introduction
-
 Render web components according to router state. Provides advanced funcionality like lazy loading, nested components and routing control though lifecycle hooks.
 
 ## Route Configuration
@@ -38,6 +36,57 @@ const routes = [
 ```
 
 > When using [dynamic import](https://javascript.info/modules-dynamic-imports) with a tool like [webpack](webpack.js.org) the corresponding code is split from main bundle and lazy loaded
+
+### `properties`
+
+Defines the properties that are set to route element each time a transition occurs.
+
+```js
+const routes = [
+  {
+    name: 'hello',
+    component: 'message-view',
+    properties: {
+      message: 'Hello'
+    }
+  },
+  {
+    name: 'goodbye',
+    component: 'message-view',
+    properties: {
+      message: 'Goodbye'
+    }
+  }
+]
+```
+
+By using `paramValue` and `queryValue` is possible to map dynamic route values to the route element. 
+Both accepts a `key` parameter to define the query or param to retrieve from, a `format` that can be 'number' to convert to number or a function to do custom formatting
+
+```js
+import { paramValue, queryValue } from 'slick-router/middlewares/wc'
+
+const routes = [
+  {
+    name: 'person',
+    component: 'person-view',
+    path: '/person/:id'
+    properties: {
+      personId: paramValue('id', 'number')
+    }
+  },
+  {
+    name: 'people',
+    component: 'people-view',
+    properties: {
+      sort: queryValue('sort', value => value.toUpperCase())
+    }
+  }
+]
+```
+
+In the above example, when path is 'person/2' the rendered element of person route will have personId set to 2.
+When path is 'people?sort=asc' the people route element will have sort set to 'ASC'
 
 ### `beforeEnter`
 
@@ -159,4 +208,4 @@ Object holding active route state:
   params,
   query
 }
-```      
+```

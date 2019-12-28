@@ -1,6 +1,9 @@
 ## Slick Router Changelog
 
 ### Unreleased
+  * Implement properties option
+  * Fix creating router links when link is not a direct child of root el
+  * Set $route property before connectedCallback is called
 
 ### [v2.1.1] - 2019-12-27
   * Fix URL generation of index routes
