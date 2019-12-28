@@ -1,4 +1,4 @@
-var Router = require('slick-router').default
+var { Router } = require('slick-router')
 var getHandler = require('./handler')
 
 

@@ -1,4 +1,4 @@
-import Router from 'slick-router'
+import { Router } from 'slick-router'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Application, Home, Messages, Profile, ProfileIndex } from './components'

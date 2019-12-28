@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import Router from 'slick-router'
+import { Router } from 'slick-router'
 
 require('./style.css')
 
