@@ -503,6 +503,15 @@ describe('Slick Router', () => {
     assert.equal(router.isActive('messages', null, { foo: 'baz' }), false)
   })
 
+  it('#isActive does a exact matching when exact argument is true', async () => {
+    router.map(routes)
+    await router.listen()
+    await router.transitionTo('application')
+    assert.equal(router.isActive('application', null, null, true), true)
+    await router.transitionTo('notifications')
+    assert.equal(router.isActive('application', null, null, true), false)
+  })
+
   it('#location URL is reset to previous one when a transition started programatically is cancelled', (done) => {
     let beforeCancelHash
     let beforeTransitionHash
