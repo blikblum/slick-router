@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### [v2.2.1] - 2019-12-28
+  * routerLinks: fix using withRouterLinks with non legacy decorators
+
 ### [v2.2.0] - 2019-12-28
   * wc: Implement reuse option
   * wc: Implement properties option
