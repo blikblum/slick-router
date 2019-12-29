@@ -131,9 +131,30 @@ describe('routerLinks', () => {
       const grandChildLink = $('#a-grandchildlink')
       rootLink.attr('param-id', '3')
       grandChildLink.attr('query-other', 'boo')
+      // wait for mutation observer
       return Promise.resolve().then(() => {
         expect(rootLink.attr('href')).to.be.equal('/root/3')
         expect(grandChildLink.attr('href')).to.be.equal('/parent/child/grandchild?name=test&other=boo')
+      })
+    })
+  })
+
+  it('should update active class when attribute is changed', function () {
+    return router.transitionTo('root', { id: 1 }).then(async function () {
+      const parentEl = document.querySelector(parentTag)
+      await parentEl.updateComplete
+
+      const rootLink1 = $('#div-rootlink1')
+      const rootLink2 = $('#a-rootlink2')
+
+      expect(rootLink1.hasClass('active')).to.be.true
+      expect(rootLink2.hasClass('active')).to.be.false
+      rootLink1.attr('param-id', '3')
+      rootLink2.attr('param-id', '1')
+      // wait for mutation observer
+      return Promise.resolve().then(() => {
+        expect(rootLink1.hasClass('active')).to.be.false
+        expect(rootLink2.hasClass('active')).to.be.true
       })
     })
   })
@@ -345,6 +366,17 @@ describe('routerLinks', () => {
       })
     })
 
+    it('should set active class in tags with route attribute', function () {
+      return router.transitionTo('parent').then(async function () {
+        const parentEl = document.querySelector(parentTag)
+        await parentEl.updateComplete
+        expect($('#a-preparentlink').hasClass('active')).to.be.true
+        expect($('#a-prerootlink2').hasClass('active')).to.be.false
+        expect($('#div-preparentlink').hasClass('active')).to.be.true
+        expect($('#div-prerootlink1').hasClass('active')).to.be.false
+      })
+    })
+
     it('should call transitionTo when a non anchor tags with route attribute is clicked', function () {
       return router.transitionTo('parent').then(async function () {
         const parentEl = document.querySelector(parentTag)
@@ -391,6 +423,25 @@ describe('routerLinks', () => {
             expect($('#a-dyn-preparentlink').attr('href')).to.be.equal('/parent')
             expect($('#a-dyn-prerootlink2').attr('href')).to.be.equal('/root/2')
             expect($('#a-dyn-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
+            done()
+          }, 0)
+        })
+      })
+
+      it('should set active class in tags with route attribute', function (done) {
+        router.transitionTo('parent').then(async function () {
+          const parentEl = document.querySelector(parentTag)
+          await parentEl.updateComplete
+          $(`<a id="a-dyn-prerootlink2" route="root" param-id="2"></a>
+            <a id="a-dyn-preparentlink" route="parent"></a>
+            <a id="a-dyn-pregrandchildlink" route="grandchild" query-name="test"></a>
+          `).appendTo(document.querySelector('#prerendered [routerlinks]'))
+
+          // links are updated asynchronously by MutationObserver
+          setTimeout(() => {
+            expect($('#a-dyn-preparentlink').hasClass('active')).to.be.true
+            expect($('#a-dyn-prerootlink2').hasClass('active')).to.be.false
+            expect($('#a-dyn-pregrandchildlink').hasClass('active')).to.be.false
             done()
           }, 0)
         })
