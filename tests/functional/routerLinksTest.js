@@ -35,6 +35,7 @@ class ParentView extends BaseParentView {
         <a id="a-parentlink" route="parent"></a>
         <a id="a-parentlink-customclass" active-class="my-active-class" route="parent"></a>
         <a id="a-parentlink-noclass" active-class="" route="parent"></a>
+        <a id="a-parentlink-exact" route="parent" exact></a>
         <a id="a-grandchildlink" route="grandchild" query-name="test"></a>
         <a id="a-rootlink2" route="root" param-id="2"></a>
         <a id="a-rootlink3" route="root"></a>
@@ -260,8 +261,6 @@ describe('routerLinks', () => {
 
   it('should allow to customize the class to be set', function () {
     return router.transitionTo('parent').then(async function () {
-      const parentEl = document.querySelector(parentTag)
-      await parentEl.updateComplete
       expect($('#a-parentlink-customclass').hasClass('active')).to.be.false
       expect($('#a-parentlink-customclass').hasClass('my-active-class')).to.be.true
     })
@@ -269,10 +268,15 @@ describe('routerLinks', () => {
 
   it('should allow to avoid a class being set', function () {
     return router.transitionTo('parent').then(async function () {
-      const parentEl = document.querySelector(parentTag)
-      await parentEl.updateComplete
       expect($('#a-parentlink-noclass').hasClass('active')).to.be.false
     })
+  })
+
+  it('should do an exact active matching when exact attribute is set', async function () {
+    await router.transitionTo('parent')
+    expect($('#a-parentlink-exact').hasClass('active')).to.be.true
+    await router.transitionTo('grandchild')
+    expect($('#a-parentlink-exact').hasClass('active')).to.be.false
   })
 
   it('should not generate href attributes outside of elements with routerlinks attribute', function () {
@@ -358,8 +362,6 @@ describe('routerLinks', () => {
 
     it('should generate href attributes in anchor tags with route attribute', function () {
       return router.transitionTo('parent').then(async function () {
-        const parentEl = document.querySelector(parentTag)
-        await parentEl.updateComplete
         expect($('#a-preparentlink').attr('href')).to.be.equal('/parent')
         expect($('#a-prerootlink2').attr('href')).to.be.equal('/root/2')
         expect($('#a-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
@@ -368,8 +370,6 @@ describe('routerLinks', () => {
 
     it('should set active class in tags with route attribute', function () {
       return router.transitionTo('parent').then(async function () {
-        const parentEl = document.querySelector(parentTag)
-        await parentEl.updateComplete
         expect($('#a-preparentlink').hasClass('active')).to.be.true
         expect($('#a-prerootlink2').hasClass('active')).to.be.false
         expect($('#div-preparentlink').hasClass('active')).to.be.true
@@ -379,8 +379,6 @@ describe('routerLinks', () => {
 
     it('should call transitionTo when a non anchor tags with route attribute is clicked', function () {
       return router.transitionTo('parent').then(async function () {
-        const parentEl = document.querySelector(parentTag)
-        await parentEl.updateComplete
         const spy = sinon.spy(router, 'transitionTo')
         $('#div-prerootlink1').click()
         expect(spy).to.be.calledOnce.and.calledWithExactly('root', { id: '1' }, {})
@@ -398,8 +396,6 @@ describe('routerLinks', () => {
     it('should not call transitionTo after calling function returned by bindRouterLinks', function () {
       unbind()
       return router.transitionTo('parent').then(async function () {
-        const parentEl = document.querySelector(parentTag)
-        await parentEl.updateComplete
         const spy = sinon.spy(router, 'transitionTo')
         $('#div-prerootlink1').click()
         $('#div-pregrandchildlink').click()
