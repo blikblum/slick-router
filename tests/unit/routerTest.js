@@ -489,6 +489,11 @@ describe('Slick Router', () => {
     assert.equal(router.state.path, '/foo')
   })
 
+  it('#isActive does not throws if called before a transition occurs', async () => {
+    router.map(routes)
+    assert.equal(router.isActive('notifications'), false)
+  })
+
   it('#isActive returns true if arguments match current state and false if not', async () => {
     router.map(routes)
     await router.listen()
