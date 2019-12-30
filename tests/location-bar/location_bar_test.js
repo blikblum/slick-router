@@ -143,7 +143,7 @@
     }
   });
 
-  asyncTest("can all navigate", 3, function () {
+  asyncTest("can all update", 3, function () {
     var count = 0;
     locationBar1 = new LocationBar();
     locationBar1.route(/^search\/.*$/, function (path) {
@@ -164,11 +164,11 @@
     });
     locationBar2.start();
 
-    locationBar1.navigate('search/news', {trigger: true});
+    locationBar1.update('search/news', {trigger: true});
 
     function proceed() {
       if (++count < 2) return;
-      locationBar1.navigate('search/food', {trigger: true});
+      locationBar1.update('search/food', {trigger: true});
     }
   });
 

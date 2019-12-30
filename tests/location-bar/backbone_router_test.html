@@ -36,6 +36,9 @@
   <script type="module">
     import LocationBar from "../../lib/locations/location-bar.js"
     window.LocationBar = LocationBar
+    LocationBar.prototype.navigate = function (...args) {
+      return LocationBar.prototype.update.apply(this, args)
+    }
 
     // we include the entire Backbone to be able to run the entire test suite
     // of Backbone.Router, but with this extracted version of Backbone.History
