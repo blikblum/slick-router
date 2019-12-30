@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import BrowserLocation from '../../lib/locations/browser'
-import { extend } from '../../lib/dash'
+import { extend } from '../../lib/utils'
 import { Router, interceptLinks } from '../../lib/router'
 import sinon from 'sinon'
 import 'chai/chai.js'

@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign, no-unused-expressions */
 import { LitElement, html } from 'lit-element'
 import 'chai/chai.js'
-import { pick } from '../../lib/dash'
+import { pick } from '../../lib/utils'
 import { Router } from '../../lib/router'
 import { wc, paramValue, queryValue } from '../../lib/middlewares/wc'
 import { expect, defineCE } from '@open-wc/testing'

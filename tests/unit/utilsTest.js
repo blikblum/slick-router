@@ -1,5 +1,5 @@
 
-import { clone, pick, isEqual, extend } from '../../lib/dash'
+import { clone, pick, isEqual, extend } from '../../lib/utils'
 import 'chai/chai.js'
 
 const { assert } = window.chai
