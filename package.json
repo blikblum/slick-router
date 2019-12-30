@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "slick-router",
-  "version": "2.2.1",
-  "description": "A flexible hierarchical client side router",
+  "version": "2.3.0",
+  "description": "A powerful and flexible client side router",
   "main": "slick-router.js",
   "module": "slick-router.js",
   "sideEffects": false,
