@@ -29,6 +29,49 @@ describe('events middleware', () => {
       router.destroy()
     })
 
+    describe('before:transition', () => {
+      let beforeTransitionSpy, transitionSpy
+
+      beforeEach(() => {
+        beforeTransitionSpy = spy()
+        transitionSpy = spy()
+        window.addEventListener('router-before:transition', beforeTransitionSpy)
+        window.addEventListener('router-transition', transitionSpy)
+      })
+
+      afterEach(() => {
+        window.removeEventListener('router-before:transition', beforeTransitionSpy)
+        window.removeEventListener('router-transition', transitionSpy)
+      })
+
+      it('should be fired on completed transition', async () => {
+        await router.transitionTo('messages')
+        expect(beforeTransitionSpy).to.be.calledOnce
+        expect(beforeTransitionSpy).to.be.calledBefore(transitionSpy)
+
+        await router.transitionTo('notifications')
+        expect(beforeTransitionSpy).to.be.calledTwice
+      })
+
+      it('should be fired on cancelled transition', async () => {
+        router.use(transition => transition.cancel())
+        try {
+          await router.transitionTo('messages')
+        } catch (error) {
+        }
+        expect(beforeTransitionSpy).to.be.called
+      })
+
+      it('should be fired on cancelled transition', async () => {
+        router.use(() => { throw new Error('error') })
+        try {
+          await router.transitionTo('messages')
+        } catch (error) {
+        }
+        expect(beforeTransitionSpy).to.be.called
+      })
+    })
+
     describe('transition', () => {
       let transitionSpy
 
