@@ -2,6 +2,16 @@
 
 ### Unreleased
 
+### [v2.3.1] - 2019-12-31
+ * wc: add getRouteEl function
+ * events: add before:transition event
+
+### [v2.3.0] - 2019-12-30
+  * Implement exact active matching in isActive
+  * routerLinks: fix updating active class when link is created outside an active transition
+  * routerLinks: implement exact active matching through exact attribute
+  * Add events middleware
+
 ### [v2.2.1] - 2019-12-28
   * routerLinks: fix using withRouterLinks with non legacy decorators
 

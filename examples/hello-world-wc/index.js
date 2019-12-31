@@ -1,6 +1,7 @@
 import { Router } from 'slick-router'
 import { wc } from 'slick-router/middlewares/wc.js'
 import { routerLinks } from 'slick-router/middlewares/router-links.js'
+import { events } from 'slick-router/middlewares/events.js'
 import './components.js'
 
 // create the router
@@ -27,6 +28,11 @@ router.map((route) => {
 // install middleware that will handle transitions
 router.use(wc)
 router.use(routerLinks)
+router.use(events)
 
 // start listening to browser's location bar changes
 router.listen()
+
+window.addEventListener('router-transition', function (e) {
+  console.log('router.transition', e.detail.transition.pathname)
+})

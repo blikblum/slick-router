@@ -36,6 +36,7 @@ wc and routerLinks middlewares accounts for 3kb each. See [webpack test project]
 
  * [wc](docs/middlewares/wc.md) (advanced Web Component rendering and lifecycle)
  * [routerLinks](docs/middlewares/router-links.md) (handle route related links state)
+ * [events](docs/middlewares/events.md) (fires route events on window)
 
 ## Usage
 
@@ -110,7 +111,9 @@ router.listen()
 
 ## Examples
 
-You can clone this repo if you want to run the `examples` locally:
+ * [lit-element-mobx-realworld](https://github.com/blikblum/lit-element-mobx-realworld-example-app) A complete app that uses router advanced features. [Live demo](https://blikblum.github.io/lit-element-mobx-realworld-example-app)
+
+You can also clone this repo and run the `examples` locally:
 
 * [hello-world-jquery](examples/hello-world-jquery) - minimal example with good old jquery
 * [hello-world-react](hello-world-react) - minimal example with React
