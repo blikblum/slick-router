@@ -4,18 +4,19 @@ Slick Router is a powerful, flexible router that translates URL changes into rou
 
 ## Features
 
-* can be used with any view and data framework
-* can nest routes allowing to create nested UI and/or state
-* generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
-* use pushState or hashchange for URL change detection
-* dynamically load parts of your app during transitions
-* dynamic segments, optional params and query params
-* support for custom query string parser
-* transition is a first class citizen - abort, pause, resume, retry. E.g. pause the transition to display "There are unsaved changes" message if the user clicked some link on the page or used browser's back/forward buttons
-* navigate around the app programatically, e.g. `router.transitionTo('commits')`
-* easily rename URL segments in a single place (e.g. /account -> /profile)
-* link clicks can be intercepted when using pushState without server support
-
+* Can be used with any view and data framework
+* Can nest routes allowing to create nested UI and/or state
+* Route transition is a first class citizen - abort, pause, resume, retry
+* Generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
+* Use pushState or hashchange for URL change detection
+* Define path dynamic segments (uses path-to-regexp under the hood)
+* Supports custom query string parser
+* Trigger router navigate programatically
+* With builtin middlewares:
+  * Render nested UI using web components
+  * Streamlined support for code spliting and lazy loading 
+  * Expose route state to components
+  * Declarative handling of router links
 
 ## Installation
 
