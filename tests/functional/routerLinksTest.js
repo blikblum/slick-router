@@ -32,6 +32,7 @@ class ParentView extends BaseParentView {
         <div id="div-rootlink1" route="root" param-id="1"></div>
         <div id="div-grandchildlink" route="grandchild" query-name="test"></div>
         <div id="div-parentlink" route="parent"><div id="innerparent"></div></div>
+        <div id="div-replace" route="parent" replace></div>
         <a id="a-parentlink" route="parent"></a>
         <a id="a-parentlink-customclass" active-class="my-active-class" route="parent"></a>
         <a id="a-parentlink-noclass" active-class="" route="parent"></a>
@@ -39,6 +40,7 @@ class ParentView extends BaseParentView {
         <a id="a-grandchildlink" route="grandchild" query-name="test"></a>
         <a id="a-rootlink2" route="root" param-id="2"></a>
         <a id="a-rootlink3" route="root"></a>
+        <a id="a-replace" route="parent" replace></a>
         <a id="a-childlink" route="child" query-name="test"></a>
         <div id="div-a-parent" route="parent"><a id="childanchor"></a><a id="childanchor2"></a><div><a id="childanchor3"></a></div></div>
         <router-outlet></router-outlet>
@@ -248,6 +250,18 @@ describe('routerLinks', () => {
 
       spy.resetHistory()
       $('#a-parentlink')[0].click()
+      expect(spy).to.be.calledOnce.and.calledWithExactly('parent', {}, {})
+    })
+  })
+
+  it('should call replaceWith when an element with route and replace attribute is clicked', function () {
+    return router.transitionTo('parent').then(async function () {
+      const spy = sinon.spy(router, 'replaceWith')
+      $('#div-replace')[0].click()
+      expect(spy).to.be.calledOnce.and.calledWithExactly('parent', {}, {})
+
+      spy.resetHistory()
+      $('#a-replace')[0].click()
       expect(spy).to.be.calledOnce.and.calledWithExactly('parent', {}, {})
     })
   })
