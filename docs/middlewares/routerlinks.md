@@ -104,10 +104,19 @@ Defines a query value where the query name is the substring after `query-` prefi
 ### active-class
 
 Defines the class to be toggled in the element with route attribute according to the route active state. By default is 'active'.
-If is set to an empty string, no class is added
- 
+If is set to an empty string, no class is added.
+
+### exact
+
+When present the active class will be set only the route path matches exactly with the one being transitioned.
+
+### replace
+
+When present it will use `replaceWith` instead of `transitionTo` thus not adding a history entry
+
 Examples:
 ```html
+<!-- routerlinks attribute is necessary on a parent element (not necessarily a direct one) -->
 <div class="nav" routerlinks>
   
   <!-- a.href will be expanded to the contacts path -->
@@ -119,7 +128,16 @@ Examples:
   <!-- a click event handler will be added to the div, calling router.transitionTo('home') -->
   <div route="home">Home</div>
   
-  <!-- a.href will be expanded to the about path and active class will be added to div. Useful for Bootstrao list-group -->
+  <!-- uses active-link class when route is active -->
+  <div route="home" active-class="active-link">Home</div>
+
+  <!-- it will get the active class only when path is /contacts but not when is /contacts/1 -->
+  <div route="contacts" exact>Contacts</div>
+
+  <!-- it will use router.replaceWith instead of router.transitionTo -->
+  <div route="contacts" replace>Contacts</div>
+
+  <!-- a.href will be expanded to the about path and active class will be added to div. Useful for Bootstrao list-group layout -->
   <div route="about">
     <a>About</a>
   </div>  

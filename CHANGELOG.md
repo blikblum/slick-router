@@ -2,6 +2,10 @@
 
 ### Unreleased
 
+### [v2.4.0] - 2020-01-04
+ * routerLinks: implement replace option
+ * wc: fix rendering when transitioning from a child to a parent route 
+
 ### [v2.3.1] - 2019-12-31
  * wc: add getRouteEl function
  * events: add before:transition event

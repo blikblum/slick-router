@@ -28,7 +28,10 @@ wc and routerLinks middlewares accounts for 3kb each. See [webpack test project]
 ## Docs
 
 * [Intro Guide](docs/intro.md)
-* [API Docs](docs/api.md)
+* [Router Configuration](docs/router-configuration.md)
+* [Programmatic Navigation and Link Handling](docs/programmatic-navigation-and-link.md)
+* [Route Transition](docs/route-transition.md)
+* [Common Situations](docs/common-situations.md)
 * [Changelog](CHANGELOG.md)
 
 
@@ -129,6 +132,6 @@ Slick Router works in all modern browsers. V1 requires es5 environment and es6 p
 
 ----
 
-Copyright (c) 2019 Luiz Américo Pereira Câmara
+Copyright (c) 2020 Luiz Américo Pereira Câmara
 
 Copyright (c) 2017 Karolis Narkevicius

@@ -1,8 +1,13 @@
-# Docs
+# Router Configuration
 
-### Router
+## Router Instance
+
+A router instance must be configured at start of application.
+
+> An application should not have more than one instance.
 
 ```js
+import { Router } from 'slick-router'
 const router = new Router(options)
 ```
 
@@ -13,15 +18,18 @@ const router = new Router(options)
 * **options.root** - default is `/`. Use in combination with `pushState: true` if your application is not being served from the root url /.
 * **options.qs** - default is a simple built in query string parser. Pass in an object with `parse` and `stringify` functions to customize how query strings get treated.
 
-### Router#map
 
-Configure the router with a route tree which can be defined as an array or a callback.
+## Routes Definition
 
-> If routes option is passed to constructor is not nessecary call `map`
+The route tree con be configured as a callback, that receives a `route` function
+
+`route` first argument must be a unique name, the second (optional) argument is the route options and the third (also optional) is a caal back to configure the children.
+
+The route options can be `path`, `abstract` or arbitrary ones that can be used by the middlewares.
 
 ```js
 // route tree as callback
-router.map(function (route) {
+const routes = function (route) {
   route('app', {path: '/'}, function () {
     route('about')
     route('post', {path: ':postId'}, function () {
@@ -29,10 +37,14 @@ router.map(function (route) {
       route('edit')
     })
   })
-})
+}
+```
 
+It can be defined also as plain array:
+
+```js
 // route tree as array
-router.map([
+const routes = [
   {
     name: 'app',
     path: '/',
@@ -54,10 +66,21 @@ router.map([
       }
     ]
   }
-]) 
+]
 ```
 
-#### Nested paths
+The routes definition can be passed directly as Router constructor `routes` option or using `map`
+
+```js
+const router = new Router({routes})
+
+// or
+
+const router = new Router()
+router.map(routes)
+```
+
+### Nested paths
 
 Nested paths are concatenated unless they start with a '/'. For example
 
@@ -85,7 +108,7 @@ router.map(function (route) {
 
 The above map results in 1 URL `/foo/bar/baz` mapping to ['foo', 'bar', 'baz'] routes.
 
-#### Dynamic paths
+### Dynamic paths
 
 Paths can contain dynamic segments as described in the docs of [path-to-regexp](https://github.com/pillarjs/path-to-regexp). For example:
 
@@ -97,7 +120,7 @@ route('foo', {path: '/hello/:splat*'}) // match 0 or more segments, matches /hel
 route('foo', {path: '/hello/:splat+'}) // match 1 or more segments, matches /hello/1 and /hello/1/2/3
 ```
 
-#### Abstract routes
+### Abstract routes
 
 By default, both leaf and non leaf routes can be navigated to. Sometimes you might not want it to be possible to navigate to certain routes at all, e.g. if the route is only used for data fetching and doesn't render anything by itself. In that case, you can set `abstract: true` in the route options. Abstract routes can still form a part of the URL.
 
@@ -145,7 +168,7 @@ router.use(function redirect (transition) {
 })
 ```
 
-#### Default path
+### Default path
 
 If a route path is not specified, it defaults to the name of the route, e.g.:
 
@@ -166,6 +189,10 @@ route('foo.bar')
 
 route('foo.bar', {path: 'bar'})
 ```
+
+## Middlewares Setup
+
+Middlewares (builtin or custom ones) are added through `use` method 
 
 ### router.use(fn, options)
 
@@ -192,7 +219,7 @@ Its possible to control the order which the middleware is inserted in internal q
 router.use(function () { console.log('my middleware') }, { at: 0 })
 ```
 
-The middleware can be defined also as an object defining one or more of following hooks:
+The middleware can be defined also as an object with one or more of the following methods:
 
 - `resolve(transition, prevData)`: called once per transition after previous middleware, if any, is resolved. Main action should be done here.
 - `done(transition)`: called when transition succeeds and after all middlewares are resolved
@@ -201,103 +228,21 @@ The middleware can be defined also as an object defining one or more of followin
 - `create(router)`: called once at middleware registration. Useful to configure the middleware
 - `destroy(router)`: called once when router destroyed
 
-#### transition
+## Router Start
 
-The transition object is itself a promise. It also contains the following attributes
-
-* `id`
-* `routes`
-* `path`
-* `pathname`
-* `params`
-* `query`
-* `prev`
-  * `routes`
-  * `path`
-  * `pathname`
-  * `params`
-  * `query`
-
-And the following methods
-
-* `then`
-* `catch`
-* `cancel`
-* `retry`
-* `followRedirects`
-* `redirectTo`
-
-#### route
-
-During every transition, you can inspect `transition.routes` and `transition.prev.routes` to see where the router is transitioning to. These are arrays that contain a list of route descriptors. Each route descriptor has the following attributes
-
-* `name` - e.g. `'message'`
-* `path` - the path segment, e.g. `'message/:id'`
-* `params` - a list of params specifically for this route, e.g `{id: 1}`
-* `options` - the options object that was passed to the `route` function in the `map`
+After the router has been configured with a route map and middleware is necessary to call `listen`
 
 ### router.listen()
 
-After the router has been configured with a route map and middleware - start listening to URL changes and transition to the appropriate route based on the current URL.
+Start listening to URL changes and transition to the appropriate route based on the current URL.
 
 When using `location: 'memory'`, the current URL is not read from the browser's location bar and instead can be  passed in via listen: `listen(path)`.
 
-### router.transitionTo(name, params, query)
-
-Transition to a route, e.g.
-
 ```js
-router.transitionTo('about')
-router.transitionTo('posts.show', {postId: 1})
-router.transitionTo('posts.show', {postId: 2}, {commentId: 2})
+router.listen()
 ```
 
-### router.replaceWith(name, params, query)
-
-Same as transitionTo, but doesn't add an entry in browser's history, instead replaces the current entry. Useful if you don't want this transition to be accessible via browser's Back button, e.g. if you're redirecting, or if you're navigating upon clicking tabs in the UI, etc.
-
-### router.generate(name, params, query)
-
-Generate a URL for a route, e.g.
-
-```js
-router.generate('about')
-router.generate('posts.show', {postId: 1})
-router.generate('posts.show', {postId: 2}, {commentId: 2})
-```
-
-It generates a URL with # if router is in hashChange mode and with no # if router is in pushState mode.
-
-### router.isActive(name, params, query)
-
-Check if a given route, params and query is active.
-
-```js
-router.isActive('status')
-router.isActive('status', {user: 'me'})
-router.isActive('status', {user: 'me'}, {commentId: 2})
-router.isActive('status', null, {commentId: 2})
-```
-
-### router.state
-
-The state of the route is always available on the `router.state` object. It contains `activeTransition`, `routes`, `path`, `pathname`, `params` and `query`.
-
-### router.matchers
-
-Use this to inspect all the routes and their URL patterns that exist in your application. It's an array of:
-
-```js
-{
-  name,
-  path,
-  routes
-}
-```
-
-listed in the order that they will be matched against the URL.
-
-## Query params
+## Query Params
 
 The query params is extracted and parsed using a very simple query string parser that only supports key values. For example, `?a=1&b=2` will be parsed to `{a: 1, b:2}`. If you want to use a more sophisticated query parser, pass in an object with `parse` and `stringify` functions - an interface compatible with the popular [qs](https://github.com/hapijs/qs) module e.g.:
 
@@ -306,19 +251,6 @@ const router = new Router({
   qs: require('qs')
 })
 ```
-
-
-## Errors
-
-Transitions can fail, in which case the transition promise is rejected with the error object. This could happen, for example, if some middleware throws or returns a rejected promise.
-
-There are also two special errors that can be thrown when a redirect happens or when transition is cancelled completely.
-
-In case of redirect (someone initiating a router.transitionTo() while another transition was active) and error object will have a `type` attribute set to 'TransitionRedirected' and `nextPath` attribute set to the path of the new transition.
-
-In case of cancelling (someone calling transition.cancel()) the error object will have a `type` attribute set to 'TransitionCancelled'.
-
-If you have some error handling middleware - you most likely want to check for these two special errors, because they're normal to the functioning of the router, it's common to perform redirects.
 
 ## BrowserLocation
 
@@ -360,9 +292,9 @@ var router = new Router({
 
 ## Intercepting Links
 
-By default, when using pushState, the server must be configured to support it (i.e. redirect all non static resources to index html) otherwise the browser would just do a full page refresh on every click of a link.
+When using pushState is necessary to intercept link clicks otherwise the browser would just do a full page refresh on every click of a link.
 
-Slick Router provides `interceptLinks` function which allows to use pushState without server configuration
+Slick Router automatically handles that when using [routerLinks](middlewares/routerlinks.md) middleware or `interceptLinks` function
 
 The clicks **are** intercepted only if:
 
@@ -398,23 +330,3 @@ function customClickHandler (event, link, router) {
 interceptLinks(router, document, customClickHandler)
 ```
 
-
-
-## Handling 404
-
-There are a couple of ways to handle URLs that don't match any routes.
-
-You can create a middleware to detects when `transition.routes.length` is 0 and render a 404 page.
-
-Alternatively, you can also declare a catch all path in your route map:
-
-```js
-router.map(function (route) {
-  route('application', {path: '/'}, function () {
-    route('blog')
-    route('missing', {path: ':path*'})
-  })
-})
-```
-
-In this case, when nothing else matches, a transition to the `missing` route will be initiated with `transition.routes` as ['application', 'missing']. This gives you a chance to activate and render the `application` route before rendering a 404 page.
