@@ -214,13 +214,41 @@ describe('routerLinks', () => {
     })
   })
 
-  it('should not call transitionTo when a non anchor tags with route attribute with an anchor descendant is clicked', function () {
+  it('should call transitionTo when a non anchor tags with route attribute with an anchor descendant is clicked', function () {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
       const spy = sinon.spy(router, 'transitionTo')
       $('#div-a-parent').click()
-      expect(spy).not.to.be.called
+      expect(spy).to.be.calledOnce
+    })
+  })
+
+  it('should call transitionTo once when an anchor tag inside a tag with route attribute is clicked', function () {
+    return router.transitionTo('parent').then(async function () {
+      const parentEl = document.querySelector(parentTag)
+      await parentEl.updateComplete
+      const spy = sinon.spy(router, 'transitionTo')
+      $('#childanchor')[0].click()
+      expect(spy).to.be.calledOnce
+    })
+  })
+
+  it('should call transitionTo when an anchor tag with route attribute is clicked', function () {
+    return router.transitionTo('parent').then(async function () {
+      const parentEl = document.querySelector(parentTag)
+      await parentEl.updateComplete
+      const spy = sinon.spy(router, 'transitionTo')
+      $('#a-rootlink2')[0].click()
+      expect(spy).to.be.calledOnce.and.calledWithExactly('root', { id: '2' }, {})
+
+      spy.resetHistory()
+      $('#a-grandchildlink')[0].click()
+      expect(spy).to.be.calledOnce.and.calledWithExactly('grandchild', {}, { name: 'test' })
+
+      spy.resetHistory()
+      $('#a-parentlink')[0].click()
+      expect(spy).to.be.calledOnce.and.calledWithExactly('parent', {}, {})
     })
   })
 
