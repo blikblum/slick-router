@@ -19,6 +19,15 @@ body, html {
   font-weight: bolder;
 }
 
+.App-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
 .App h1 {
   display: inline-block;
 }
