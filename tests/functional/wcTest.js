@@ -233,6 +233,28 @@ describe('wc middleware', () => {
     </router-outlet>`)
   })
 
+  it('should remove the previous rendered element', async () => {
+    await router.transitionTo('child')
+    const parentEl = outlet.children[0]
+    const parentOutlet = parentEl.shadowRoot.children[0]
+    const childEl = parentOutlet.children[0]
+    // postpone childEl removal
+    parentOutlet.removeChild = () => {}
+    await router.transitionTo('sibling')
+    const siblingEl = parentOutlet.querySelector('sibling-view')
+    parentOutlet.removeChild = spy()
+    await router.transitionTo('child')
+    expect(parentOutlet.removeChild).to.be.calledWith(siblingEl)
+    childEl.remove()
+    siblingEl.remove()
+    expect(parentEl).shadowDom.to.equal(`
+    <router-outlet>
+      <child-view>
+        <div class="outlet"></div>
+      </child-view>
+    </router-outlet>`)
+  })
+
   describe('$route', () => {
     function normalizeState (state) {
       return pick(state, ['path', 'pathname', 'routes', 'params', 'query'])
