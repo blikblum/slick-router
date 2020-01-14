@@ -209,6 +209,18 @@ describe('wc middleware', () => {
     expect(parentEl).shadowDom.to.equal('<router-outlet></router-outlet>')
   })
 
+  it('should not remove the child elements of first deactivated element when transitioning from a child route', async () => {
+    await router.transitionTo('grandchild')
+    const parentEl = outlet.children[0]
+    const childEl = parentEl.shadowRoot.querySelector('child-view')
+    await router.transitionTo('parent')
+    expect(childEl).lightDom.to.equal(`
+      <div class="outlet">
+        <grandchild-view></grandchild-view>
+      </div>
+    `)
+  })
+
   it('should swap the element when transitioning from a sibling route', async () => {
     await router.transitionTo('child')
     expect(outlet).lightDom.to.equal('<parent-view></parent-view>')
