@@ -1,12 +1,12 @@
 import { withRouterLinks } from 'slick-router/middlewares/router-links.js'
-import { AnimatedOutlet, registerAnimation, animateCSSHandler } from '../../lib/components/animated-outlet.js'
+import { AnimatedOutlet, registerAnimation, AnimateCSS } from '../../lib/components/animated-outlet.js'
 
-registerAnimation('main', animateCSSHandler, {enter: 'rotateInDownRight', leave: 'hinge'})
+registerAnimation('main', AnimateCSS, {enter: 'rotateInDownRight', leave: 'hinge'})
 
 customElements.define('router-outlet', AnimatedOutlet)
 
 const enterAnimationSelect = `<select id="enter-animation" name="enter-animation">
-  <option value="none">none</option>
+  <option value="">none</option>
   
   <optgroup label="Attention Seekers">
     <option value="bounce">bounce</option>
@@ -81,7 +81,7 @@ const enterAnimationSelect = `<select id="enter-animation" name="enter-animation
 `
 
 const leaveAnimationSelect = `<select id="leave-animation" name="leave-animation">
-  <option value="none">none</option>            
+  <option value="">none</option>            
   
   <optgroup label="Attention Seekers">
     <option value="bounce">bounce</option>
