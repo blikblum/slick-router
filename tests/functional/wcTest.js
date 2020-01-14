@@ -25,6 +25,8 @@ const grandchildBeforeEnterMethod = spy()
 const parentBeforeLeaveMethod = spy()
 const grandchildBeforeLeaveMethod = stub()
 
+const nouiBeforeLeave = spy()
+
 class ParentView extends LitElement {
   render () {
     return html`<router-outlet></router-outlet>`
@@ -118,7 +120,7 @@ const routes = function (route) {
     route('sibling', { component: 'sibling-view' })
   })
   route('root', { component: ParentView }, function () {
-    route('noui', function () {
+    route('noui', { beforeLeave: nouiBeforeLeave }, function () {
       route('rootchild', { component: ChildView })
     })
   })
@@ -543,6 +545,13 @@ describe('wc middleware', () => {
         parentBeforeLeave.resetHistory()
         await router.transitionTo('sibling')
         expect(parentBeforeLeave).to.not.be.called
+      })
+
+      it('should be called on routes without component', async () => {
+        await router.transitionTo('noui')
+        const transition = router.transitionTo('parent')
+        await transition
+        expect(nouiBeforeLeave).to.be.calledOnceWithExactly(transition)
       })
     })
 
