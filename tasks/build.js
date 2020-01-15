@@ -21,11 +21,16 @@ promise.then(() => rollup.rollup({
   input: 'lib/router.js',
   external: Object.keys(pkg.dependencies),
   plugins: [
-    copy({
+    copy([{
       files: 'lib/middlewares/*',
       dest: 'build/middlewares',
       parents: true
-    })
+    },
+    {
+      files: 'lib/components/*',
+      dest: 'build/components',
+      parents: true
+    }])
   ]
 }).then(bundle => bundle.write({
   file: 'build/slick-router.js',
