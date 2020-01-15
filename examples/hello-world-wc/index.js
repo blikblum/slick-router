@@ -2,7 +2,12 @@ import { Router } from 'slick-router'
 import { wc } from 'slick-router/middlewares/wc.js'
 import { routerLinks } from 'slick-router/middlewares/router-links.js'
 import { events } from 'slick-router/middlewares/events.js'
+import { AnimatedOutlet, setDefaultAnimation, AnimateCSS } from 'slick-router/components/animated-outlet.js'
 import './components.js'
+
+setDefaultAnimation(AnimateCSS, { enter: 'rotateInDownRight', leave: 'hinge' })
+
+customElements.define('router-outlet', AnimatedOutlet)
 
 // create the router
 const router = new Router({

@@ -1,9 +1,4 @@
 import { withRouterLinks } from 'slick-router/middlewares/router-links.js'
-import { AnimatedOutlet, registerAnimation, AnimateCSS } from '../../lib/components/animated-outlet.js'
-
-registerAnimation('main', AnimateCSS, {enter: 'rotateInDownRight', leave: 'hinge'})
-
-customElements.define('router-outlet', AnimatedOutlet)
 
 const enterAnimationSelect = `<select id="enter-animation" name="enter-animation">
   <option value="">none</option>
@@ -180,7 +175,7 @@ class ApplicationView extends withRouterLinks(HTMLElement) {
             <li class='Nav-item'><a route="profile.index" param-user="scrobblemuch">Profile</a></li>
           </ul>
         </div>
-        <router-outlet animation="main"></router-outlet>
+        <router-outlet animation></router-outlet>
         
         <div class="App-footer">
           Enter Animation
