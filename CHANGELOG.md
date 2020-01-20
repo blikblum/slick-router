@@ -2,6 +2,9 @@
 
 ### Unreleased
 
+### [v2.5.0] - 2020-01-18
+ * implement animated-outlet component
+
 ### [v2.4.0] - 2020-01-04
  * routerLinks: implement replace option
  * wc: fix rendering when transitioning from a child to a parent route 

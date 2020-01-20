@@ -12,11 +12,12 @@ Slick Router is a powerful, flexible router that translates URL changes into rou
 * Define path dynamic segments (uses path-to-regexp under the hood)
 * Supports custom query string parser
 * Trigger router navigate programatically
-* With builtin middlewares:
+* With builtin middlewares/components:
   * Render nested UI using web components
   * Streamlined support for code spliting and lazy loading 
   * Expose route state to components
   * Declarative handling of router links
+  * Allow to animate route transitions
 
 ## Installation
 
@@ -36,11 +37,15 @@ wc and routerLinks middlewares accounts for 3kb each. See [webpack test project]
 * [Changelog](CHANGELOG.md)
 
 
-## Buitins middlewares
+## Builtin middlewares
 
  * [wc](docs/middlewares/wc.md) (advanced Web Component rendering and lifecycle)
  * [routerLinks](docs/middlewares/router-links.md) (handle route related links state)
  * [events](docs/middlewares/events.md) (fires route events on window)
+
+## Builtin components
+
+ * [animated-outlet](docs/components/animated-outlet.md) (enable animation on route transitions)
 
 ## Usage
 
