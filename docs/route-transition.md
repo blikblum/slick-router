@@ -6,13 +6,13 @@ Slick Router defines route transition as the process of changing from a route st
 
 The transition object is itself a promise. It also contains the following attributes
 
-* `id`
-* `routes`
-* `path`
-* `pathname`
-* `params`
-* `query`
-* `prev`
+* `id`: the transition id
+* `routes`: the matched routes
+* `path`: the matched path
+* `pathname`: the matched path without query params
+* `params`: a hash with path params
+* `query`: a hash with the query
+* `prev`: the previous matched info
   * `routes`
   * `path`
   * `pathname`

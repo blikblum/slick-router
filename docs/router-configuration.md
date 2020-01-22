@@ -21,9 +21,9 @@ const router = new Router(options)
 
 ## Routes Definition
 
-The route tree con be configured as a callback, that receives a `route` function
+The route tree can be configured as a callback, that receives a `route` function
 
-`route` first argument must be a unique name, the second (optional) argument is the route options and the third (also optional) is a caal back to configure the children.
+`route` first argument must be a unique name, the second (optional) argument is the route options and the third (also optional) is a callback to configure the children.
 
 The route options can be `path`, `abstract` or arbitrary ones that can be used by the middlewares.
 
@@ -80,7 +80,23 @@ const router = new Router()
 router.map(routes)
 ```
 
-### Nested paths
+### Nested Routes
+
+Nested routes are defined by passing a callback to the `route` function or, when using the array notation, by defining a `children` property.
+
+Each route is associated to a path composed by its own path concatenated with the parent routes paths.
+
+```js
+router.map(function (route) {
+  route('foo', {path: '/foo'}, function () {
+    route('bar', {path: 'bar'}, function () {
+      route('baz', {path: 'baz'})
+    });
+  })
+})
+```
+
+The above map results in one path `/foo/bar/baz` mapping to ['foo', 'bar', 'baz'] routes.
 
 Nested paths are concatenated unless they start with a '/'. For example
 
@@ -94,19 +110,9 @@ router.map(function (route) {
 })
 ```
 
-The above map results in 1 URL `/baz` mapping to ['foo', 'bar', 'baz'] routes.
+The above map results in one path `/baz` mapping to ['foo', 'bar', 'baz'] routes.
 
-```js
-router.map(function (route) {
-  route('foo', {path: '/foo'}, function () {
-    route('bar', {path: 'bar'}, function () {
-      route('baz', {path: 'baz'})
-    });
-  })
-})
-```
-
-The above map results in 1 URL `/foo/bar/baz` mapping to ['foo', 'bar', 'baz'] routes.
+When a navigation occurs, the route with the path which best matches the current URL is matched together with its parents, e.g., when 'bar' route is matched, 'foo' will also be matched even if 'foo' path is not related at all with current URL.
 
 ### Dynamic paths
 
