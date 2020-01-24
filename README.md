@@ -40,7 +40,7 @@ wc and routerLinks middlewares accounts for 3kb each. See [webpack test project]
 ## Builtin middlewares
 
  * [wc](docs/middlewares/wc.md) (advanced Web Component rendering and lifecycle)
- * [routerLinks](docs/middlewares/router-links.md) (handle route related links state)
+ * [routerLinks](docs/middlewares/routerlinks.md) (handle route related links state)
  * [events](docs/middlewares/events.md) (fires route events on window)
 
 ## Builtin components
