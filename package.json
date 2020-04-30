@@ -42,7 +42,7 @@
     "@open-wc/testing-karma": "^3.2.21",
     "deepmerge": "^4.2.2",
     "del": "^5.1.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "karma": "^4.4.1",
     "lit-element": "^2.2.1",
     "mocha": "^6.2.2",
