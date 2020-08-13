@@ -5,6 +5,7 @@
   "description": "A powerful and flexible client side router",
   "main": "slick-router.js",
   "module": "slick-router.js",
+  "types": "types.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
@@ -14,7 +15,8 @@
     "test:debug": "karma start --browsers ChromeDebugging --auto-watch=true --single-run=false",
     "test:watch": "karma start --auto-watch=true --single-run=false",
     "test:update-snapshots": "karma start --update-snapshots",
-    "test:prune-snapshots": "karma start --prune-snapshots"
+    "test:prune-snapshots": "karma start --prune-snapshots",
+    "types": "jsdoc lib/router.js -t node_modules/tsd-jsdoc/dist -r -d build"
   },
   "repository": {
     "type": "git",
@@ -43,6 +45,7 @@
     "deepmerge": "^4.2.2",
     "del": "^5.1.0",
     "jquery": "^3.4.1",
+    "jsdoc": "^3.6.5",
     "karma": "^4.4.1",
     "lit-element": "^2.2.1",
     "mocha": "^6.2.2",
@@ -50,7 +53,8 @@
     "rollup-plugin-cpy": "^2.0.1",
     "sinon": "^8.0.1",
     "snazzy": "^8.0.0",
-    "standard": "^14.3.1"
+    "standard": "^14.3.1",
+    "tsd-jsdoc": "^2.5.0"
   },
   "standard": {
     "env": {
