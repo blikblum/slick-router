@@ -4323,9 +4323,9 @@ node-environment-flags@1.0.5:
     semver "^5.7.0"
 
 node-fetch@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
-  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
 node-releases@^1.1.42:
   version "1.1.42"
@@ -4671,17 +4671,17 @@ path-parse@^1.0.6:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
 
-path-to-regexp@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-5.0.0.tgz#e56dd58778b9dc06e76f0f3e39e741bbddc0bd26"
-  integrity sha512-VOQVA+0mivusQfaveeWlrW7ddXKuStHMTdovn/1epf7cEpUL4dpzGl7eq8ho96H9w90/q66yJLsqn84jSCfkmQ==
-
 path-to-regexp@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz#59fde0f435badacba103a84e9d3bc64e96b9937d"
   integrity sha1-Wf3g9DW62suhA6hOnTvGTpa5k30=
   dependencies:
     isarray "0.0.1"
+
+path-to-regexp@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-5.0.0.tgz#e56dd58778b9dc06e76f0f3e39e741bbddc0bd26"
+  integrity sha512-VOQVA+0mivusQfaveeWlrW7ddXKuStHMTdovn/1epf7cEpUL4dpzGl7eq8ho96H9w90/q66yJLsqn84jSCfkmQ==
 
 path-type@^2.0.0:
   version "2.0.0"
