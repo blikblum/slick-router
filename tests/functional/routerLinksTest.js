@@ -90,6 +90,22 @@ class GrandChildView extends BaseGrandChildView {
 }
 const grandChildTag = defineCE(GrandChildView)
 
+class BrokenView extends withRouterLinks(LitElement) {
+  createRenderRoot () {
+    return this
+  }
+
+  render () {
+    return html`
+    <div routerlinks>
+      <a id="a-brokenrootlink" route="root"></a>
+      <a id="a-rootlink" route="root" param-id="1"></a>
+    </div>    
+    `
+  }
+}
+const brokenTag = defineCE(BrokenView)
+
 describe('routerLinks', () => {
   let router, outlet, parentComponent
   beforeEach(() => {
@@ -103,6 +119,7 @@ describe('routerLinks', () => {
       })
       route('root', { path: 'root/:id', component: ParentView })
       route('secondroot', { path: 'secondroot/:personId', component: ParentView })
+      route('brokenroot', { path: 'brokenroot', component: BrokenView })
     }
     parentComponent = ParentView
     router = new Router({ location: 'memory', outlet, routes })
@@ -355,6 +372,14 @@ describe('routerLinks', () => {
       const spy = sinon.spy(router, 'transitionTo')
       $('#innerparent-outside').click()
       expect(spy).to.not.be.called
+    })
+  })
+
+  it('should generate href even if there is a broken link configuration', function () {
+    return router.transitionTo('brokenroot').then(async function () {
+      const brokenEl = document.querySelector(brokenTag)
+      await brokenEl.updateComplete
+      expect($('#a-rootlink').attr('href')).to.be.equal('/root/1')           
     })
   })
 
