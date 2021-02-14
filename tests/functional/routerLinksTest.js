@@ -40,6 +40,7 @@ class ParentView extends BaseParentView {
         <a id="a-grandchildlink" route="grandchild" query-name="test"></a>
         <a id="a-rootlink2" route="root" param-id="2"></a>
         <a id="a-rootlink3" route="root"></a>
+        <a id="a-secondrootlink" route="secondroot" param-person-id="2" query-test-value="yyy"></a>
         <a id="a-replace" route="parent" replace></a>
         <a id="a-childlink" route="child" query-name="test"></a>
         <div id="div-a-parent" route="parent"><a id="childanchor"></a><a id="childanchor2"></a><div><a id="childanchor3"></a></div></div>
@@ -101,6 +102,7 @@ describe('routerLinks', () => {
         })
       })
       route('root', { path: 'root/:id', component: ParentView })
+      route('secondroot', { path: 'secondroot/:personId', component: ParentView })
     }
     parentComponent = ParentView
     router = new Router({ location: 'memory', outlet, routes })
@@ -119,9 +121,26 @@ describe('routerLinks', () => {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
 
-      expect($('#a-parentlink').attr('href')).to.be.equal('/parent')
+      expect($('#a-parentlink').attr('href')).to.be.equal('/parent')     
+    })
+  })
+
+  it('should use param-* and query-* attributes to generate href', async function () {
+    return router.transitionTo('parent').then(async function () {
+      const parentEl = document.querySelector(parentTag)
+      await parentEl.updateComplete
+      
       expect($('#a-rootlink2').attr('href')).to.be.equal('/root/2')
       expect($('#a-grandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
+    })
+  })
+
+  it('should convert param-* and query-* attributes from kebab to camel case', async function () {
+    return router.transitionTo('parent').then(async function () {
+      const parentEl = document.querySelector(parentTag)
+      await parentEl.updateComplete
+      
+      expect($('#a-secondrootlink').attr('href')).to.be.equal('/secondroot/2?testValue=yyy')
     })
   })
 
