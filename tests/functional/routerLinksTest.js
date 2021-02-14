@@ -138,7 +138,7 @@ describe('routerLinks', () => {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
 
-      expect($('#a-parentlink').attr('href')).to.be.equal('/parent')     
+      expect($('#a-parentlink').attr('href')).to.be.equal('/parent')
     })
   })
 
@@ -146,7 +146,7 @@ describe('routerLinks', () => {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
-      
+
       expect($('#a-rootlink2').attr('href')).to.be.equal('/root/2')
       expect($('#a-grandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
     })
@@ -156,7 +156,7 @@ describe('routerLinks', () => {
     return router.transitionTo('parent').then(async function () {
       const parentEl = document.querySelector(parentTag)
       await parentEl.updateComplete
-      
+
       expect($('#a-secondrootlink').attr('href')).to.be.equal('/secondroot/2?testValue=yyy')
     })
   })
@@ -379,7 +379,7 @@ describe('routerLinks', () => {
     return router.transitionTo('brokenroot').then(async function () {
       const brokenEl = document.querySelector(brokenTag)
       await brokenEl.updateComplete
-      expect($('#a-rootlink').attr('href')).to.be.equal('/root/1')           
+      expect($('#a-rootlink').attr('href')).to.be.equal('/root/1')
     })
   })
 
