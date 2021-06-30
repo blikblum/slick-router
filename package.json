@@ -9,12 +9,8 @@
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
-    "test-coverage": "karma start --browsers ChromeHeadless --single-run",
-    "test": "karma start --coverage",
-    "test:debug": "karma start --browsers ChromeDebugging --auto-watch=true --single-run=false",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "test:update-snapshots": "karma start --update-snapshots",
-    "test:prune-snapshots": "karma start --prune-snapshots"
+    "test": "web-test-runner \"tests/**/*Test.js\" --node-resolve",
+    "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage"
   },
   "repository": {
     "type": "git",
@@ -37,20 +33,16 @@
     "nested"
   ],
   "devDependencies": {
-    "@open-wc/testing": "^2.0.0",
-    "@open-wc/testing-helpers": "^1.4.0",
-    "@open-wc/testing-karma": "^3.2.21",
-    "deepmerge": "^4.2.2",
-    "del": "^5.1.0",
-    "jquery": "^3.4.1",
-    "karma": "^4.4.1",
-    "lit-element": "^2.2.1",
-    "mocha": "^6.2.2",
-    "rollup": "^1.27.14",
+    "@open-wc/testing": "^2.5.33",
+    "@web/test-runner": "^0.13.13",
+    "del": "^6.0.0",
+    "jquery": "^3.6.0",
+    "lit-element": "^2.5.1",
+    "rollup": "^2.52.4",
     "rollup-plugin-cpy": "^2.0.1",
-    "sinon": "^8.0.1",
-    "snazzy": "^8.0.0",
-    "standard": "^14.3.1"
+    "sinon": "^11.1.1",
+    "snazzy": "^9.0.0",
+    "standard": "^16.0.3"
   },
   "standard": {
     "env": {
