@@ -42,7 +42,7 @@ describe('app', () => {
   it('cancelling and retrying transitions', async function () {
     await router.transitionTo('/posts/filter/foo')
     assert.equal(router.location.getURL(), '/posts/filter/foo')
-    var transition = router.transitionTo('about')
+    const transition = router.transitionTo('about')
     transition.cancel()
     await transition.catch(() => {})
     assert.equal(router.location.getURL(), '/posts/filter/foo')
@@ -52,22 +52,20 @@ describe('app', () => {
   })
 
   it('transition.followRedirects resolves when all of the redirects have finished', async function () {
-    var transition
-
     await router.transitionTo('application')
     // initiate a transition
-    transition = router.transitionTo('/posts/filter/foo')
+    const transition = router.transitionTo('/posts/filter/foo')
     // and a redirect
     router.transitionTo('/about')
 
     // if followRedirects is not used - the original transition is rejected
-    var rejected = false
+    let rejected = false
     await transition.catch(() => rejected = true)
     assert(rejected)
 
     await router.transitionTo('application')
     // initiate a transition
-    var t = router.transitionTo('/posts/filter/foo')
+    const t = router.transitionTo('/posts/filter/foo')
     // and a redirect, this time using `redirectTo`
     t.redirectTo('/about')
 
@@ -78,13 +76,11 @@ describe('app', () => {
   })
 
   it('transition.followRedirects is rejected if transition fails', async function () {
-    var transition
-
     // silence the errors for the tests
     router.logError = () => {}
 
     // initiate a transition
-    transition = router.transitionTo('/posts/filter/foo')
+    const transition = router.transitionTo('/posts/filter/foo')
     // install a breaking middleware
     router.use(() => {
       throw new Error('middleware error')
@@ -92,19 +88,17 @@ describe('app', () => {
     // and a redirect
     router.transitionTo('/about')
 
-    var rejected = false
+    let rejected = false
     await transition.followRedirects().catch((err) => rejected = err.message)
     assert.equal(rejected, 'middleware error')
   })
 
   it('transition.followRedirects is rejected if transition fails asynchronously', async function () {
-    var transition
-
     // silence the errors for the tests
     router.logError = () => {}
 
     // initiate a transition
-    transition = router.transitionTo('/posts/filter/foo')
+    const transition = router.transitionTo('/posts/filter/foo')
     // install a breaking middleware
     router.use(() => {
       return Promise.reject(new Error('middleware promise error'))
@@ -112,7 +106,7 @@ describe('app', () => {
     // and a redirect
     router.transitionTo('/about')
 
-    var rejected = false
+    let rejected = false
     await transition.followRedirects().catch((err) => rejected = err.message)
     assert.equal(rejected, 'middleware promise error')
   })
@@ -125,7 +119,7 @@ describe('app', () => {
     assert.equal(window.location.hash, '#posts/filter/foo')
 
     // now attempt to transition to about and cancel
-    var transition = router.transitionTo('/about')
+    const transition = router.transitionTo('/about')
     transition.cancel()
     await transition.catch(() => {})
 

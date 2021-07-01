@@ -23,7 +23,7 @@ Dom.prototype.html = function (content) {
 }
 
 Dom.prototype.find = function (selector) {
-  var result = new Dom()
+  const result = new Dom()
   this.forEach(function (el) {
     [].slice.call(el.querySelectorAll(selector)).forEach(function (e) { result.push(e) })
   })
@@ -46,16 +46,16 @@ Dom.prototype.get = function (index) {
   return this[index]
 }
 
-function domify (str) { var d = document.createElement('div'); d.innerHTML = str; return d.childNodes }
+function domify (str) { const d = document.createElement('div'); d.innerHTML = str; return d.childNodes }
 
-var nanodom = function (selector) {
-  var d
+const nanodom = function (selector) {
+  let d
   if (selector instanceof Dom) return selector
   if (selector instanceof HTMLElement) { d = new Dom(); d.push(selector); return d }
   if (typeof selector !== 'string') return
   d = new Dom()
-  var s; var c = (selector.indexOf('<') === 0)
-  s = c ? domify(selector) : document.querySelectorAll(selector);
+  const c = (selector.indexOf('<') === 0)
+  const s = c ? domify(selector) : document.querySelectorAll(selector);
   [].slice.call(s).forEach(function (e) { d.push(e) })
   return d
 }

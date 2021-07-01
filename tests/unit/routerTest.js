@@ -1,4 +1,4 @@
-/* eslint-disable no-return-assign */
+/* eslint-disable no-return-assign,array-callback-return */
 import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/utils'
 import { Router, interceptLinks } from '../../lib/router'
@@ -132,7 +132,7 @@ describe('Slick Router', () => {
 
   it('#use middleware resolve and done hooks are called on successful transition', (done) => {
     router.map(routes)
-    var m = {
+    const m = {
       resolve: sinon.spy(),
       done: sinon.spy()
     }
@@ -148,7 +148,7 @@ describe('Slick Router', () => {
 
   it('#use middleware error hook is called on failed transition', (done) => {
     router.map(routes)
-    var m = {
+    const m = {
       error: sinon.spy()
     }
     router.use(m)
@@ -162,7 +162,7 @@ describe('Slick Router', () => {
 
   it('#use middleware cancel hook is called on cancelled transition', (done) => {
     router.map(routes)
-    var m = {
+    const m = {
       cancel: sinon.spy()
     }
     router.listen().then(() => {
@@ -177,7 +177,7 @@ describe('Slick Router', () => {
 
   it('#use middleware cancel hook is called on redirected transition', (done) => {
     router.map(routes)
-    var m = {
+    const m = {
       cancel: sinon.spy()
     }
     router.listen().then(() => {
@@ -253,7 +253,7 @@ describe('Slick Router', () => {
 
   it('#generate generates urls given route name and params as object', () => {
     router.map(routes).listen()
-    var url = router.generate('status', { user: 'foo', id: 1 }, { withReplies: true })
+    const url = router.generate('status', { user: 'foo', id: 1 }, { withReplies: true })
     assert.equal(url, '#application/foo/status/1?withReplies=true')
   })
 
@@ -262,7 +262,7 @@ describe('Slick Router', () => {
       router.options.pushState = true
       router.options.root = '/foo/bar'
       router.map(routes).listen()
-      var url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
+      const url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
       assert.equal(url, '/foo/bar/application/usr/status/1?withReplies=true')
     })
   }
@@ -285,7 +285,7 @@ describe('Slick Router', () => {
       })
 
       router.map(routes).listen()
-      var url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
+      const url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
       assert.equal(browserRedirectedTo, '/foo/bar/#different')
       assert.equal(url, '#application/usr/status/1?withReplies=true')
     })

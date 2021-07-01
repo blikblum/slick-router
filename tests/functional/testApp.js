@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import $ from './nanodom'
 import { Router } from '../../lib/router'
 
@@ -5,7 +6,7 @@ export default function TestApp (options) {
   options = options || {}
 
   // create the router
-  var router = this.router = new Router(options)
+  const router = this.router = new Router(options)
 
   // provide the route map
   router.map(function (route) {
@@ -20,7 +21,7 @@ export default function TestApp (options) {
     })
   })
 
-  var handlers = {}
+  const handlers = {}
 
   handlers.application = {
     // this is a hook for 'performing'
