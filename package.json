@@ -9,6 +9,7 @@
   "scripts": {
     "build": "standard | snazzy && node tasks/build.js",
     "lint": "standard",
+    "start": "web-dev-server --open examples/ --node-resolve",
     "test": "web-test-runner \"tests/**/*Test.js\" --node-resolve",
     "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage"
   },
@@ -34,6 +35,7 @@
   ],
   "devDependencies": {
     "@open-wc/testing": "^2.5.33",
+    "@web/dev-server": "^0.1.17",
     "@web/test-runner": "^0.13.13",
     "del": "^6.0.0",
     "jquery": "^3.6.0",

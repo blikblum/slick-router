@@ -1,7 +1,5 @@
-import $ from 'jquery'
-import { Router } from 'slick-router'
-
-require('./style.css')
+import 'jquery'
+import { Router } from '../../lib/router.js'
 
 // create the router
 let router = new Router({
