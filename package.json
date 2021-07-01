@@ -36,6 +36,7 @@
   "devDependencies": {
     "@open-wc/testing": "^2.5.33",
     "@web/dev-server": "^0.1.17",
+    "@web/dev-server-import-maps": "^0.0.5",
     "@web/test-runner": "^0.13.13",
     "del": "^6.0.0",
     "jquery": "^3.6.0",

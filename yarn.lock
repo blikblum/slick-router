@@ -55,6 +55,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@import-maps/resolve@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@import-maps/resolve/-/resolve-1.0.1.tgz#1e9fcadcf23aa0822256a329aabca241879d37c9"
+  integrity sha512-tWZNBIS1CoekcwlMuyG2mr0a1Wo5lb5lEHwwWvZo+5GLgr3e9LLDTtmgtCWEwBpXMkxn9D+2W9j2FY6eZQq0tA==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -481,7 +486,7 @@
   dependencies:
     semver "^7.3.4"
 
-"@web/dev-server-core@^0.3.12", "@web/dev-server-core@^0.3.3":
+"@web/dev-server-core@^0.3.0", "@web/dev-server-core@^0.3.12", "@web/dev-server-core@^0.3.3":
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/@web/dev-server-core/-/dev-server-core-0.3.13.tgz#ae54e38c0e27212d44a48776c0439230e7d04bef"
   integrity sha512-bGJHPeFRWATNfuL9Pp2LfqhnmqhBCc5eOO5AWQa0X+WQAwHiFo6xZNfsvsnJ1gvxXgsE4jKBAGu9lQRisvFRFA==
@@ -504,6 +509,18 @@
     parse5 "^6.0.1"
     picomatch "^2.2.2"
     ws "^7.4.2"
+
+"@web/dev-server-import-maps@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@web/dev-server-import-maps/-/dev-server-import-maps-0.0.5.tgz#98f8a8b7af4a60a13f7b6f1ea8e2a4ce0253658d"
+  integrity sha512-aAV+U6db9D3clfk2NmJkB4lPzL00MWmtYbAxrKNiQNrCWUFC0AsCG3EwrSXco2iF0WMdbbU2McLz/I9BHKyWFA==
+  dependencies:
+    "@import-maps/resolve" "^1.0.1"
+    "@types/parse5" "^5.0.3"
+    "@web/dev-server-core" "^0.3.0"
+    "@web/parse5-utils" "^1.1.2"
+    parse5 "^6.0.1"
+    picomatch "^2.2.2"
 
 "@web/dev-server-rollup@^0.3.3":
   version "0.3.4"
@@ -537,7 +554,7 @@
     open "^8.0.2"
     portfinder "^1.0.28"
 
-"@web/parse5-utils@^1.2.0":
+"@web/parse5-utils@^1.1.2", "@web/parse5-utils@^1.2.0":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@web/parse5-utils/-/parse5-utils-1.2.2.tgz#33eec93321eb07cf364651c131b980a7afd8c4d7"
   integrity sha512-B68DoJ5qF8Cu3o7nDA2RQTCf9bslVz2b0WHTk3qir5YCbWfhnPEGhDOedOjbE8xDiHqgzI1zXQsJ2+655aluLA==
