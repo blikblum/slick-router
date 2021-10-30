@@ -1,37 +1,49 @@
 import qs from '../../lib/qs'
 import * as Path from '../../lib/path'
 import 'chai/chai.js'
-import { patternCompiler } from '../../lib/patternCompiler.js'
+import { patternCompiler as defaultPatternCompiler } from '../../lib/patternCompiler.js'
+import { patternCompiler as pathToRegexPatternCompiler } from './pathToRegexPatternCompiler.js'
 
 const { assert } = window.chai
 const { describe, it } = window
 
-describe('Path', () => {
-  it('Path.extractParamNames', () => {
-    assert.deepEqual(Path.extractParamNames('a/b/c', patternCompiler), [])
-    assert.deepEqual(Path.extractParamNames('/comments/:a/:b/edit', patternCompiler), ['a', 'b'])
-    assert.deepEqual(Path.extractParamNames('/files/:path*.jpg', patternCompiler), ['path'])
-  })
+function testExtractParamNames (patternCompiler) {
+  assert.deepEqual(Path.extractParamNames('a/b/c', patternCompiler), [])
+  assert.deepEqual(Path.extractParamNames('/comments/:a/:b/edit', patternCompiler), ['a', 'b'])
+  assert.deepEqual(Path.extractParamNames('/files/:path*.jpg', patternCompiler), ['path'])
+}
 
-  it('Path.extractParams', () => {
-    assert.deepEqual(Path.extractParams('a/b/c', 'a/b/c', patternCompiler), {})
-    assert.deepEqual(Path.extractParams('a/b/c', 'd/e/f', patternCompiler), null)
+function testExtractParams (patternCompiler, edgeCases) {
+  assert.deepEqual(Path.extractParams('/a/b/c', '/a/b/c', patternCompiler), {})
+  assert.deepEqual(Path.extractParams('/a/b/c', '/d/e/f', patternCompiler), null)
 
-    assert.deepEqual(Path.extractParams('comments/:id.:ext/edit', 'comments/abc.js/edit', patternCompiler), { id: 'abc', ext: 'js' })
+  assert.deepEqual(Path.extractParams('/comments/:id?/edit', '/comments/123/edit', patternCompiler), { id: '123' })
+  assert.deepEqual(Path.extractParams('/comments/:id?/edit', '/comments/the%2Fid/edit', patternCompiler), { id: 'the/id' })
+  assert.deepEqual(Path.extractParams('/comments/:id?/edit', '/comments//edit', patternCompiler), null)
+  assert.deepEqual(Path.extractParams('/comments/:id?/edit', '/users/123', patternCompiler), null)
 
-    assert.deepEqual(Path.extractParams('comments/:id?/edit', 'comments/123/edit', patternCompiler), { id: '123' })
-    assert.deepEqual(Path.extractParams('comments/:id?/edit', 'comments/the%2Fid/edit', patternCompiler), { id: 'the/id' })
-    assert.deepEqual(Path.extractParams('comments/:id?/edit', 'comments//edit', patternCompiler), null)
-    assert.deepEqual(Path.extractParams('comments/:id?/edit', 'users/123', patternCompiler), null)
+  assert.deepEqual(Path.extractParams('/one, two', '/one, two', patternCompiler), {})
+  assert.deepEqual(Path.extractParams('/one, two', '/one two', patternCompiler), null)
 
-    assert.deepEqual(Path.extractParams('one, two', 'one, two', patternCompiler), {})
-    assert.deepEqual(Path.extractParams('one, two', 'one two', patternCompiler), null)
+  assert.deepEqual(Path.extractParams('/comments/:id/edit now', '/comments/abc/edit now', patternCompiler), { id: 'abc' })
+  assert.deepEqual(Path.extractParams('/comments/:id/edit now', '/users/123', patternCompiler), null)
 
-    assert.deepEqual(Path.extractParams('/comments/:id/edit now', '/comments/abc/edit now', patternCompiler), { id: 'abc' })
-    assert.deepEqual(Path.extractParams('/comments/:id/edit now', '/users/123', patternCompiler), null)
+  assert.deepEqual(Path.extractParams('/files/:path*', '/files/my/photo.jpg', patternCompiler), { path: 'my/photo.jpg' })
+  assert.deepEqual(Path.extractParams('/files/:path*', '/files/my/photo.jpg.zip', patternCompiler), { path: 'my/photo.jpg.zip' })
 
-    assert.deepEqual(Path.extractParams('/files/:path*', '/files/my/photo.jpg', patternCompiler), { path: 'my/photo.jpg' })
-    assert.deepEqual(Path.extractParams('/files/:path*', '/files/my/photo.jpg.zip', patternCompiler), { path: 'my/photo.jpg.zip' })
+  assert.deepEqual(Path.extractParams('/archive/:name?', '/archive', patternCompiler), { name: undefined })
+  assert.deepEqual(Path.extractParams('/archive/:name?', '/archive/', patternCompiler), { name: undefined })
+  assert.deepEqual(Path.extractParams('/archive/:name?', '/archive/foo', patternCompiler), { name: 'foo' })
+  assert.deepEqual(Path.extractParams('/archive/:name?', '/archivefoo', patternCompiler), null)
+  assert.deepEqual(Path.extractParams('/archive/:name?', '/archiv', patternCompiler), null)
+
+  assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo/with/foo.app', patternCompiler), { query: 'foo', domain: 'foo.app' })
+  assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap/with/foo', patternCompiler), { query: 'foo.ap', domain: 'foo' })
+  assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap/with/foo.app', patternCompiler), { query: 'foo.ap', domain: 'foo.app' })
+  assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap', patternCompiler), null)
+
+  if (edgeCases) {
+    assert.deepEqual(Path.extractParams('/comments/:id.:ext/edit', '/comments/abc.js/edit', patternCompiler), { id: 'abc', ext: 'js' })
     assert.deepEqual(Path.extractParams('/files/:path*.jpg', '/files/my%2Fphoto.jpg', patternCompiler), { path: 'my/photo' })
     assert.deepEqual(Path.extractParams('/files/:path*', '/files', patternCompiler), { path: undefined })
     assert.deepEqual(Path.extractParams('/files/:path*', '/files/', patternCompiler), { path: undefined })
@@ -51,22 +63,37 @@ describe('Path', () => {
     assert.deepEqual(Path.extractParams('/files/:path+', '/files/', patternCompiler), null)
     assert.deepEqual(Path.extractParams('/files/:path+.jpg', '/files/my/photo.png', patternCompiler), null)
 
-    assert.deepEqual(Path.extractParams('/archive/:name?', '/archive', patternCompiler), { name: undefined })
-    assert.deepEqual(Path.extractParams('/archive/:name?', '/archive/', patternCompiler), { name: undefined })
-    assert.deepEqual(Path.extractParams('/archive/:name?', '/archive/foo', patternCompiler), { name: 'foo' })
-    assert.deepEqual(Path.extractParams('/archive/:name?', '/archivefoo', patternCompiler), null)
-    assert.deepEqual(Path.extractParams('/archive/:name?', '/archiv', patternCompiler), null)
-
-    assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo/with/foo.app', patternCompiler), { query: 'foo', domain: 'foo.app' })
-    assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap/with/foo', patternCompiler), { query: 'foo.ap', domain: 'foo' })
-    assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap/with/foo.app', patternCompiler), { query: 'foo.ap', domain: 'foo.app' })
-    assert.deepEqual(Path.extractParams('/:query/with/:domain', '/foo.ap', patternCompiler), null)
-
     // advanced use case of making params in the middle of the url optional
     assert.deepEqual(Path.extractParams('/comments/:id(.*/?edit)', '/comments/123/edit', patternCompiler), { id: '123/edit' })
     assert.deepEqual(Path.extractParams('/comments/:id(.*/?edit)', '/comments/edit', patternCompiler), { id: 'edit' })
     assert.deepEqual(Path.extractParams('/comments/:id(.*/?edit)', '/comments/editor', patternCompiler), null)
     assert.deepEqual(Path.extractParams('/comments/:id(.*/?edit)', '/comments/123', patternCompiler), null)
+  }
+}
+
+describe('Path', () => {
+  describe('Path.extractParamNames', () => {
+    it('with default patternCompiler', () => {
+      Path.clearPatternCompilerCache()
+      testExtractParamNames(defaultPatternCompiler, false)
+    })
+
+    it('with pathToRegex patternCompiler', () => {
+      Path.clearPatternCompilerCache()
+      testExtractParamNames(pathToRegexPatternCompiler, true)
+    })
+  })
+
+  describe('Path.extractParams', () => {
+    it('with default patternCompiler', () => {
+      Path.clearPatternCompilerCache()
+      testExtractParams(defaultPatternCompiler, false)
+    })
+
+    it('with pathToRegex patternCompiler', () => {
+      Path.clearPatternCompilerCache()
+      testExtractParams(pathToRegexPatternCompiler, true)
+    })
   })
 
   it('Path.injectParams', () => {

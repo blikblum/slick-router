@@ -23,7 +23,7 @@
     "url": "https://github.com/blikblum/slick-router/issues"
   },
   "dependencies": {
-    "path-to-regexp": "^5.0.0"
+    "regexparam": "^2.0.0"
   },
   "keywords": [
     "router",
@@ -34,16 +34,18 @@
     "nested"
   ],
   "devDependencies": {
-    "@open-wc/testing": "^2.5.33",
-    "@web/dev-server": "^0.1.17",
-    "@web/dev-server-import-maps": "^0.0.5",
-    "@web/test-runner": "^0.13.13",
+    "@open-wc/testing": "^3.0.2",
+    "@web/dev-server": "^0.1.25",
+    "@web/dev-server-import-maps": "^0.0.6",
+    "@web/test-runner": "^0.13.20",
+    "chai": "^4.3.4",
     "del": "^6.0.0",
     "jquery": "^3.6.0",
     "lit-element": "^2.5.1",
+    "path-to-regexp": "5.0.0",
     "rollup": "^2.52.4",
     "rollup-plugin-cpy": "^2.0.1",
-    "sinon": "^11.1.1",
+    "sinon": "^11.1.2",
     "snazzy": "^9.0.0",
     "standard": "^16.0.3"
   },
