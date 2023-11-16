@@ -60,5 +60,6 @@
       "lib/locations/location-bar.js",
       "tests/location-bar/**"
     ]
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }

@@ -6,3 +6,4 @@ examples/*/dist
 coverage
 build
 /.idea/
+/.yarn/install-state.gz
