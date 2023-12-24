@@ -45,6 +45,9 @@ promise = promise.then(() => {
   delete pkg.scripts
   delete pkg.standard
   delete pkg.babel
+  if (!fs.existsSync(BUILD_DIR)) {
+    fs.mkdirSync(BUILD_DIR)
+  }
   fs.writeFileSync(`${BUILD_DIR}/package.json`, JSON.stringify(pkg, null, '  '), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/LICENSE`, fs.readFileSync('LICENSE', 'utf-8'), 'utf-8')
   fs.writeFileSync(`${BUILD_DIR}/README.md`, fs.readFileSync('README.md', 'utf-8'), 'utf-8')
