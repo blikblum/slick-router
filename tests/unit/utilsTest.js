@@ -1,4 +1,3 @@
-
 import { clone, pick, isEqual, extend } from '../../lib/utils'
 import 'chai/chai.js'
 

@@ -1,12 +1,12 @@
-var $ = require('jquery')
-var _ = require('lodash')
-var template = require('./templates/app.html')
-var BaseHandler = require('base_handler')
+const $ = require('jquery')
+const _ = require('lodash')
+const template = require('./templates/app.html')
+const BaseHandler = require('base_handler')
 
 module.exports = _.extend({}, BaseHandler, {
-  template: template,
+  template,
   model: function () {
-    var context = {
+    const context = {
       appRnd: Math.random()
     }
     // activate eagerly - we want to render this route

@@ -9,7 +9,7 @@ module.exports = {
   },
   devtool: 'source-map',
   resolve: {
-    modules: [path.resolve(__dirname, './client/shared'), 'node_modules'],
+    modules: [path.resolve(__dirname, './client/shared'), 'node_modules']
   },
   module: {
     rules: [

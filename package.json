@@ -7,8 +7,8 @@
   "module": "slick-router.js",
   "sideEffects": false,
   "scripts": {
-    "build": "standard | snazzy && node tasks/build.js",
-    "lint": "standard",
+    "build": "standard --env browser | snazzy && node tasks/build.js",
+    "lint": "standard --env browser",
     "start": "web-dev-server --open examples/ --node-resolve",
     "test": "web-test-runner \"tests/**/*Test.js\" --node-resolve",
     "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage"
@@ -47,12 +47,9 @@
     "rollup-plugin-cpy": "^2.0.1",
     "sinon": "^11.1.2",
     "snazzy": "^9.0.0",
-    "standard": "^16.0.3"
+    "standard": "^17.1.0"
   },
   "standard": {
-    "env": {
-      "browser": true
-    },
     "ignore": [
       "examples/**",
       "docs/**",

@@ -1,20 +1,19 @@
-var { Router } = require('slick-router')
-var getHandler = require('./handler')
-
+const { Router } = require('slick-router')
+const getHandler = require('./handler')
 
 // create the router
-var router = window.router = new Router({
+const router = window.router = new Router({
   log: true
 })
 
 // define the route map
 router.map(function (route) {
-  route('application', {path: '/', abstract: true}, function () {
-    route('home', {path: ''})
+  route('application', { path: '/', abstract: true }, function () {
+    route('home', { path: '' })
     route('about')
     route('faq')
-    route('posts', {abstract: true}, function () {
-      route('posts.index', {path: ''})
+    route('posts', { abstract: true }, function () {
+      route('posts.index', { path: '' })
       route('posts.popular')
       route('posts.search', { path: 'search/:query' })
       route('posts.show', { path: ':id' })
@@ -28,10 +27,10 @@ router.map(function (route) {
 // this can load handlers dynamically (TODO)
 router.use(function loadHandlers (transition) {
   transition.routes.forEach(function (route, i) {
-    var handler = getHandler(route.name)
+    const handler = getHandler(route.name)
     handler.name = route.name
     handler.router = router
-    var parentRoute = transition.routes[i - 1]
+    const parentRoute = transition.routes[i - 1]
     if (parentRoute) {
       handler.parent = parentRoute.handler
     }
@@ -57,7 +56,7 @@ router.use(function deactivateHook (transition) {
 // model hook
 // with the loading hook (TODO)
 router.use(function modelHook (transition) {
-  var prevContext = Promise.resolve()
+  let prevContext = Promise.resolve()
   return Promise.all(transition.routes.map(function (route) {
     prevContext = Promise.resolve(route.handler.model(transition.params, prevContext, transition))
     return prevContext

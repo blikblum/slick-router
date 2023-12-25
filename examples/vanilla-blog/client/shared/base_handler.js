@@ -1,10 +1,10 @@
-var $ = require('jquery')
-var _ = require('lodash')
+const $ = require('jquery')
+const _ = require('lodash')
 
 module.exports = {
   template: _.template('<div class="outlet"></div>'),
   model: function (params) {
-    var self = this
+    const self = this
     return new Promise(function (resolve) {
       self.timeout = setTimeout(function () {
         resolve(params)
@@ -21,8 +21,8 @@ module.exports = {
     return {}
   },
   view: function (context) {
-    var tpl = '<div>' + this.template(this.templateData(context)) + '</div>'
-    var router = this.router
+    let tpl = '<div>' + this.template(this.templateData(context)) + '</div>'
+    const router = this.router
     tpl = tpl.replace(/\{\{link\:(.*)\}\}/g, function (match, routeId) {
       return router.generate(routeId)
     })
@@ -34,7 +34,7 @@ module.exports = {
     this.outlet().html(this.$view)
   },
   outlet: function () {
-    var parent = this.parent
+    let parent = this.parent
     while (parent) {
       if (parent.$outlet) {
         return parent.$outlet

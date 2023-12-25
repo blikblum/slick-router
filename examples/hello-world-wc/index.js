@@ -18,12 +18,12 @@ const router = new Router({
 // in this particular case we configure components by its tag name
 
 router.map((route) => {
-  route('application', {path: '/', component: 'application-view'}, () => {
-    route('home', {path: '', component: 'home-view'})
-    route('messages', {component: 'messages-view'})
-    route('status', {path: ':user/status/:id'})
-    route('profile', {path: ':user', component: 'profile-view'}, () => {
-      route('profile.index', {path: '', component: 'profile-index-view'})
+  route('application', { path: '/', component: 'application-view' }, () => {
+    route('home', { path: '', component: 'home-view' })
+    route('messages', { component: 'messages-view' })
+    route('status', { path: ':user/status/:id' })
+    route('profile', { path: ':user', component: 'profile-view' }, () => {
+      route('profile.index', { path: '', component: 'profile-index-view' })
       route('profile.lists')
       route('profile.edit')
     })

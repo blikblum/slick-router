@@ -1,9 +1,9 @@
-var _ = require('lodash')
-var template = require('./templates/show.html')
-var BaseHandler = require('base_handler')
+const _ = require('lodash')
+const template = require('./templates/show.html')
+const BaseHandler = require('base_handler')
 
 module.exports = _.extend({}, BaseHandler, {
-  template: template,
+  template,
   willTransition: function (transition) {
     // if (this.postId === '2') {
     //   transition.cancel()
@@ -15,11 +15,11 @@ module.exports = _.extend({}, BaseHandler, {
     } else {
       this.sessionStore++
     }
-    var self = this
+    const self = this
     return context.then(function (context) {
       self.postId = params.id
       return new Promise(function (resolve) {
-        resolve({title: 'Blog ' + params.id, subtitle: context.allPostsData[0] + context.appRnd})
+        resolve({ title: 'Blog ' + params.id, subtitle: context.allPostsData[0] + context.appRnd })
       })
     })
   },

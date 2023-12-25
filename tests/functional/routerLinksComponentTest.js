@@ -11,15 +11,12 @@ import 'jquery'
 
 import '../../lib/components/router-links'
 
-
-
 function getQueryCallback (route, el) {
   if (route === 'child') return { foo: 'bar' }
   if (el.id === 'a-rootlink3') return { tag: el.tagName }
 }
 
 class ParentView extends LitElement {
-  
   get rootId () { return 5 }
 
   getParamsCallback = (route) => {

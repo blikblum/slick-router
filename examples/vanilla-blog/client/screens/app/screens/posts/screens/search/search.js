@@ -1,5 +1,5 @@
-var _ = require('lodash')
-var BaseHandler = require('base_handler')
+const _ = require('lodash')
+const BaseHandler = require('base_handler')
 
 module.exports = _.extend({}, BaseHandler, {
   model: function (params) {

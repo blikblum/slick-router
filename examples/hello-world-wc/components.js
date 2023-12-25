@@ -151,7 +151,7 @@ const leaveAnimationSelect = `<select id="leave-animation" name="leave-animation
 </select>`
 
 class ApplicationView extends withRouterLinks(HTMLElement) {
-  constructor() {
+  constructor () {
     super()
     this.addEventListener('change', (e) => {
       if (e.target.matches('#leave-animation')) {
@@ -163,7 +163,7 @@ class ApplicationView extends withRouterLinks(HTMLElement) {
     })
   }
 
-  connectedCallback() {
+  connectedCallback () {
     super.connectedCallback()
     this.innerHTML = `
       <div class='App'>
@@ -192,7 +192,7 @@ class ApplicationView extends withRouterLinks(HTMLElement) {
 customElements.define('application-view', ApplicationView)
 
 class HomeView extends withRouterLinks(HTMLElement) {
-  connectedCallback() {
+  connectedCallback () {
     super.connectedCallback()
     this.innerHTML = `
       <div class='Home' routerlinks>
@@ -226,7 +226,7 @@ class HomeView extends withRouterLinks(HTMLElement) {
 customElements.define('home-view', HomeView)
 
 class MessagesView extends HTMLElement {
-  connectedCallback() {
+  connectedCallback () {
     this.innerHTML = `
       <div class='Messages'>
         <h2>Messages</h2>
@@ -239,11 +239,11 @@ class MessagesView extends HTMLElement {
 customElements.define('messages-view', MessagesView)
 
 class ProfileView extends HTMLElement {
-  static get outlet() {
+  static get outlet () {
     return '.Container'
   }
 
-  connectedCallback() {
+  connectedCallback () {
     this.innerHTML = `
       <div class='Profile'>
         <div class='Container'></div>
@@ -254,9 +254,8 @@ class ProfileView extends HTMLElement {
 
 customElements.define('profile-view', ProfileView)
 
-
 class ProfileIndexView extends HTMLElement {
-  connectedCallback() {
+  connectedCallback () {
     this.innerHTML = `
       <div class='ProfileIndex'>
         <h2>${this.$route.params.user} profile</h2>
