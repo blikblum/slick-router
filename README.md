@@ -21,8 +21,9 @@ Slick Router is a powerful, flexible router that translates URL changes into rou
 
 ## Installation
 
-The main library size including path-to-regexp dependency is ~15kB minified (without gzip compression).
-wc and routerLinks middlewares accounts for 3kb each. See [webpack test project](examples/tree-shaking) for more results.
+The main library size including regexparam dependency is ~12kB minified (without gzip compression).
+With wc and routerLinks middlewares the size increases to ~17kb. AnimatedOutlet web component, which can be used independent from the router, has a 2.5kb size.
+See [webpack test project](examples/tree-shaking) for more results.
 
     $ npm install --save slick-router
 
@@ -125,19 +126,15 @@ router.listen()
 You can also clone this repo and run the `examples` locally:
 
 * [hello-world-jquery](examples/hello-world-jquery) - minimal example with good old jquery
-* [hello-world-react](hello-world-react) - minimal example with React
-* [hello-world-wc](hello-world-react) - minimal example with Web Component (no build required)
+* [hello-world-wc](examples/hello-world-wc) - minimal example with Web Component (no build required)
 * [vanilla-blog](examples/vanilla-blog) - a small static demo of blog like app that uses no framework
 
 ## Browser Support
 
-Slick Router works in all modern browsers. V1 requires es5 environment and es6 promises. Use polyfills for those if you have to support older browsers, e.g.:
-
-* https://github.com/es-shims/es5-shim
-* https://github.com/jakearchibald/es6-promise
+Slick Router works in all modern browsers. No IE support.
 
 ----
 
-Copyright (c) 2020 Luiz Américo Pereira Câmara
+Copyright (c) 2023 Luiz Américo Pereira Câmara
 
 Copyright (c) 2017 Karolis Narkevicius

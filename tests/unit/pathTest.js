@@ -54,7 +54,7 @@ function testExtractParams (patternCompiler, edgeCases) {
 
     // multiple splats
     // this is not supported by latest path-to-regexp https://github.com/pillarjs/path-to-regexp/issues/214
-    // also not supported by URLPattern https://github.com/whatwg/urlpattern/issues/163 
+    // also not supported by URLPattern https://github.com/whatwg/urlpattern/issues/163
     // assert.deepEqual(Path.extractParams('/files/:path*\\.:ext*', '/files/my/photo.jpg/gif', patternCompiler), { path: 'my/photo', ext: 'jpg/gif' })
 
     // one more more segments

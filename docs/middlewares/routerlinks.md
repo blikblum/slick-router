@@ -5,17 +5,21 @@ is active, the 'active' class will be added to the element
     
 ## Usage
 
-Decorate a web component class using class mixin or decorator syntax
+Wrap router links elements with `router-links` web component
 
 ```javascript
-import { withRouterLinks } from 'slick-router/middlewares/router-links'
+import 'slick-router/components/router-links'
 
-@withRouterLinks
-class MyView extends HTMLElement {}
-
-// or
-
-class MyView extends withRouterLinks(HTMLElement) {}
+class MyView extends LitElement {
+  render() {
+    return html`
+      <router-links>
+        <a route="home">Home</a>
+        <a route="about">About</a>
+      </router-links>
+    `
+  }
+}
 ```
 
 Manually bind a dom element:
@@ -31,13 +35,8 @@ const unbind = bindRouterLinks(navEl)
 
 ## Options
 
-Both `withRouterLinks` and `bindRouterLinks` can be configured with an options argument
+Both `router-links` and `bindRouterLinks` can be configured
 
-### `selector`
-
-Defines the selector that is used to search elements that holds router links.
-
-Defaults to '[routerlinks]' 
 
 ### `query` and `params`
 
@@ -49,34 +48,56 @@ The function is called with the onwner element as `this` and route name and link
 
 
 ```javascript
-const hashOptions = {
-  params: {
-    id: 3
-  },
-  query: {
-    foo: 'bar'
+const routeParams = {
+  id: 3
+}
+ 
+const routeQuery = {
+  foo: 'bar'
+}
+ 
+
+const unbind = bindRouterLinks(navEl, { params: routeParams, query: routeQuery })
+
+// or
+class MyView extends LitElement {
+  render() {
+    return html`
+      <router-links .params=${routeParams} .query=${routeQuery}>
+        <a route="home">Home</a>
+        <a route="about">About</a>
+      </router-links>
+    `
   }
 }
-
-@withRouterLinks(hashOptions)
-class MyView extends LitElement {}
 ```
 
 
 ```javascript
-const dynOptions = {
-  params: function (route) {
-    if (route === 'root') return { id: this.rootId }
-  },
-  query: function (route, el) {
-    if (route === 'child') return { foo: 'bar' }
-    if (el.id === 'my-link') return { tag: el.tagName }
-  }
+function getRouteParams(route, el) {
+  if (route === 'home') return { id: this.rootId }
+}
 
-class MyView extends withRouterLinks(LitElement, dynOptions) {
-  rootId = 3
+function getRouteQuery(route, el) {
+  if (route === 'child') return { foo: 'bar' }
+  if (el.id === 'my-link') return { tag: el.tagName }
+}
+
+const unbind = bindRouterLinks(navEl, { params: getRouteParams, query: getRouteQuery })
+
+// or
+class MyView extends LitElement {
+  render() {
+    return html`
+      <router-links .rootId=${5} .params=${getRouteParams} .query=${getRouteQuery}>
+        <a route="home">Home</a>
+        <a route="about">About</a>
+      </router-links>
+    `
+  }
 }
 ```
+
 
 ## Markup
 
@@ -114,11 +135,10 @@ When present the active class will be set only the route path matches exactly wi
 
 When present it will use `replaceWith` instead of `transitionTo` thus not adding a history entry
 
-Examples:
+Example:
+
 ```html
-<!-- routerlinks attribute is necessary on a parent element (not necessarily a direct one) -->
-<div class="nav" routerlinks>
-  
+<div class="nav">  
   <!-- a.href will be expanded to the contacts path -->
   <a route="contacts">All contacts</a>
   

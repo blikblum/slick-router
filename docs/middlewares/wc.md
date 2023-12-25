@@ -41,7 +41,7 @@ const routes = [
 
 By default, the routes elements are created each navigation even when the same route is matched.
 
-Setting `reuse` to false will make the router reuse the same element instance when the same route is matched
+Setting `reuse` to true will make the router reuse the same element instance when the same route is matched
 
 ```js
 const routes = [
