@@ -15,6 +15,7 @@ const baseConfig = {
 }
 
 const entries = [
+  'animated-outlet',
   'router',
   'router-intercept',
   'router-wc',

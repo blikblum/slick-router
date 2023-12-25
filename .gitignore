@@ -7,3 +7,4 @@ coverage
 build
 /.idea/
 /.yarn/install-state.gz
+/examples/tree-shaking/.yarn/install-state.gz
