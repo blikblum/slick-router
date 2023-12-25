@@ -1,4 +1,5 @@
-import { withRouterLinks } from 'slick-router/middlewares/router-links.js'
+import { bindRouterLinks } from 'slick-router/middlewares/router-links.js'
+import 'slick-router/components/router-links.js'
 
 const enterAnimationSelect = `<select id="enter-animation" name="enter-animation">
   <option value="">none</option>
@@ -150,7 +151,7 @@ const leaveAnimationSelect = `<select id="leave-animation" name="leave-animation
   </optgroup>
 </select>`
 
-class ApplicationView extends withRouterLinks(HTMLElement) {
+class ApplicationView extends HTMLElement {
   constructor () {
     super()
     this.addEventListener('change', (e) => {
@@ -164,16 +165,17 @@ class ApplicationView extends withRouterLinks(HTMLElement) {
   }
 
   connectedCallback () {
-    super.connectedCallback()
     this.innerHTML = `
       <div class='App'>
         <div class='App-header'>
           <h1>Application</h1>
-          <ul class='Nav' routerlinks>
-            <li class='Nav-item'><a route="home">Home</a></li>
-            <li class='Nav-item'><a route="messages">Messages</a></li>
-            <li class='Nav-item'><a route="profile.index" param-user="scrobblemuch">Profile</a></li>
-          </ul>
+          <router-links>
+            <ul class='Nav'>
+              <li class='Nav-item'><a route="home">Home</a></li>
+              <li class='Nav-item'><a route="messages">Messages</a></li>
+              <li class='Nav-item'><a route="profile.index" param-user="scrobblemuch">Profile</a></li>
+            </ul>
+          </router-links>
         </div>
         <router-outlet animation></router-outlet>
         
@@ -191,11 +193,10 @@ class ApplicationView extends withRouterLinks(HTMLElement) {
 
 customElements.define('application-view', ApplicationView)
 
-class HomeView extends withRouterLinks(HTMLElement) {
+class HomeView extends HTMLElement {
   connectedCallback () {
-    super.connectedCallback()
     this.innerHTML = `
-      <div class='Home' routerlinks>
+      <div class='Home'>
         <h2>Tweets</h2>
         <div class='Tweet'>
           <div class='Tweet-author'>
@@ -220,6 +221,7 @@ class HomeView extends withRouterLinks(HTMLElement) {
         </div>
       </div>
     `
+    bindRouterLinks(this)
   }
 }
 
