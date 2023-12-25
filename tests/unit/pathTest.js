@@ -53,7 +53,9 @@ function testExtractParams (patternCompiler, edgeCases) {
     assert.deepEqual(Path.extractParams('/files/:path*.:ext', '/files/my/photo.jpg', patternCompiler), { path: 'my/photo', ext: 'jpg' })
 
     // multiple splats
-    assert.deepEqual(Path.extractParams('/files/:path*\\.:ext*', '/files/my/photo.jpg/gif', patternCompiler), { path: 'my/photo', ext: 'jpg/gif' })
+    // this is not supported by latest path-to-regexp https://github.com/pillarjs/path-to-regexp/issues/214
+    // also not supported by URLPattern https://github.com/whatwg/urlpattern/issues/163 
+    // assert.deepEqual(Path.extractParams('/files/:path*\\.:ext*', '/files/my/photo.jpg/gif', patternCompiler), { path: 'my/photo', ext: 'jpg/gif' })
 
     // one more more segments
     assert.deepEqual(Path.extractParams('/files/:path+', '/files/my/photo.jpg', patternCompiler), { path: 'my/photo.jpg' })
@@ -75,12 +77,12 @@ describe('Path', () => {
   describe('Path.extractParamNames', () => {
     it('with default patternCompiler', () => {
       Path.clearPatternCompilerCache()
-      testExtractParamNames(defaultPatternCompiler, false)
+      testExtractParamNames(defaultPatternCompiler)
     })
 
     it('with pathToRegex patternCompiler', () => {
       Path.clearPatternCompilerCache()
-      testExtractParamNames(pathToRegexPatternCompiler, true)
+      testExtractParamNames(pathToRegexPatternCompiler)
     })
   })
 

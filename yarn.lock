@@ -5614,10 +5614,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:5.0.0":
-  version: 5.0.0
-  resolution: "path-to-regexp@npm:5.0.0"
-  checksum: e132b8b628a3430eca1a2aac295f2778215b035f9f01b87b799c8d466b8a68c7b4cfd5117f675285bfae2bbd780830e10b5f59019336400b7f022178e21a84df
+"path-to-regexp@npm:6.2.1":
+  version: 6.2.1
+  resolution: "path-to-regexp@npm:6.2.1"
+  checksum: 7a73811ca703e5c199e5b50b9649ab8f6f7b458a37f7dff9ea338815203f5b1f95fe8cb24d4fdfe2eab5d67ce43562d92534330babca35cdf3231f966adb9360
   languageName: node
   linkType: hard
 
@@ -5912,10 +5912,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexparam@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "regexparam@npm:2.0.0"
-  checksum: b269c327e253052a5c880605e850bca890a128336108bc216ebb4f779a1262026d4b9cf9d52b64d894b7e833748d24125c4ffb2f296323676e61d262fc2ecff2
+"regexparam@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "regexparam@npm:3.0.0"
+  checksum: a6430d7b97d5a7d5518f37a850b6b73aab479029d02f46af4fa0e8e4a1d7aad05b7a0d2d10c86ded21a14d5f0fa4c68525f873a5fca2efeefcccd93c36627459
   languageName: node
   linkType: hard
 
@@ -6377,8 +6377,8 @@ __metadata:
     del: "npm:^6.0.0"
     jquery: "npm:^3.6.0"
     lit-element: "npm:^2.5.1"
-    path-to-regexp: "npm:5.0.0"
-    regexparam: "npm:^2.0.0"
+    path-to-regexp: "npm:6.2.1"
+    regexparam: "npm:^3.0.0"
     rollup: "npm:^2.52.4"
     rollup-plugin-cpy: "npm:^2.0.1"
     sinon: "npm:^11.1.2"
