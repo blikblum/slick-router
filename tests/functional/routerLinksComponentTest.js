@@ -392,7 +392,7 @@ describe('router-links', () => {
             <a id="a-dyn-parentlink" route="parent"></a>
             <a id="a-dyn-grandchildlink" route="grandchild" query-name="test"></a>
           </div> 
-        `).appendTo(parentEl.renderRoot.querySelector('[routerlinks]'))
+        `).appendTo(parentEl.renderRoot.querySelector('router-links'))
 
         // links are updated asynchronously by MutationObserver
         setTimeout(() => {
@@ -412,7 +412,7 @@ describe('router-links', () => {
         $(`<div id="div-dyn-rootlink1" route="root" param-id="1"></div>
         <div id="div-dyn-grandchildlink" route="grandchild" query-name="test"></div>
         <div id="div-dyn-parentlink" route="parent"><div id="dyn-innerparent"></div></div>
-        `).appendTo(parentEl.renderRoot.querySelector('[routerlinks]'))
+        `).appendTo(parentEl.renderRoot.querySelector('router-links'))
 
         const spy = sinon.spy(router, 'transitionTo')
         $('#div-dyn-rootlink1').click()
