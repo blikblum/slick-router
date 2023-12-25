@@ -85,7 +85,7 @@ describe('bindRouterLinks', () => {
     let unbind, preRenderedEl
     beforeEach(function () {
       preRenderedEl = fixtureSync(`<div id="prerendered">
-        <div routerlinks>
+        <div>
           <a id="a-prerootlink2" route="root" param-id="2"></a>
           <a id="a-preparentlink" route="parent"></a>
           <a id="a-pregrandchildlink" route="grandchild" query-name="test"></a>
@@ -149,7 +149,7 @@ describe('bindRouterLinks', () => {
           $(`<a id="a-dyn-prerootlink2" route="root" param-id="2"></a>
             <a id="a-dyn-preparentlink" route="parent"></a>
             <a id="a-dyn-pregrandchildlink" route="grandchild" query-name="test"></a>
-          `).appendTo(document.querySelector('#prerendered [routerlinks]'))
+          `).appendTo(document.querySelector('#prerendered'))
 
           // links are updated asynchronously by MutationObserver
           setTimeout(() => {
@@ -168,7 +168,7 @@ describe('bindRouterLinks', () => {
           $(`<a id="a-dyn-prerootlink2" route="root" param-id="2"></a>
             <a id="a-dyn-preparentlink" route="parent"></a>
             <a id="a-dyn-pregrandchildlink" route="grandchild" query-name="test"></a>
-          `).appendTo(document.querySelector('#prerendered [routerlinks]'))
+          `).appendTo(document.querySelector('#prerendered'))
 
           // links are updated asynchronously by MutationObserver
           setTimeout(() => {
