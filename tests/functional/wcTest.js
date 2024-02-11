@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit-element'
 import 'chai/chai.js'
 import { pick } from '../../lib/utils'
 import { Router } from '../../lib/router'
-import { wc, paramValue, queryValue } from '../../lib/middlewares/wc'
+import { wc, fromQuery, fromParam } from '../../lib/middlewares/wc'
 import { expect, defineCE } from '@open-wc/testing'
 import { spy, stub } from 'sinon'
 
@@ -24,6 +24,11 @@ const parentBeforeEnterMethod = stub()
 const grandchildBeforeEnterMethod = spy()
 const parentBeforeLeaveMethod = spy()
 const grandchildBeforeLeaveMethod = stub()
+
+const propertyHookInit = spy()
+const propertyHookEnter = spy()
+const propertyHookLeave = spy()
+const propertyHookUpdate = spy()
 
 const nouiBeforeLeave = spy()
 
@@ -100,6 +105,30 @@ const LazyDynamic = function (route) {
   })
 }
 
+function fromCustom() {
+  return {
+    init(setValue) {
+      propertyHookInit(setValue)
+    },
+    enter(transition, setValue) {
+      propertyHookEnter(transition, setValue)
+      setValue('customEnter')
+    },
+    leave(transition, setValue) {
+      propertyHookLeave(transition, setValue)
+      setValue('customLeave')
+    },
+  }
+}
+
+function toCustom() {
+  return {
+    update(newValue, el) {
+      propertyHookUpdate(newValue, el)
+    },
+  }
+}
+
 const routes = function (route) {
   route(
     'parent',
@@ -136,8 +165,10 @@ const routes = function (route) {
     path: 'x/:id',
     properties: {
       x: 'y',
-      myQuery: queryValue('sort', (val) => val.toUpperCase()),
-      myParam: paramValue('id', 'number'),
+      myQuery: fromQuery('sort', (val) => val.toUpperCase()),
+      myParam: fromParam('id', 'number'),
+      custom: fromCustom(),
+      composite: [fromParam('id', 'number'), toCustom()],
     },
   })
   route('reusable', {
@@ -313,22 +344,51 @@ describe('wc middleware', () => {
   })
 
   describe('properties', () => {
-    it('should be set on elements', async () => {
+    it('should be set on elements when is a primitive value', async () => {
       await router.transitionTo('withparam', { id: 1 })
       const parentEl = outlet.children[0]
       expect(parentEl.x).to.equal('y')
     })
 
-    it('should set query value when using queryValue', async () => {
+    it('should set query value when using fromQuery', async () => {
       await router.transitionTo('withparam', { id: 1 }, { sort: 'asc' })
       const parentEl = outlet.children[0]
       expect(parentEl.myQuery).to.equal('ASC')
     })
 
-    it('should set param value when using paramValue', async () => {
+    it('should set param value when using fromParam', async () => {
       await router.transitionTo('withparam', { id: 1 })
       const parentEl = outlet.children[0]
       expect(parentEl.myParam).to.equal(1)
+    })
+
+    it('should call property hooks', async () => {
+      propertyHookInit.resetHistory()
+      propertyHookEnter.resetHistory()
+      propertyHookLeave.resetHistory()
+      propertyHookUpdate.resetHistory()
+      const transition = router.transitionTo('withparam', { id: 1 })
+      await transition
+      expect(propertyHookInit).to.be.calledOnce
+      expect(propertyHookInit).to.be.calledWithMatch((setValue) => typeof setValue === 'function')
+      expect(propertyHookEnter).to.be.calledOnce
+      expect(propertyHookEnter).to.be.calledWithMatch(
+        (t) => t === transition,
+        (setValue) => typeof setValue === 'function',
+      )
+      expect(propertyHookLeave).to.not.be.called
+
+      const parentEl = outlet.children[0]
+      expect(parentEl.custom).to.equal('customEnter')
+      expect(propertyHookUpdate).to.be.calledOnce
+      expect(propertyHookUpdate).to.be.calledWithExactly(1, parentEl)
+      const leaveTransition = router.transitionTo('root')
+      await leaveTransition
+      expect(propertyHookLeave).to.be.calledOnce
+      expect(propertyHookLeave).to.be.calledWithMatch(
+        (t) => t === leaveTransition,
+        (setValue) => typeof setValue === 'function',
+      )
     })
   })
 
