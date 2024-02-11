@@ -59,9 +59,13 @@ The lifecycle hooks will be fired and `$route` property will be updated
 
 ### `properties`
 
-Defines the properties that are set to route element each time a transition occurs.
+Defines the properties that are set to the route element.
+
+Its a hash where the key is the property name and the value is either a primitive a value (string, number) or a property hook (see below)
 
 ```js
+// navigating to 'hello' will render a message-view element with message set to 'Hello'
+// navigating to 'goodbye' will render a message-view element with message set to 'Goodbye' 
 const routes = [
   {
     name: 'hello',
@@ -80,11 +84,27 @@ const routes = [
 ]
 ```
 
-By using `paramValue` and `queryValue` is possible to map dynamic route values to the route element. 
-Both accepts a `key` parameter to define the query or param to retrieve from, a `format` that can be 'number' to convert to number or a function to do custom formatting
+
+#### Property hooks
+
+Property hooks provides a way to intercept routing lifecycle and set properties dynamically
+
+Its a object with the following methods:
+ - `init` - called first time the route is entered. Its called with a setter function
+ - `enter` - called after the route is entered. Its called with the current transition and a setter function
+ - `leave` - called after the route is leave. Its called with the current transition and a setter function
+ - `update` - called when the property value is updated by one of the other methods. Its called with the new value and element instance
+
+
+The following builtin hook factories are provided:
+ - `fromParam`: sets the property from a route param. Accepts a `key` parameter to define the param to retrieve from and a optional `format` parameter to convert the value 
+ - `fromQuery`: sets the property from a route query. Accepts a `key` parameter to define the query to retrieve from and a optional `format` parameter to convert the value
+ - `fromValue`: sets the property from a value. Accepts a `value` parameter to define the value to set
+
+The `format` parameter can be 'number' to convert to number or a function to do custom formatting
 
 ```js
-import { paramValue, queryValue } from 'slick-router/middlewares/wc'
+import { fromParam, fromQuery } from 'slick-router/middlewares/wc'
 
 const routes = [
   {
@@ -92,14 +112,14 @@ const routes = [
     component: 'person-view',
     path: '/person/:id'
     properties: {
-      personId: paramValue('id', 'number')
+      personId: fromParam('id', 'number')
     }
   },
   {
     name: 'people',
     component: 'people-view',
     properties: {
-      sort: queryValue('sort', value => value.toUpperCase())
+      sort: fromQuery('sort', value => value.toUpperCase())
     }
   }
 ]
@@ -107,6 +127,58 @@ const routes = [
 
 In the above example, when path is 'person/2' the rendered element of person route will have personId set to 2.
 When path is 'people?sort=asc' the people route element will have sort set to 'ASC'
+
+** Custom property hooks **
+
+```js
+
+// reads a value from local storage each time the route is entered
+function fromLocalStorage(key) {
+  return {
+    enter(transition, set) {
+      set(localStorage.getItem(key))
+    }
+  }
+}
+
+// reads a value from a DI container first time the route is entered 
+function fromService(service) {
+  return {
+    init(set) {
+      const value = someServiceContainer[service]
+      set(value)
+    }
+  }
+}
+
+// reads a value from a store and updates the element property when the store changes
+// useful for libraries like reatom or nanostores
+function fromDataStore(store) {
+  return {
+    enter(transition, set) {
+      this.unsubscribe = store.subscribe(value => set(value))
+    }
+
+    leave() {
+      this.unsubscribe && this.unsubscribe()
+    }
+  }
+}
+
+
+const routes = [
+  {
+    name: 'person',
+    component: 'person-view',
+    path: '/person'
+    properties: {
+      personId: fromLocalStorage('personId'),
+      dbApi: fromService('dbApi'),
+      appUser: fromDataStore(appUserStore)
+    }
+  }
+]
+```
 
 ### `beforeEnter`
 

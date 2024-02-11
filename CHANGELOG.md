@@ -2,6 +2,22 @@
 
 ### Unreleased
 
+- make patternCompiler configurable
+- regexparam as default pattern compiler (replace path-to-regexp by regexparam)
+- add router-links component
+- remove withRouterLinks decorator
+- add customizable property hooks
+- replace paramValue and queryValue by withParam and withQuery hooks
+
+### [v2.5.2] - 2021-06-30
+
+- router-links: catch errors when generating link
+- router-links: convert from kebab case to camel case param-_ and query-_ attributes
+
+### [v2.5.1] - 2020-01-24
+
+- animated-outlet: export GenericCSS class
+
 ### [v2.5.0] - 2020-01-18
 
 - implement animated-outlet component
