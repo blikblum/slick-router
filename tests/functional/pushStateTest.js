@@ -13,11 +13,11 @@ describe('app using pushState', () => {
     window.location.hash = ''
     app = new TestApp({
       pushState: true,
-      root: '/app'
+      root: '/app',
     })
     router = app.router
     // eslint-disable-next-line no-return-assign
-    return app.start().then(() => history = fakeHistory(router.location))
+    return app.start().then(() => (history = fakeHistory(router.location)))
   })
 
   afterEach(() => {
@@ -27,11 +27,13 @@ describe('app using pushState', () => {
 
   it('transition occurs when location.hash changes', (done) => {
     router.use((transition) => {
-      transition.then(() => {
-        assert.equal(transition.path, '/about')
-        assert.equal($('.application .outlet').html(), 'This is about page')
-        done()
-      }).catch(done, done)
+      transition
+        .then(() => {
+          assert.equal(transition.path, '/about')
+          assert.equal($('.application .outlet').html(), 'This is about page')
+          done()
+        })
+        .catch(done, done)
     })
 
     history.setURL('/app/about')

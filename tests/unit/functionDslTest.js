@@ -6,7 +6,7 @@ const { describe, it } = window
 
 describe('function-dsl', () => {
   it('simple route map', () => {
-    const routes = functionDsl(route => {
+    const routes = functionDsl((route) => {
       route('application')
     })
     assert.deepEqual(routes, [
@@ -14,13 +14,13 @@ describe('function-dsl', () => {
         name: 'application',
         path: 'application',
         options: { path: 'application' },
-        routes: []
-      }
+        routes: [],
+      },
     ])
   })
 
   it('simple route map with options', () => {
-    const routes = functionDsl(route => {
+    const routes = functionDsl((route) => {
       route('application', { path: '/', foo: 'bar' })
     })
     assert.deepEqual(routes, [
@@ -28,13 +28,13 @@ describe('function-dsl', () => {
         name: 'application',
         path: '/',
         options: { foo: 'bar', path: '/' },
-        routes: []
-      }
+        routes: [],
+      },
     ])
   })
 
   it('simple nested route map', () => {
-    const routes = functionDsl(route => {
+    const routes = functionDsl((route) => {
       route('application', () => {
         route('child')
       })
@@ -49,15 +49,15 @@ describe('function-dsl', () => {
             name: 'child',
             path: 'child',
             options: { path: 'child' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 
   it('route with dot names and no path', () => {
-    const routes = functionDsl(route => {
+    const routes = functionDsl((route) => {
       route('application', () => {
         route('application.child')
       })
@@ -72,10 +72,10 @@ describe('function-dsl', () => {
             name: 'application.child',
             path: 'child',
             options: { path: 'child' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 
@@ -108,7 +108,7 @@ describe('function-dsl', () => {
             name: 'notifications',
             path: 'notifications',
             options: { path: 'notifications' },
-            routes: []
+            routes: [],
           },
           {
             name: 'messages',
@@ -124,15 +124,15 @@ describe('function-dsl', () => {
                     name: 'priority',
                     path: 'priority',
                     options: { path: 'priority' },
-                    routes: []
-                  }
-                ]
+                    routes: [],
+                  },
+                ],
               },
               {
                 name: 'read',
                 path: 'read',
                 options: { path: 'read' },
-                routes: []
+                routes: [],
               },
               {
                 name: 'draft',
@@ -143,19 +143,19 @@ describe('function-dsl', () => {
                     name: 'recent',
                     path: 'recent',
                     options: { path: 'recent' },
-                    routes: []
-                  }
-                ]
-              }
-            ]
+                    routes: [],
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'status',
             path: ':user/status/:id',
             options: { path: ':user/status/:id' },
-            routes: []
-          }
-        ]
+            routes: [],
+          },
+        ],
       },
       {
         name: 'anotherTopLevel',
@@ -166,10 +166,10 @@ describe('function-dsl', () => {
             name: 'withChildren',
             path: 'withChildren',
             options: { path: 'withChildren' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 })

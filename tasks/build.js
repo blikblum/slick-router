@@ -17,26 +17,34 @@ promise = promise.then(() => del([`${BUILD_DIR}/*`]))
 
 // Compile source code into a distributable format with Babel
 
-promise.then(() => rollup.rollup({
-  input: 'lib/router.js',
-  external: Object.keys(pkg.dependencies),
-  plugins: [
-    copy([{
-      files: 'lib/middlewares/*',
-      dest: 'build/middlewares',
-      parents: true
-    },
-    {
-      files: 'lib/components/*',
-      dest: 'build/components',
-      parents: true
-    }])
-  ]
-}).then(bundle => bundle.write({
-  file: 'build/slick-router.js',
-  format: 'es',
-  sourcemap: true
-})))
+promise.then(() =>
+  rollup
+    .rollup({
+      input: 'lib/router.js',
+      external: Object.keys(pkg.dependencies),
+      plugins: [
+        copy([
+          {
+            files: 'lib/middlewares/*',
+            dest: 'build/middlewares',
+            parents: true,
+          },
+          {
+            files: 'lib/components/*',
+            dest: 'build/components',
+            parents: true,
+          },
+        ]),
+      ],
+    })
+    .then((bundle) =>
+      bundle.write({
+        file: 'build/slick-router.js',
+        format: 'es',
+        sourcemap: true,
+      }),
+    ),
+)
 
 // Copy package.json and LICENSE.txt
 promise = promise.then(() => {
@@ -54,7 +62,7 @@ promise = promise.then(() => {
   fs.writeFileSync(`${BUILD_DIR}/CHANGELOG.md`, fs.readFileSync('CHANGELOG.md', 'utf-8'), 'utf-8')
 })
 
-promise.catch(err => {
+promise.catch((err) => {
   console.error(err.stack) // eslint-disable-line no-console
   process.exit(1)
 })

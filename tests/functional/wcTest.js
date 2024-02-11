@@ -28,15 +28,15 @@ const grandchildBeforeLeaveMethod = stub()
 const nouiBeforeLeave = spy()
 
 class ParentView extends LitElement {
-  render () {
+  render() {
     return html`<router-outlet></router-outlet>`
   }
 
-  beforeRouteEnter (...args) {
+  beforeRouteEnter(...args) {
     return parentBeforeEnterMethod(...args)
   }
 
-  beforeRouteLeave (...args) {
+  beforeRouteLeave(...args) {
     return parentBeforeLeaveMethod(...args)
   }
 }
@@ -44,15 +44,15 @@ class ParentView extends LitElement {
 customElements.define('parent-view', ParentView)
 
 class ChildView extends LitElement {
-  static get outlet () {
+  static get outlet() {
     return '.outlet'
   }
 
-  createRenderRoot () {
+  createRenderRoot() {
     return this
   }
 
-  render () {
+  render() {
     return html`<div class="outlet"></div>`
   }
 }
@@ -60,15 +60,15 @@ class ChildView extends LitElement {
 customElements.define('child-view', ChildView)
 
 class GrandChildView extends LitElement {
-  render () {
+  render() {
     return html`Grandchild`
   }
 
-  beforeRouteEnter (...args) {
+  beforeRouteEnter(...args) {
     return grandchildBeforeEnterMethod(...args)
   }
 
-  beforeRouteLeave (...args) {
+  beforeRouteLeave(...args) {
     return grandchildBeforeLeaveMethod(...args)
   }
 }
@@ -76,7 +76,7 @@ class GrandChildView extends LitElement {
 customElements.define('grandchild-view', GrandChildView)
 
 class SiblingView extends LitElement {
-  render () {
+  render() {
     return html`Sibling`
   }
 }
@@ -91,7 +91,7 @@ const LazyParent = function () {
 
 const viewMap = {
   lazydynamic: SiblingView,
-  lazydynamic2: GrandChildView
+  lazydynamic2: GrandChildView,
 }
 
 const LazyDynamic = function (route) {
@@ -101,24 +101,28 @@ const LazyDynamic = function (route) {
 }
 
 const routes = function (route) {
-  route('parent', {
-    component: 'parent-view',
-    beforeEnter: parentBeforeEnter,
-    beforeLeave: parentBeforeLeave,
-    afterEnter: parentAfterEnter,
-    afterLeave: parentAfterLeave
-  }, function () {
-    route('child', { component: 'child-view' }, function () {
-      route('grandchild', {
-        component: 'grandchild-view',
-        beforeEnter: grandchildBeforeEnter,
-        beforeLeave: grandchildBeforeLeave,
-        afterEnter: grandchildAfterEnter,
-        afterLeave: grandchildAfterLeave
+  route(
+    'parent',
+    {
+      component: 'parent-view',
+      beforeEnter: parentBeforeEnter,
+      beforeLeave: parentBeforeLeave,
+      afterEnter: parentAfterEnter,
+      afterLeave: parentAfterLeave,
+    },
+    function () {
+      route('child', { component: 'child-view' }, function () {
+        route('grandchild', {
+          component: 'grandchild-view',
+          beforeEnter: grandchildBeforeEnter,
+          beforeLeave: grandchildBeforeLeave,
+          afterEnter: grandchildAfterEnter,
+          afterLeave: grandchildAfterLeave,
+        })
       })
-    })
-    route('sibling', { component: 'sibling-view' })
-  })
+      route('sibling', { component: 'sibling-view' })
+    },
+  )
   route('root', { component: ParentView }, function () {
     route('noui', { beforeLeave: nouiBeforeLeave }, function () {
       route('rootchild', { component: ChildView })
@@ -130,12 +134,16 @@ const routes = function (route) {
   route('withparam', {
     component: ParentView,
     path: 'x/:id',
-    properties: { x: 'y', myQuery: queryValue('sort', val => val.toUpperCase()), myParam: paramValue('id', 'number') }
+    properties: {
+      x: 'y',
+      myQuery: queryValue('sort', (val) => val.toUpperCase()),
+      myParam: paramValue('id', 'number'),
+    },
   })
   route('reusable', {
     component: ParentView,
     path: 'y/:id',
-    reuse: true
+    reuse: true,
   })
   route('temp', { component: LazyDynamic })
 }
@@ -270,7 +278,7 @@ describe('wc middleware', () => {
   })
 
   describe('$route', () => {
-    function normalizeState (state) {
+    function normalizeState(state) {
       return pick(state, ['path', 'pathname', 'routes', 'params', 'query'])
     }
 
@@ -294,7 +302,7 @@ describe('wc middleware', () => {
     it('should be set before element is attached to dom tree', async () => {
       let $route
       class GrabRouteState extends HTMLElement {
-        connectedCallback () {
+        connectedCallback() {
           $route = this.$route
         }
       }

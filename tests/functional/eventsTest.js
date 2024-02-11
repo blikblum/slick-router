@@ -54,20 +54,20 @@ describe('events middleware', () => {
       })
 
       it('should be fired on cancelled transition', async () => {
-        router.use(transition => transition.cancel())
+        router.use((transition) => transition.cancel())
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(beforeTransitionSpy).to.be.called
       })
 
       it('should be fired on cancelled transition', async () => {
-        router.use(() => { throw new Error('error') })
+        router.use(() => {
+          throw new Error('error')
+        })
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(beforeTransitionSpy).to.be.called
       })
     })
@@ -93,20 +93,20 @@ describe('events middleware', () => {
       })
 
       it('should not be fired on cancelled transition', async () => {
-        router.use(transition => transition.cancel())
+        router.use((transition) => transition.cancel())
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(transitionSpy).to.not.be.called
       })
 
       it('should not be fired on cancelled transition', async () => {
-        router.use(() => { throw new Error('error') })
+        router.use(() => {
+          throw new Error('error')
+        })
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(transitionSpy).to.not.be.called
       })
     })
@@ -132,20 +132,20 @@ describe('events middleware', () => {
       })
 
       it('should be fired on cancelled transition', async () => {
-        router.use(transition => transition.cancel())
+        router.use((transition) => transition.cancel())
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(abortSpy).to.be.calledOnce
       })
 
       it('should be fired on cancelled transition', async () => {
-        router.use(() => { throw new Error('error') })
+        router.use(() => {
+          throw new Error('error')
+        })
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(abortSpy).to.be.calledOnce
       })
     })
@@ -171,20 +171,20 @@ describe('events middleware', () => {
       })
 
       it('should not be fired on cancelled transition', async () => {
-        router.use(transition => transition.cancel())
+        router.use((transition) => transition.cancel())
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(errorSpy).to.not.be.called
       })
 
       it('should be fired on cancelled transition', async () => {
-        router.use(() => { throw new Error('error') })
+        router.use(() => {
+          throw new Error('error')
+        })
         try {
           await router.transitionTo('messages')
-        } catch (error) {
-        }
+        } catch (error) {}
         expect(errorSpy).to.be.calledOnce
       })
     })

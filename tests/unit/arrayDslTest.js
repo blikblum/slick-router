@@ -6,16 +6,14 @@ const { describe, it } = window
 
 describe('array-dsl', () => {
   it('simple route map', () => {
-    const routes = dsl([
-      { name: 'application' }
-    ])
+    const routes = dsl([{ name: 'application' }])
     assert.deepEqual(routes, [
       {
         name: 'application',
         path: 'application',
         options: { path: 'application' },
-        routes: []
-      }
+        routes: [],
+      },
     ])
   })
 
@@ -24,8 +22,8 @@ describe('array-dsl', () => {
       {
         name: 'application',
         path: '/',
-        foo: 'bar'
-      }
+        foo: 'bar',
+      },
     ])
 
     assert.deepEqual(routes, [
@@ -33,8 +31,8 @@ describe('array-dsl', () => {
         name: 'application',
         path: '/',
         options: { foo: 'bar', path: '/' },
-        routes: []
-      }
+        routes: [],
+      },
     ])
   })
 
@@ -44,10 +42,10 @@ describe('array-dsl', () => {
         name: 'application',
         children: [
           {
-            name: 'child'
-          }
-        ]
-      }
+            name: 'child',
+          },
+        ],
+      },
     ])
 
     assert.deepEqual(routes, [
@@ -60,10 +58,10 @@ describe('array-dsl', () => {
             name: 'child',
             path: 'child',
             options: { path: 'child' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 
@@ -73,10 +71,10 @@ describe('array-dsl', () => {
         name: 'application',
         children: [
           {
-            name: 'application.child'
-          }
-        ]
-      }
+            name: 'application.child',
+          },
+        ],
+      },
     ])
 
     assert.deepEqual(routes, [
@@ -89,10 +87,10 @@ describe('array-dsl', () => {
             name: 'application.child',
             path: 'child',
             options: { path: 'child' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 
@@ -103,7 +101,7 @@ describe('array-dsl', () => {
         abstract: true,
         children: [
           {
-            name: 'notifications'
+            name: 'notifications',
           },
           {
             name: 'messages',
@@ -112,38 +110,38 @@ describe('array-dsl', () => {
                 name: 'unread',
                 children: [
                   {
-                    name: 'priority'
-                  }
-                ]
+                    name: 'priority',
+                  },
+                ],
               },
               {
-                name: 'read'
+                name: 'read',
               },
               {
                 name: 'draft',
                 abstract: true,
                 children: [
                   {
-                    name: 'recent'
-                  }
-                ]
-              }
-            ]
+                    name: 'recent',
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'status',
-            path: ':user/status/:id'
-          }
-        ]
+            path: ':user/status/:id',
+          },
+        ],
       },
       {
         name: 'anotherTopLevel',
         children: [
           {
-            name: 'withChildren'
-          }
-        ]
-      }
+            name: 'withChildren',
+          },
+        ],
+      },
     ])
 
     assert.deepEqual(routes, [
@@ -156,7 +154,7 @@ describe('array-dsl', () => {
             name: 'notifications',
             path: 'notifications',
             options: { path: 'notifications' },
-            routes: []
+            routes: [],
           },
           {
             name: 'messages',
@@ -172,15 +170,15 @@ describe('array-dsl', () => {
                     name: 'priority',
                     path: 'priority',
                     options: { path: 'priority' },
-                    routes: []
-                  }
-                ]
+                    routes: [],
+                  },
+                ],
               },
               {
                 name: 'read',
                 path: 'read',
                 options: { path: 'read' },
-                routes: []
+                routes: [],
               },
               {
                 name: 'draft',
@@ -191,19 +189,19 @@ describe('array-dsl', () => {
                     name: 'recent',
                     path: 'recent',
                     options: { path: 'recent' },
-                    routes: []
-                  }
-                ]
-              }
-            ]
+                    routes: [],
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'status',
             path: ':user/status/:id',
             options: { path: ':user/status/:id' },
-            routes: []
-          }
-        ]
+            routes: [],
+          },
+        ],
       },
       {
         name: 'anotherTopLevel',
@@ -214,10 +212,10 @@ describe('array-dsl', () => {
             name: 'withChildren',
             path: 'withChildren',
             options: { path: 'withChildren' },
-            routes: []
-          }
-        ]
-      }
+            routes: [],
+          },
+        ],
+      },
     ])
   })
 })

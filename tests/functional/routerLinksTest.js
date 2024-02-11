@@ -10,11 +10,11 @@ import sinon from 'sinon'
 import 'jquery'
 
 class ParentView extends LitElement {
-  createRenderRoot () {
+  createRenderRoot() {
     return this
   }
 
-  render () {
+  render() {
     return html`
       <div>
         <div id="div-rootlink1" route="root" param-id="1"></div>
@@ -31,26 +31,26 @@ class ParentView extends LitElement {
         <a id="a-secondrootlink" route="secondroot" param-person-id="2" query-test-value="yyy"></a>
         <a id="a-replace" route="parent" replace></a>
         <a id="a-childlink" route="child" query-name="test"></a>
-        <div id="div-a-parent" route="parent"><a id="childanchor"></a><a id="childanchor2"></a><div><a id="childanchor3"></a></div></div>
+        <div id="div-a-parent" route="parent">
+          <a id="childanchor"></a><a id="childanchor2"></a>
+          <div><a id="childanchor3"></a></div>
+        </div>
         <router-outlet></router-outlet>
       </div>
       <a id="a-parentlink-outside" route="parent"></a>
       <div id="div-parentlink-outside" route="parent"><div id="innerparent-outside"></div></div>
-      
-     `
+    `
   }
 }
 const parentTag = defineCE(ParentView)
 
 class ChildView extends LitElement {
-  createRenderRoot () {
+  createRenderRoot() {
     return this
   }
 
-  render () {
-    return html`
-     <router-outlet></router-outlet>    
-    `
+  render() {
+    return html` <router-outlet></router-outlet> `
   }
 }
 defineCE(ChildView)
@@ -101,7 +101,9 @@ describe('bindRouterLinks', () => {
       return router.transitionTo('parent').then(async function () {
         expect($('#a-preparentlink').attr('href')).to.be.equal('/parent')
         expect($('#a-prerootlink2').attr('href')).to.be.equal('/root/2')
-        expect($('#a-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
+        expect($('#a-pregrandchildlink').attr('href')).to.be.equal(
+          '/parent/child/grandchild?name=test',
+        )
       })
     })
 
@@ -155,7 +157,9 @@ describe('bindRouterLinks', () => {
           setTimeout(() => {
             expect($('#a-dyn-preparentlink').attr('href')).to.be.equal('/parent')
             expect($('#a-dyn-prerootlink2').attr('href')).to.be.equal('/root/2')
-            expect($('#a-dyn-pregrandchildlink').attr('href')).to.be.equal('/parent/child/grandchild?name=test')
+            expect($('#a-dyn-pregrandchildlink').attr('href')).to.be.equal(
+              '/parent/child/grandchild?name=test',
+            )
             done()
           }, 0)
         })

@@ -43,7 +43,7 @@ describe('Slick Router', () => {
     const m = {
       resolve: function () {},
       done: function () {},
-      error: function () {}
+      error: function () {},
     }
     router.use(m)
     assert(router.middleware.length === 1)
@@ -55,7 +55,7 @@ describe('Slick Router', () => {
     const m2 = {
       resolve: function () {},
       done: function () {},
-      error: function () {}
+      error: function () {},
     }
     router.use(m1)
     router.use(m2, { at: 0 })
@@ -67,50 +67,57 @@ describe('Slick Router', () => {
   it('#use middleware gets passed a transition object', (done) => {
     const m = (transition) => {
       const t = extend({}, transition)
-      ;['catch', 'then', 'redirectTo', 'cancel', 'retry', 'followRedirects'].forEach(attr => delete t[attr])
+      ;['catch', 'then', 'redirectTo', 'cancel', 'retry', 'followRedirects'].forEach(
+        (attr) => delete t[attr],
+      )
       const et = {
         id: 3,
         prev: {
-          routes: [{
+          routes: [
+            {
+              name: 'application',
+              path: 'application',
+              params: {},
+              options: {
+                path: 'application',
+              },
+            },
+          ],
+          path: '/application',
+          pathname: '/application',
+          params: {},
+          query: {},
+        },
+        routes: [
+          {
             name: 'application',
             path: 'application',
             params: {},
             options: {
-              path: 'application'
-            }
-          }],
-          path: '/application',
-          pathname: '/application',
-          params: {},
-          query: {}
-        },
-        routes: [{
-          name: 'application',
-          path: 'application',
-          params: {},
-          options: {
-            path: 'application'
-          }
-        }, {
-          name: 'status',
-          path: ':user/status/:id',
-          params: {
-            user: '1',
-            id: '2'
+              path: 'application',
+            },
           },
-          options: {
-            path: ':user/status/:id'
-          }
-        }],
+          {
+            name: 'status',
+            path: ':user/status/:id',
+            params: {
+              user: '1',
+              id: '2',
+            },
+            options: {
+              path: ':user/status/:id',
+            },
+          },
+        ],
         path: '/application/1/status/2?withReplies=true',
         pathname: '/application/1/status/2',
         params: {
           user: '1',
-          id: '2'
+          id: '2',
         },
         query: {
-          withReplies: 'true'
-        }
+          withReplies: 'true',
+        },
       }
       assert.deepEqual(t, et)
 
@@ -119,7 +126,8 @@ describe('Slick Router', () => {
 
     // first navigate to 'application'
     router.map(routes)
-    router.listen()
+    router
+      .listen()
       .then(() => router.transitionTo('application'))
       .then(() => {
         // then install the middleware and navigate to status page
@@ -127,14 +135,15 @@ describe('Slick Router', () => {
         // to assert
         router.use(m)
         return router.transitionTo('status', { user: 1, id: 2 }, { withReplies: true })
-      }).catch(done)
+      })
+      .catch(done)
   })
 
   it('#use middleware resolve and done hooks are called on successful transition', (done) => {
     router.map(routes)
     const m = {
       resolve: sinon.spy(),
-      done: sinon.spy()
+      done: sinon.spy(),
     }
     router.use(m)
     router.listen()
@@ -149,10 +158,12 @@ describe('Slick Router', () => {
   it('#use middleware error hook is called on failed transition', (done) => {
     router.map(routes)
     const m = {
-      error: sinon.spy()
+      error: sinon.spy(),
     }
     router.use(m)
-    router.use(() => { throw new Error('fail') })
+    router.use(() => {
+      throw new Error('fail')
+    })
     router.listen()
     router.transitionTo('messages').catch(() => {
       sinon.assert.calledOnce(m.error)
@@ -163,11 +174,13 @@ describe('Slick Router', () => {
   it('#use middleware cancel hook is called on cancelled transition', (done) => {
     router.map(routes)
     const m = {
-      cancel: sinon.spy()
+      cancel: sinon.spy(),
     }
     router.listen().then(() => {
       router.use(m)
-      router.use((transition) => { transition.cancel() })
+      router.use((transition) => {
+        transition.cancel()
+      })
       router.transitionTo('messages').catch(() => {
         sinon.assert.calledOnce(m.cancel)
         done()
@@ -178,11 +191,13 @@ describe('Slick Router', () => {
   it('#use middleware cancel hook is called on redirected transition', (done) => {
     router.map(routes)
     const m = {
-      cancel: sinon.spy()
+      cancel: sinon.spy(),
     }
     router.listen().then(() => {
       router.use(m)
-      router.use((transition) => { transition.redirectTo('notifications') })
+      router.use((transition) => {
+        transition.redirectTo('notifications')
+      })
       router.transitionTo('messages').catch(() => {
         sinon.assert.calledOnce(m.cancel)
         done()
@@ -193,12 +208,15 @@ describe('Slick Router', () => {
   it('#map registers the routes defined with a callback', () => {
     router.map(routes)
     // check that the internal matchers object is created
-    assert.deepEqual(router.matchers.map(m => m.path), [
-      '/application',
-      '/application/notifications',
-      '/application/messages',
-      '/application/:user/status/:id'
-    ])
+    assert.deepEqual(
+      router.matchers.map((m) => m.path),
+      [
+        '/application',
+        '/application/notifications',
+        '/application/messages',
+        '/application/:user/status/:id',
+      ],
+    )
     // check that the internal routes object is created
     assert.equal(router.routes[0].name, 'application')
     assert.equal(router.routes[0].routes[2].options.path, ':user/status/:id')
@@ -210,25 +228,28 @@ describe('Slick Router', () => {
         name: 'application',
         children: [
           {
-            name: 'notifications'
+            name: 'notifications',
           },
           {
-            name: 'messages'
+            name: 'messages',
           },
           {
             name: 'status',
-            path: ':user/status/:id'
-          }
-        ]
-      }
+            path: ':user/status/:id',
+          },
+        ],
+      },
     ])
     // check that the internal matchers object is created
-    assert.deepEqual(router.matchers.map(m => m.path), [
-      '/application',
-      '/application/notifications',
-      '/application/messages',
-      '/application/:user/status/:id'
-    ])
+    assert.deepEqual(
+      router.matchers.map((m) => m.path),
+      [
+        '/application',
+        '/application/notifications',
+        '/application/messages',
+        '/application/:user/status/:id',
+      ],
+    )
     // check that the internal routes object is created
     assert.equal(router.routes[0].name, 'application')
     assert.equal(router.routes[0].routes[2].options.path, ':user/status/:id')
@@ -236,16 +257,19 @@ describe('Slick Router', () => {
 
   it('routes can be registered using routes option', () => {
     const localRouter = new Router({
-      routes
+      routes,
     })
 
     // check that the internal matchers object is created
-    assert.deepEqual(localRouter.matchers.map(m => m.path), [
-      '/application',
-      '/application/notifications',
-      '/application/messages',
-      '/application/:user/status/:id'
-    ])
+    assert.deepEqual(
+      localRouter.matchers.map((m) => m.path),
+      [
+        '/application',
+        '/application/notifications',
+        '/application/messages',
+        '/application/:user/status/:id',
+      ],
+    )
     // check that the internal routes object is created
     assert.equal(localRouter.routes[0].name, 'application')
     assert.equal(localRouter.routes[0].routes[2].options.path, ':user/status/:id')
@@ -280,8 +304,8 @@ describe('Slick Router', () => {
           search: '',
           replace: function (path) {
             browserRedirectedTo = path
-          }
-        }
+          },
+        },
       })
 
       router.map(routes).listen()
@@ -301,21 +325,29 @@ describe('Slick Router', () => {
   })
 
   it('#generate throws a useful error when called with an abstract route', () => {
-    router.map((route) => {
-      route('foo', { abstract: true })
-    }).listen()
+    router
+      .map((route) => {
+        route('foo', { abstract: true })
+      })
+      .listen()
 
-    assert.throws(function () {
-      router.generate('foo')
-    }, Error, 'No route is named foo')
+    assert.throws(
+      function () {
+        router.generate('foo')
+      },
+      Error,
+      'No route is named foo',
+    )
   })
 
   it('#generate succeeds when called with an abstract route that has a child index route', () => {
-    router.map((route) => {
-      route('foo', { abstract: true }, () => {
-        route('bar', { path: '' })
+    router
+      .map((route) => {
+        route('foo', { abstract: true }, () => {
+          route('bar', { path: '' })
+        })
       })
-    }).listen()
+      .listen()
     const url = router.generate('foo')
     assert.equal(url, '#foo')
   })
@@ -346,9 +378,15 @@ describe('Slick Router', () => {
     router.map(routes)
     router.logError = function () {}
     router.use((transition) => {
-      transition.catch((err) => {
-        assert.equal(err.message, 'Invariant Violation: Middleware anonymous returned a transition which resulted in a deadlock')
-      }).then(done).catch(done)
+      transition
+        .catch((err) => {
+          assert.equal(
+            err.message,
+            'Invariant Violation: Middleware anonymous returned a transition which resulted in a deadlock',
+          )
+        })
+        .then(done)
+        .catch(done)
     })
     router.use((transition) => transition)
     router.listen()
@@ -361,9 +399,12 @@ describe('Slick Router', () => {
     const match = router.match('/application/KidkArolis/status/42')
     assert.deepEqual(match.params, {
       user: 'KidkArolis',
-      id: '42'
+      id: '42',
     })
-    assert.deepEqual(match.routes.map(r => r.name), ['application', 'status'])
+    assert.deepEqual(
+      match.routes.map((r) => r.name),
+      ['application', 'status'],
+    )
   })
 
   it('#match matches a path with query params', () => {
@@ -371,11 +412,11 @@ describe('Slick Router', () => {
     const match = router.match('/application/KidkArolis/status/42?withReplies=true&foo=bar')
     assert.deepEqual(match.params, {
       user: 'KidkArolis',
-      id: '42'
+      id: '42',
     })
     assert.deepEqual(match.query, {
       withReplies: 'true',
-      foo: 'bar'
+      foo: 'bar',
     })
   })
 
@@ -386,23 +427,26 @@ describe('Slick Router', () => {
       })
     })
     const match = router.match('/foo/bar')
-    assert.deepEqual(match.routes, [{
-      name: 'foo',
-      path: 'foo',
-      params: {},
-      options: {
-        customData: 1,
-        path: 'foo'
-      }
-    }, {
-      name: 'bar',
-      path: 'bar',
-      params: {},
-      options: {
-        customData: 2,
-        path: 'bar'
-      }
-    }])
+    assert.deepEqual(match.routes, [
+      {
+        name: 'foo',
+        path: 'foo',
+        params: {},
+        options: {
+          customData: 1,
+          path: 'foo',
+        },
+      },
+      {
+        name: 'bar',
+        path: 'bar',
+        params: {},
+        options: {
+          customData: 2,
+          path: 'bar',
+        },
+      },
+    ])
   })
 
   it('#match ignores the trailing slash', () => {
@@ -420,51 +464,72 @@ describe('Slick Router', () => {
   it('#match always parses query parameters even if a route does not match', () => {
     router.map(routes)
     const match = router.match('/foo/bar?hello=world')
-    assert.deepEqual(match, { routes: [], params: {}, pathname: '/foo/bar', query: { hello: 'world' } })
+    assert.deepEqual(match, {
+      routes: [],
+      params: {},
+      pathname: '/foo/bar',
+      query: { hello: 'world' },
+    })
   })
 
   it('#transitionTo called multiple times reuses the active transition', (done) => {
     router.map(routes)
-    router.listen().then(() => {
-      router.use(() => delay(500))
-      assert.equal(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
-      assert.equal(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
-      done()
-    }).catch(done)
+    router
+      .listen()
+      .then(() => {
+        router.use(() => delay(500))
+        assert.equal(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
+        assert.equal(router.transitionTo('status', { user: 'me', id: 1 }).id, 2)
+        done()
+      })
+      .catch(done)
   })
 
   it('#transitionTo called on the same route, returns a completed transition', (done) => {
     let called = false
     router.map(routes)
-    router.listen().then(() => {
-      return router.transitionTo('status', { user: 'me', id: 1 })
-    }).then(() => {
-      router.use(() => called = true)
-      const t = router.transitionTo('status', { user: 'me', id: 1 })
-      assert.equal(t.noop, true)
-      return t
-    }).then(() => {
-      assert.equal(called, false)
-      done()
-    }).catch(done)
+    router
+      .listen()
+      .then(() => {
+        return router.transitionTo('status', { user: 'me', id: 1 })
+      })
+      .then(() => {
+        router.use(() => (called = true))
+        const t = router.transitionTo('status', { user: 'me', id: 1 })
+        assert.equal(t.noop, true)
+        return t
+      })
+      .then(() => {
+        assert.equal(called, false)
+        done()
+      })
+      .catch(done)
   })
 
   it('#transitionTo throws an useful error when called with an abstract route', () => {
-    router.map((route) => {
-      route('foo', { abstract: true })
-    }).listen()
+    router
+      .map((route) => {
+        route('foo', { abstract: true })
+      })
+      .listen()
 
-    assert.throws(function () {
-      router.transitionTo('foo')
-    }, Error, 'No route is named foo')
+    assert.throws(
+      function () {
+        router.transitionTo('foo')
+      },
+      Error,
+      'No route is named foo',
+    )
   })
 
   it('#transitionTo called on an abstract route with a child index route should activate the index route', async () => {
-    router.map((route) => {
-      route('foo', { abstract: true }, () => {
-        route('bar', { path: '' })
+    router
+      .map((route) => {
+        route('foo', { abstract: true }, () => {
+          route('bar', { path: '' })
+        })
       })
-    }).listen()
+      .listen()
     await router.transitionTo('foo')
     assert.equal(router.isActive('foo'), true)
     assert.equal(router.isActive('bar'), true)
@@ -475,11 +540,13 @@ describe('Slick Router', () => {
   })
 
   it('#transitionTo called on an route with a child index route should activate the index route', async () => {
-    router.map((route) => {
-      route('foo', () => {
-        route('bar', { path: '' })
+    router
+      .map((route) => {
+        route('foo', () => {
+          route('bar', { path: '' })
+        })
       })
-    }).listen()
+      .listen()
     await router.transitionTo('foo')
     assert.equal(router.isActive('foo'), true)
     assert.equal(router.isActive('bar'), true)
@@ -563,7 +630,7 @@ describe('Slick Router', () => {
               assert.notEqual(beforeCancelHash, router.location.getURL())
               done()
             })
-          }
+          },
         })
         window.location.hash = '#application/notifications'
       })
@@ -591,19 +658,22 @@ describe('Slick Router', () => {
         })
       })
       // check that the internal matchers object is created
-      assert.deepEqual(router.matchers.map(m => m.path), [
-        '/application',
-        '/application/notifications',
-        '/application/messages',
-        '/application/messages/unread',
-        '/application/messages/unread/priority',
-        '/application/messages/read',
-        '/application/messages/draft',
-        '/application/messages/draft/recent',
-        '/application/:user/status/:id',
-        '/anotherTopLevel',
-        '/anotherTopLevel/withChildren'
-      ])
+      assert.deepEqual(
+        router.matchers.map((m) => m.path),
+        [
+          '/application',
+          '/application/notifications',
+          '/application/messages',
+          '/application/messages/unread',
+          '/application/messages/unread/priority',
+          '/application/messages/read',
+          '/application/messages/draft',
+          '/application/messages/draft/recent',
+          '/application/:user/status/:id',
+          '/anotherTopLevel',
+          '/anotherTopLevel/withChildren',
+        ],
+      )
     })
 
     it('a parent route can be excluded from the route map by setting abstract to true', () => {
@@ -626,17 +696,20 @@ describe('Slick Router', () => {
         })
       })
 
-      assert.deepEqual(router.matchers.map(m => m.path), [
-        '/application/notifications',
-        '/application/messages',
-        '/application/messages/unread',
-        '/application/messages/unread/priority',
-        '/application/messages/read',
-        '/application/messages/draft/recent',
-        '/application/:user/status/:id',
-        '/anotherTopLevel',
-        '/anotherTopLevel/withChildren'
-      ])
+      assert.deepEqual(
+        router.matchers.map((m) => m.path),
+        [
+          '/application/notifications',
+          '/application/messages',
+          '/application/messages/unread',
+          '/application/messages/unread/priority',
+          '/application/messages/read',
+          '/application/messages/draft/recent',
+          '/application/:user/status/:id',
+          '/anotherTopLevel',
+          '/anotherTopLevel/withChildren',
+        ],
+      )
     })
 
     it('routes with duplicate names throw a useful error', () => {
@@ -647,7 +720,10 @@ describe('Slick Router', () => {
           })
         })
       } catch (e) {
-        assert.equal(e.message, 'Invariant Violation: Route names must be unique, but route "foo" is declared multiple times')
+        assert.equal(
+          e.message,
+          'Invariant Violation: Route names must be unique, but route "foo" is declared multiple times',
+        )
         return
       }
       assert(false, 'Should not reach this')
@@ -656,7 +732,7 @@ describe('Slick Router', () => {
     it('modifying params or query in middleware does not affect the router state', async function () {
       router.map(routes)
       await router.listen()
-      router.use(transition => {
+      router.use((transition) => {
         transition.params.foo = 1
         transition.query.bar = 2
         transition.routes.push({})

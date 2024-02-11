@@ -21,11 +21,13 @@ describe('app', () => {
 
   it('transition occurs when location.hash changes', (done) => {
     router.use((transition) => {
-      transition.then(() => {
-        assert.equal(transition.path, '/about')
-        assert.equal($('.application .outlet').html(), 'This is about page')
-        done()
-      }).catch(done, done)
+      transition
+        .then(() => {
+          assert.equal(transition.path, '/about')
+          assert.equal($('.application .outlet').html(), 'This is about page')
+          done()
+        })
+        .catch(done, done)
     })
 
     window.location.hash = '#about'
@@ -60,7 +62,7 @@ describe('app', () => {
 
     // if followRedirects is not used - the original transition is rejected
     let rejected = false
-    await transition.catch(() => rejected = true)
+    await transition.catch(() => (rejected = true))
     assert(rejected)
 
     await router.transitionTo('application')
@@ -89,7 +91,7 @@ describe('app', () => {
     router.transitionTo('/about')
 
     let rejected = false
-    await transition.followRedirects().catch((err) => rejected = err.message)
+    await transition.followRedirects().catch((err) => (rejected = err.message))
     assert.equal(rejected, 'middleware error')
   })
 
@@ -107,7 +109,7 @@ describe('app', () => {
     router.transitionTo('/about')
 
     let rejected = false
-    await transition.followRedirects().catch((err) => rejected = err.message)
+    await transition.followRedirects().catch((err) => (rejected = err.message))
     assert.equal(rejected, 'middleware promise error')
   })
 
@@ -136,10 +138,12 @@ describe('app', () => {
     // the solution would be to handle router own history
     await new Promise((resolve, reject) => {
       router.use((transition) => {
-        transition.then(() => {
-          assert.equal(window.location.hash, '#faq')
-          resolve()
-        }).catch(reject)
+        transition
+          .then(() => {
+            assert.equal(window.location.hash, '#faq')
+            resolve()
+          })
+          .catch(reject)
       })
       window.history.back()
     })
@@ -197,11 +201,13 @@ describe('app', () => {
       // setup a middleware that will fail
       router.use((transition) => {
         // but catch the error
-        transition.catch((err) => {
-          assert.equal(err.message, 'failed')
-          assert.equal(window.location.hash, '#faq')
-          resolve()
-        }).catch(reject)
+        transition
+          .catch((err) => {
+            assert.equal(err.message, 'failed')
+            assert.equal(window.location.hash, '#faq')
+            resolve()
+          })
+          .catch(reject)
         throw new Error('failed')
       })
       router.transitionTo('faq')

@@ -7,8 +7,9 @@
   "module": "slick-router.js",
   "sideEffects": false,
   "scripts": {
-    "build": "standard --env browser | snazzy && node tasks/build.js",
-    "lint": "standard --env browser",
+    "build": "eslint --env browser && node tasks/build.js",
+    "lint": "eslint --env browser lib",
+    "format": "prettier --write .",
     "start": "web-dev-server --open examples/ --node-resolve",
     "test": "web-test-runner \"tests/**/*Test.js\" --node-resolve",
     "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage"
@@ -40,23 +41,15 @@
     "@web/test-runner": "^0.13.20",
     "chai": "^4.3.4",
     "del": "^6.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "jquery": "^3.6.0",
     "lit-element": "^2.5.1",
     "path-to-regexp": "6.2.1",
+    "prettier": "3.2.5",
     "rollup": "^2.52.4",
     "rollup-plugin-cpy": "^2.0.1",
-    "sinon": "^11.1.2",
-    "snazzy": "^9.0.0",
-    "standard": "^17.1.0"
-  },
-  "standard": {
-    "ignore": [
-      "examples/**",
-      "docs/**",
-      "build/**",
-      "lib/locations/location-bar.js",
-      "tests/location-bar/**"
-    ]
+    "sinon": "^11.1.2"
   },
   "packageManager": "yarn@4.0.2"
 }

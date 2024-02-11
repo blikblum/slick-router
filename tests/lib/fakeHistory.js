@@ -1,4 +1,4 @@
-export default function fakeHistory (location) {
+export default function fakeHistory(location) {
   const history = []
 
   const originalPushState = window.history.pushState
@@ -7,7 +7,7 @@ export default function fakeHistory (location) {
   }
 
   return {
-    getURL: function getURL () {
+    getURL: function getURL() {
       return history[history.length - 1]
     },
 
@@ -19,18 +19,18 @@ export default function fakeHistory (location) {
      * a) build functional tests that include a server with real pushState
      * b) unit test around this
      */
-    setURL: function setURL (url) {
+    setURL: function setURL(url) {
       // slick router + location-bar + window.location
       location.locationBar.location = {
         pathname: url,
-        search: ''
+        search: '',
       }
       // 'trigger' a popstate
       location.locationBar.checkUrl()
     },
 
-    restore: function restore () {
+    restore: function restore() {
       window.history.pushState = originalPushState
-    }
+    },
   }
 }

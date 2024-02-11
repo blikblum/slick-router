@@ -30,7 +30,7 @@ describe('links', () => {
     // the navigation, we must install this after the
     // link.intercept has been already called
     let navPreventedCount = 0
-    clickHandler = e => {
+    clickHandler = (e) => {
       navPreventedCount++
       e.preventDefault()
     }

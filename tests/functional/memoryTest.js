@@ -11,7 +11,7 @@ describe('app using memory', () => {
   beforeEach(() => {
     window.location.hash = ''
     app = new TestApp({
-      location: 'memory'
+      location: 'memory',
     })
     router = app.router
     return app.start()
@@ -23,11 +23,13 @@ describe('app using memory', () => {
 
   it('transition occurs when setURL', (done) => {
     router.use((transition) => {
-      transition.then(() => {
-        assert.equal(transition.path, '/about')
-        assert.equal($('.application .outlet').html(), 'This is about page')
-        done()
-      }).catch(done, done)
+      transition
+        .then(() => {
+          assert.equal(transition.path, '/about')
+          assert.equal($('.application .outlet').html(), 'This is about page')
+          done()
+        })
+        .catch(done, done)
     })
 
     router.location.setURL('/about')

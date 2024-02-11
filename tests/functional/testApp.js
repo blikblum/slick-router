@@ -2,11 +2,11 @@
 import $ from './nanodom'
 import { Router } from '../../lib/router'
 
-export default function TestApp (options) {
+export default function TestApp(options) {
   options = options || {}
 
   // create the router
-  const router = this.router = new Router(options)
+  const router = (this.router = new Router(options))
 
   // provide the route map
   router.map(function (route) {
@@ -27,28 +27,30 @@ export default function TestApp (options) {
     // this is a hook for 'performing'
     // actions upon entering this state
     activate: function () {
-      this.$view = $('<div class="application" style="margin: 100px; test-align: center; border: 10px solid #333;"></div>')
+      this.$view = $(
+        '<div class="application" style="margin: 100px; test-align: center; border: 10px solid #333;"></div>',
+      )
       this.$view.html('<h1>Slick Router Application</h1><div class="outlet"></div>')
       this.$outlet = this.$view.find('.outlet')
       this.$outlet.html('Welcome to this application')
       $(document.body).html(this.$view)
-    }
+    },
   }
 
   handlers.about = {
     activate: function () {
       this.parent.$outlet.html('This is about page')
-    }
+    },
   }
 
   handlers.faq = {
     activate: function (params, query) {
       this.parent.$outlet.html('FAQ. Sorted By: ' + query.sortBy)
-    }
+    },
   }
 
   handlers.posts = {
-    activate: function () {}
+    activate: function () {},
   }
 
   handlers['posts.filter'] = {
@@ -58,7 +60,7 @@ export default function TestApp (options) {
       } else {
         this.parent.parent.$outlet.html('Filter not found')
       }
-    }
+    },
   }
 
   router.use((transition) => {
