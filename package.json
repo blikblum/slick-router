@@ -13,7 +13,8 @@
     "format": "prettier --write .",
     "start": "web-dev-server --open examples/ --node-resolve",
     "test": "web-test-runner \"tests/**/*Test.js\" --node-resolve --puppeteer",
-    "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage"
+    "test:coverage": "web-test-runner \"tests/**/*Test.js\" --node-resolve --coverage",
+    "types": "tsc --project tsconfig.types.json"
   },
   "repository": {
     "type": "git",
@@ -61,7 +62,8 @@
     "lit-element": "^2.5.1",
     "path-to-regexp": "6.2.1",
     "prettier": "3.2.5",
-    "sinon": "^11.1.2"
+    "sinon": "^11.1.2",
+    "typescript": "^5.4.4"
   },
   "packageManager": "yarn@4.0.2"
 }
