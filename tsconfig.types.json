@@ -1,7 +1,7 @@
 {
   // Change this to match your project
   "include": [
-    "lib/logger.js",
+    "lib/wc-router.js",
     "lib/components",
     "lib/middlewares"
   ],

@@ -3,9 +3,9 @@
   "name": "slick-router",
   "version": "2.5.2",
   "description": "A powerful and flexible client side router",
-  "main": "./lib/router.js",
-  "module": "./lib/router.js",
-  "types": "./types/router.d.ts",
+  "main": "./lib/wc-router.js",
+  "module": "./lib/wc-router.js",
+  "types": "./types/wc-router.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "eslint --env browser && node tasks/build.js",
@@ -38,6 +38,10 @@
   ],
   "exports": {
     ".": {
+      "types": "./types/wc-router.d.ts",
+      "default": "./lib/wc-router.js"
+    },
+    "./core.js": {
       "types": "./types/router.d.ts",
       "default": "./lib/router.js"
     },

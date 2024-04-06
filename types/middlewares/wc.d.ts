@@ -24,6 +24,19 @@ export namespace wc {
     export { done };
 }
 export type Transition = import("../transition.js").Transition;
+export type WCRouteDef = {
+    name: string;
+    path: string;
+    component: string | Function;
+    properties?: {
+        [x: string]: PropertyHook | PropertyHook[];
+    };
+    reuse?: boolean;
+    beforeEnter?: (arg0: Transition) => Promise<boolean> | boolean;
+    beforeLeave?: (arg0: Transition) => Promise<boolean> | boolean;
+    afterEnter?: (arg0: Transition) => Promise<void> | void;
+    afterLeave?: (arg0: Transition) => Promise<void> | void;
+};
 export type PropertySetter = (value: any) => void;
 export type PropertyHook = {
     init?: (arg0: PropertySetter) => void;

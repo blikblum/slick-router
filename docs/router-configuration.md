@@ -7,7 +7,7 @@ A router instance must be configured at start of application.
 > An application should not have more than one instance.
 
 ```js
-import { Router } from 'slick-router'
+import { Router } from 'slick-router/core.js'
 const router = new Router(options)
 ```
 

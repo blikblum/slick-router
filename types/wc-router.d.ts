@@ -1,0 +1,17 @@
+export type WCRouteDef = import("./middlewares/wc.js").WCRouteDef;
+export type PropertyHook = import("./middlewares/wc.js").PropertyHook;
+/**
+ * @typedef {import("./middlewares/wc.js").WCRouteDef} WCRouteDef
+ * @typedef {import("./middlewares/wc.js").PropertyHook} PropertyHook
+ */
+export class Router extends CoreRouter {
+    constructor(options: any);
+}
+import { interceptLinks } from './router.js';
+import { fromParam } from './middlewares/wc.js';
+import { fromQuery } from './middlewares/wc.js';
+import { fromValue } from './middlewares/wc.js';
+import { getRouteEl } from './middlewares/wc.js';
+import { Router as CoreRouter } from './router.js';
+export { interceptLinks, fromParam, fromQuery, fromValue, getRouteEl };
+//# sourceMappingURL=wc-router.d.ts.map

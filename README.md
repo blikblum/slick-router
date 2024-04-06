@@ -4,25 +4,27 @@ Slick Router is a powerful, flexible router that translates URL changes into rou
 
 ## Features
 
-- Can be used with any view and data framework
+- Out of the box support for Web Components:
+  - Streamlined support for code spliting and lazy loading
+  - Expose route state (query, params) to components
+  - Property hooks to map global state to component props
+  - Declarative handling of router links
 - Can nest routes allowing to create nested UI and/or state
 - Route transition is a first class citizen - abort, pause, resume, retry
 - Generate links in a systematic way, e.g. `router.generate('commit', {sha: '1e2760'})`
 - Use pushState or hashchange for URL change detection
-- Define path dynamic segments (uses path-to-regexp under the hood)
-- Supports custom query string parser
+- Define path dynamic segments
 - Trigger router navigate programatically
 - With builtin middlewares/components:
-  - Render nested UI using web components
-  - Streamlined support for code spliting and lazy loading
-  - Expose route state to components
-  - Declarative handling of router links
-  - Allow to animate route transitions
+  - components/animated-outlet: enable animation on route transitions
+  - components/router-links: handle route related links state
+  - middlewares/wc: advanced Web Component rendering and lifecycle (included in default export)
+  - middlewares/router-links: handle route related links state (included in default export)
+  - middlewares/events: fires route events on window
 
 ## Installation
 
-The main library size including regexparam dependency is ~12kB minified (without gzip compression).
-With wc and routerLinks middlewares the size increases to ~17kb. AnimatedOutlet web component, which can be used independent from the router, has a 2.5kb size.
+The default export (including web component support and routerLinks) is 17kb. The core Router class is ~12kB minified (without gzip compression). AnimatedOutlet web component, which can be used independent from the router, has a 2.5kb size.
 See [webpack test project](examples/tree-shaking) for more results.
 
     $ npm install --save slick-router
@@ -45,11 +47,22 @@ See [webpack test project](examples/tree-shaking) for more results.
 ## Builtin components
 
 - [animated-outlet](docs/components/animated-outlet.md) (enable animation on route transitions)
+- [router-links](docs/middlewares/routerlinks.md) (handle route related links state)
 
 ## Usage
 
+### With Web Components
+
+The default Router class comes with Web Components and router links support.
+
 ```js
 import { Router } from 'slick-router'
+
+function checkAuth(transition) {
+  if (!!localStorage.getItem('token')) {
+    transition.redirectTo('login')
+  }
+}
 
 // route tree definition
 const routes = function (route) {
@@ -57,7 +70,7 @@ const routes = function (route) {
     route('feed', { path: '' })
     route('messages')
     route('status', { path: ':user/status/:id' })
-    route('profile', { path: ':user', private: true }, function () {
+    route('profile', { path: ':user', beforeEnter: checkAuth }, function () {
       route('profile.lists', { component: 'profile-lists' })
       route('profile.edit', { component: 'profile-edit' })
     })
@@ -69,19 +82,59 @@ var router = new Router({
   routes,
 })
 
-// renders a web component defined through component option
-// or using route name suffixed with "-view"
-// for advanced features use builtin wc middleware
-router.use(async function render(transition) {
-  const routes = transition.routes
-  for (const route of routes) {
-    const parent = routes[routes.indexOf(route) - 1]
-    const tagName = route.options.component || `${route.name}-view`
-    const el = (route.el = document.createElement(tagName))
-    const containerEl = parent ? parent.el.querySelector('.outlet') : document.body
-    containerEl.appendChild(el)
-    // supports lazy rendering e.g. LitElement and SkateJS
-    await (el.updateComplete || Promise.resolve())
+// start listening to URL changes
+router.listen()
+```
+
+### Custom middlewares
+
+Is possible to create a router with customized behavior by using the core Router with middlewares.
+
+Check how to create middlewares in the [Router Configuration Guide](docs/router-configuration.md).
+
+```js
+import { Router } from 'slick-router/core.js'
+
+// create a router similar to page.js - https://github.com/visionmedia/page.js
+
+const user = {
+  list() {},
+  async load() {},
+  show() {},
+  edit() {},
+}
+
+const routes = [
+  {
+    name: 'users',
+    path: '/',
+    handler: user.list,
+  },
+  {
+    name: 'user.show',
+    path: '/user/:id/edit',
+    handler: [user.load, user.show],
+  },
+  ,
+  {
+    name: 'user.edit',
+    path: '/user/:id/edit',
+    handler: [user.load, user.edit],
+  },
+]
+
+const router = new Router({ routes })
+
+function normalizeHandlers(handlers) {
+  return Array.isArray(handlers) ? handlers : [handlers]
+}
+
+router.use(async function (transition) {
+  for (const route of transition.routes) {
+    const handlers = normalizeHandlers(route.options.handler)
+    for (const handler of handlers) {
+      await handler(transition)
+    }
   }
 })
 
@@ -132,6 +185,6 @@ Slick Router works in all modern browsers. No IE support.
 
 ---
 
-Copyright (c) 2023 Luiz Américo Pereira Câmara
+Copyright (c) 2024 Luiz Américo Pereira Câmara
 
 Copyright (c) 2017 Karolis Narkevicius
