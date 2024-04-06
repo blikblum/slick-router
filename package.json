@@ -3,8 +3,9 @@
   "name": "slick-router",
   "version": "2.5.2",
   "description": "A powerful and flexible client side router",
-  "main": "slick-router.js",
-  "module": "slick-router.js",
+  "main": "./lib/router.js",
+  "module": "./lib/router.js",
+  "types": "./types/router.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "eslint --env browser && node tasks/build.js",
@@ -34,22 +35,32 @@
     "hierarchical",
     "nested"
   ],
+  "exports": {
+    ".": {
+      "types": "./types/router.d.ts",
+      "default": "./lib/router.js"
+    },
+    "./components/*.js": {
+      "types": "./types/components/*.d.ts",
+      "default": "./lib/components/*.js"
+    },
+    "./middlewares/*.js": {
+      "types": "./types/middlewares/*.d.ts",
+      "default": "./lib/middlewares/*.js"
+    }
+  },
   "devDependencies": {
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server": "^0.4.2",
-    "@web/dev-server-import-maps": "^0.2.0",
     "@web/test-runner": "^0.18.0",
     "@web/test-runner-puppeteer": "^0.15.0",
     "chai": "^4.3.4",
-    "del": "^6.0.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "jquery": "^3.6.0",
     "lit-element": "^2.5.1",
     "path-to-regexp": "6.2.1",
     "prettier": "3.2.5",
-    "rollup": "^2.52.4",
-    "rollup-plugin-cpy": "^2.0.1",
     "sinon": "^11.1.2"
   },
   "packageManager": "yarn@4.0.2"
