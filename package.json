@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "slick-router",
   "version": "3.0.0",
   "description": "A powerful and flexible client side router",
@@ -54,6 +53,13 @@
       "default": "./lib/middlewares/*.js"
     }
   },
+  "files": [
+    "lib",
+    "types",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server": "^0.4.2",
