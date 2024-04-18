@@ -2,12 +2,16 @@
 
 ### Unreleased
 
+### [v3.0.0] - 2024-04-18
+
 - make patternCompiler configurable
 - regexparam as default pattern compiler (replace path-to-regexp by regexparam)
 - add router-links component
 - remove withRouterLinks decorator
 - add customizable property hooks
 - replace paramValue and queryValue by withParam and withQuery hooks
+- default entry point exports a Router with wc and routerLinks middlewares
+- basic typescript support
 
 ### [v2.5.2] - 2021-06-30
 
