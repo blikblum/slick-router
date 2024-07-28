@@ -1,8 +1,10 @@
 export type WCRouteDef = import("./middlewares/wc.js").WCRouteDef;
 export type PropertyHook = import("./middlewares/wc.js").PropertyHook;
+export type Transition = import("./transition.js").Transition;
 /**
  * @typedef {import("./middlewares/wc.js").WCRouteDef} WCRouteDef
  * @typedef {import("./middlewares/wc.js").PropertyHook} PropertyHook
+ * @typedef {import("./transition.js").Transition} Transition
  */
 export class Router extends CoreRouter {
     constructor(options: any);

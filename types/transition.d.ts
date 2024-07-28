@@ -13,10 +13,10 @@ export type Transition = {
     params: any;
     query: any;
     prev: TransitionData;
-    redirectTo: Function;
-    retry: Function;
-    cancel: Function;
-    followRedirects: Function;
+    redirectTo: (name: string, params?: any, query?: any) => Transition;
+    retry: (name: string, params?: any, query?: any) => Transition;
+    cancel: (error: string | Error) => void;
+    followRedirects: () => Promise<any>;
     then: Function;
     catch: Function;
     noop: boolean;
