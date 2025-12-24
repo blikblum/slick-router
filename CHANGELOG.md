@@ -2,6 +2,8 @@
 
 ### Unreleased
 
+- add routerLinks lit directive
+
 ### [v3.0.0] - 2024-04-18
 
 - make patternCompiler configurable
