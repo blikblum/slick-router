@@ -1,9 +1,7 @@
 import $ from './nanodom'
 import TestApp from './testApp'
-import 'chai/chai.js'
 
-const { assert } = window.chai
-const { describe, it, beforeEach, afterEach } = window
+import { assert } from 'chai'
 
 let app, router
 

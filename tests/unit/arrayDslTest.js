@@ -1,8 +1,7 @@
 import dsl from '../../lib/array-dsl'
-import 'chai/chai.js'
 
-const { assert } = window.chai
-const { describe, it } = window
+import { assert } from 'chai'
+
 
 describe('array-dsl', () => {
   it('simple route map', () => {

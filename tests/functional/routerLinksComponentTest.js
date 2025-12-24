@@ -5,7 +5,7 @@ import { Router } from '../../lib/router'
 import { wc } from '../../lib/middlewares/wc'
 import { routerLinks } from '../../lib/middlewares/router-links'
 import { defineCE, expect } from '@open-wc/testing'
-import { LitElement, html } from 'lit-element'
+import { LitElement, html } from 'lit'
 import sinon from 'sinon'
 import 'jquery'
 

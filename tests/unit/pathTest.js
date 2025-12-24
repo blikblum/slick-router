@@ -1,11 +1,10 @@
 import qs from '../../lib/qs'
 import * as Path from '../../lib/path'
-import 'chai/chai.js'
+
 import { patternCompiler as defaultPatternCompiler } from '../../lib/patternCompiler.js'
 import { patternCompiler as pathToRegexPatternCompiler } from './pathToRegexPatternCompiler.js'
 
-const { assert } = window.chai
-const { describe, it } = window
+import { assert } from 'chai'
 
 function testExtractParamNames(patternCompiler) {
   assert.deepEqual(Path.extractParamNames('a/b/c', patternCompiler), [])

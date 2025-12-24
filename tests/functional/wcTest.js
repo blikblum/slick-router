@@ -1,13 +1,11 @@
 /* eslint-disable no-return-assign, no-unused-expressions */
-import { LitElement, html } from 'lit-element'
-import 'chai/chai.js'
+import { LitElement, html } from 'lit'
+
 import { pick } from '../../lib/utils'
 import { Router } from '../../lib/router'
 import { wc, fromQuery, fromParam } from '../../lib/middlewares/wc'
 import { expect, defineCE } from '@open-wc/testing'
 import { spy, stub } from 'sinon'
-
-const { describe, it, beforeEach, afterEach } = window
 
 const parentBeforeEnter = stub()
 const grandchildBeforeEnter = spy()

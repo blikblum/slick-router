@@ -1,7 +1,6 @@
 import { clone, pick, isEqual, extend } from '../../lib/utils'
-import 'chai/chai.js'
 
-const { assert } = window.chai
+import { assert } from 'chai'
 const { describe, it } = window
 
 describe('dash', () => {

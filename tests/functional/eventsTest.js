@@ -1,12 +1,9 @@
 /* eslint-disable no-unused-expressions */
 
-import 'chai/chai.js'
 import { Router } from '../../lib/router'
 import { events } from '../../lib/middlewares/events'
 import { expect } from '@open-wc/testing'
 import { spy } from 'sinon'
-
-const { describe, it, beforeEach, afterEach } = window
 
 describe('events middleware', () => {
   const routes = (route) => {

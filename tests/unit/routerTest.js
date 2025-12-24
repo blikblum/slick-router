@@ -3,10 +3,8 @@ import BrowserLocation from '../../lib/locations/browser'
 import { extend } from '../../lib/utils'
 import { Router, interceptLinks } from '../../lib/router'
 import sinon from 'sinon'
-import 'chai/chai.js'
 
-const { assert } = window.chai
-const { describe, it, beforeEach, afterEach } = window
+import { assert } from 'chai'
 
 const delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
 

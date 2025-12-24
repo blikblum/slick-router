@@ -1,8 +1,7 @@
 import $ from '../functional/nanodom'
 import { intercept } from '../../lib/links'
-import 'chai/chai.js'
 
-const { assert } = window.chai
+import { assert } from 'chai'
 const { describe, it, beforeEach, afterEach } = window
 let $container
 let clickHandler

@@ -51,6 +51,10 @@
     "./middlewares/*.js": {
       "types": "./types/middlewares/*.d.ts",
       "default": "./lib/middlewares/*.js"
+    },
+    "./lit/*.js": {
+      "types": "./types/lit/*.d.ts",
+      "default": "./lib/lit/*.js"
     }
   },
   "files": [
@@ -62,18 +66,18 @@
   ],
   "devDependencies": {
     "@open-wc/testing": "^4.0.0",
-    "@web/dev-server": "^0.4.2",
-    "@web/test-runner": "^0.18.0",
-    "@web/test-runner-puppeteer": "^0.15.0",
-    "chai": "^4.3.4",
+    "@web/dev-server": "^0.4.6",
+    "@web/test-runner": "^0.20.2",
+    "@web/test-runner-puppeteer": "^0.18.0",
+    "chai": "^6.2.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
-    "jquery": "^3.6.0",
-    "lit-element": "^2.5.1",
+    "jquery": "^3.7.1",
+    "lit": "^3.3.2",
     "path-to-regexp": "6.2.1",
     "prettier": "3.2.5",
-    "sinon": "^11.1.2",
-    "typescript": "^5.4.4"
+    "sinon": "^21.0.1",
+    "typescript": "^5.9.3"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.12.0"
 }
