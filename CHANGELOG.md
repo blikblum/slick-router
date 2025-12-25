@@ -3,6 +3,7 @@
 ### Unreleased
 
 - add routerLinks lit directive
+- allow `generate` to be called before `listen`
 
 ### [v3.0.0] - 2024-04-18
 

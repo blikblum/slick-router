@@ -279,11 +279,25 @@ describe('Slick Router', () => {
     assert.equal(url, '#application/foo/status/1?withReplies=true')
   })
 
+  it('#generate should work before listen is called', () => {
+    router.map(routes)
+    const url = router.generate('status', { user: 'foo', id: 1 }, { withReplies: true })
+    assert.equal(url, '#application/foo/status/1?withReplies=true')
+  })
+
   if (window.history && window.history.pushState) {
     it('#generate when pushState: true and root != "/" in modern browsers', () => {
-      router.options.pushState = true
-      router.options.root = '/foo/bar'
+      router.location.options.pushState = true
+      router.location.options.root = '/foo/bar'
       router.map(routes).listen()
+      const url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
+      assert.equal(url, '/foo/bar/application/usr/status/1?withReplies=true')
+    })
+
+    it('#generate when pushState: true before listen is called', () => {
+      router.location.options.pushState = true
+      router.location.options.root = '/foo/bar'
+      router.map(routes)
       const url = router.generate('status', { user: 'usr', id: 1 }, { withReplies: true })
       assert.equal(url, '/foo/bar/application/usr/status/1?withReplies=true')
     })
