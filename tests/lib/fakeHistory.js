@@ -21,12 +21,12 @@ export default function fakeHistory(location) {
      */
     setURL: function setURL(url) {
       // slick router + location-bar + window.location
-      location.locationBar.location = {
+      location.history.location = {
         pathname: url,
         search: '',
       }
       // 'trigger' a popstate
-      location.locationBar.checkUrl()
+      location.history.checkUrl()
     },
 
     restore: function restore() {
