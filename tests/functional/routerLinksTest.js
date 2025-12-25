@@ -185,4 +185,33 @@ describe('bindRouterLinks', () => {
       })
     })
   })
+
+  describe('with custom event', function () {
+    let unbindCustomEvent
+    beforeEach(function () {
+      unbindCustomEvent = bindRouterLinks(document.body, { event: 'custom-event' })
+    })
+
+    afterEach(function () {
+      unbindCustomEvent()
+    })
+
+    it('should call transitionTo when a non anchor tags with route attribute is clicked', function () {
+      return router.transitionTo('parent').then(async function () {
+        const spy = sinon.spy(router, 'transitionTo')
+        const event = new CustomEvent('custom-event', { bubbles: true })
+
+        $('#div-rootlink1')[0].dispatchEvent(event)
+        expect(spy).to.be.calledOnce.and.calledWithExactly('root', { id: '1' }, {})
+
+        spy.resetHistory()
+        $('#div-grandchildlink')[0].dispatchEvent(event)
+        expect(spy).to.be.calledOnce.and.calledWithExactly('grandchild', {}, { name: 'test' })
+
+        spy.resetHistory()
+        $('#innerparent')[0].dispatchEvent(event)
+        expect(spy).to.be.calledOnce.and.calledWithExactly('parent', {}, {})
+      })
+    })
+  })
 })
