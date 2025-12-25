@@ -1,5 +1,5 @@
 .yarn
-examples/**
+
 docs/**
 build/**
 lib/locations/location-bar.js

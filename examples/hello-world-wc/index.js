@@ -1,6 +1,4 @@
 import { Router } from 'slick-router'
-import { wc } from 'slick-router/middlewares/wc.js'
-import { routerLinks } from 'slick-router/middlewares/router-links.js'
 import { events } from 'slick-router/middlewares/events.js'
 import { AnimatedOutlet, setDefaultAnimation, AnimateCSS } from 'slick-router/components/animated-outlet.js'
 import './components.js'
@@ -30,9 +28,7 @@ router.map((route) => {
   })
 })
 
-// install middleware that will handle transitions
-router.use(wc)
-router.use(routerLinks)
+// install middleware that will trigger events
 router.use(events)
 
 // start listening to browser's location bar changes
