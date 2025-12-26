@@ -1,8 +1,9 @@
 import { Router } from 'slick-router'
-import { wc, queryValue, paramValue } from 'slick-router/middlewares/wc'
+import { fromQuery, fromParam } from 'slick-router/middlewares/wc.js'
 
 const router = new Router()
-router.use(wc)
 
-queryValue()
-paramValue()
+fromQuery()
+fromParam()
+
+router.listen()
