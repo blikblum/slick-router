@@ -1,8 +1,14 @@
 import { html, LitElement } from 'lit'
-import { routerLinks } from 'slick-router/lit/routerLinks.js'
+import { customElement } from 'lit/decorators.js'
 import { router } from './router'
+import './pages/application'
+import './pages/home'
+import './pages/messages'
+import './pages/profile'
+import './pages/profile-index'
 
-class LitDemoApp extends LitElement {
+@customElement('lit-demo-app')
+export class LitDemoApp extends LitElement {
   protected createRenderRoot(): HTMLElement | DocumentFragment {
     return this
   }
@@ -12,23 +18,6 @@ class LitDemoApp extends LitElement {
   }
 
   protected render() {
-    return html`<div class="App">
-      <div class="App-header">
-        <h1>Application</h1>
-
-        <ul class="Nav" ${routerLinks()}>
-          <li class="Nav-item"><a route="home">Home</a></li>
-          <li class="Nav-item"><a route="messages">Messages</a></li>
-          <li class="Nav-item"><a route="profile.index" param-user="scrobblemuch">Profile</a></li>
-        </ul>
-      </div>
-      <router-outlet animation></router-outlet>
-
-      <div class="App-footer">
-        Enter Animation {enterAnimationSelect} Leave Animation {leaveAnimationSelect}
-      </div>
-    </div>`
+    return html`<application-view></application-view>`
   }
 }
-
-customElements.define('lit-demo-app', LitDemoApp)

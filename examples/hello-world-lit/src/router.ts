@@ -6,6 +6,12 @@ import {
   AnimateCSS,
 } from 'slick-router/components/animated-outlet.js'
 
+import './pages/application'
+import './pages/home'
+import './pages/messages'
+import './pages/profile'
+import './pages/profile-index'
+
 setDefaultAnimation(AnimateCSS, { enter: 'rotateInDownRight', leave: 'hinge' })
 
 customElements.define('router-outlet', AnimatedOutlet)
