@@ -1,4 +1,4 @@
-import { Router } from 'slick-router'
+import { Router, type Transition } from 'slick-router'
 import { events } from 'slick-router/middlewares/events.js'
 import {
   AnimatedOutlet,
@@ -36,3 +36,13 @@ router.use(events)
 window.addEventListener('router-transition', function (e) {
   console.log('router.transition', e.detail.transition.pathname)
 })
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'router-outlet': AnimatedOutlet
+  }
+
+  interface WindowEventMap {
+    'router-transition': CustomEvent<{ transition: Transition }>
+  }
+}

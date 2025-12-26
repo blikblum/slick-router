@@ -4,7 +4,7 @@
 /**
  * @callback registerRoute
  * @param {string} name
- * @param {Object} options
+ * @param {Object} [options]
  * @param {routeCallback} [childrenCallback]
  */
 /**
@@ -18,6 +18,6 @@
  */
 export default function functionDsl(callback: routeCallback): Route[];
 export type Route = import("./router.js").Route;
-export type registerRoute = (name: string, options: any, childrenCallback?: routeCallback) => any;
+export type registerRoute = (name: string, options?: any, childrenCallback?: routeCallback) => any;
 export type routeCallback = (route: registerRoute) => any;
 //# sourceMappingURL=function-dsl.d.ts.map

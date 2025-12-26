@@ -1,13 +1,31 @@
-export type routeCallback = import('./function-dsl.js').routeCallback;
-export type RouteDef = import('./array-dsl.js').RouteDef;
-export type Transition = import('./transition.js').Transition;
+export type routeCallback = import("./function-dsl.js").routeCallback;
+export type RouteDef = import("./array-dsl.js").RouteDef;
+export type Transition = import("./transition.js").Transition;
 export type Route = {
     name: string;
     path: string;
     options: any;
     routes: Route[];
 };
-export type LocationParam = any | 'browser' | 'memory';
+export type RouterLocation = {
+    formatURL: (url: string) => string;
+    removeRoot: (url: string) => string;
+    setURL: (path: string, options?: any) => void;
+    replaceURL: (path: string, options?: any) => void;
+    onChange: (callback: (url: string) => void) => void;
+    getURL: () => string;
+    start: (path?: string) => void;
+};
+export type LocationParam = RouterLocation | "browser" | "memory";
+export type RouterMiddleware = {
+    create?: (router: Router) => void;
+    destroy?: () => void;
+    resolve?: (transition: Transition) => void;
+    before?: (transition: Transition) => void;
+    after?: (transition: Transition) => void;
+    error?: (transition: Transition, error: any) => void;
+    cancel?: (transition: Transition, error: any) => void;
+};
 export type RouterOptions = {
     routes?: routeCallback | RouteDef[];
     location?: LocationParam;
@@ -15,29 +33,6 @@ export type RouterOptions = {
     qs?: any;
     patternCompiler?: any;
 };
-/**
- * @typedef {import('./function-dsl.js').routeCallback} routeCallback
- * @typedef {import('./array-dsl.js').RouteDef} RouteDef
- * @typedef {import('./transition.js').Transition} Transition
- *
- * @typedef Route
- * @property {String} name
- * @property {String} path
- * @property {Object} options
- * @property {Route[]} routes
- *
-
- * @typedef {Object | 'browser' | 'memory'} LocationParam
- *
- *
- * @typedef RouterOptions
- * @property {routeCallback | RouteDef[]} [routes]
- * @property {LocationParam} [location]
- * @property {Boolean} [logError]
- * @property {Object} [qs]
- * @property {Object} [patternCompiler]
- *
- */
 export class Router {
     /**
      * @param {RouterOptions} [options]
@@ -55,13 +50,18 @@ export class Router {
         };
         patternCompiler: typeof patternCompiler;
     } & RouterOptions;
+    location: RouterLocation;
     /**
      * Add a middleware
-     * @param  {Function} middleware
+     * @param  {((transition: Transition) => void) | RouterMiddleware} middleware
+     * @param  {object} [options]
+     * @param  {number} [options.at] position to insert the middleware
      * @return {Router}
      * @api public
      */
-    use(middleware: Function, options?: {}): Router;
+    use(middleware: ((transition: Transition) => void) | RouterMiddleware, options?: {
+        at?: number;
+    }): Router;
     /**
      * Add the route map
      * @param  {routeCallback | RouteDef[]} routes
@@ -79,7 +79,6 @@ export class Router {
      * @api public
      */
     listen(path?: string): Transition;
-    location: any;
     /**
      * Transition to a different route. Passe in url or a route name followed by params and query
      * @param  {String} name     url or route name
@@ -150,16 +149,6 @@ export class Router {
      * @returns {Transition}
      */
     dispatch(path: string): Transition;
-    /**
-     * Create the default location.
-     * This is used when no custom location is passed to
-     * the listen call.
-     * @param  {LocationParam} path
-     * @return {Object} location
-     *
-     * @api private
-     */
-    createLocation(path: LocationParam): any;
     log(...args: any[]): void;
     logError(...args: any[]): void;
 }

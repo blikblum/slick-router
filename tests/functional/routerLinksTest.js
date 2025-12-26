@@ -189,7 +189,12 @@ describe('bindRouterLinks', () => {
   describe('with custom event', function () {
     let unbindCustomEvent
     beforeEach(function () {
-      unbindCustomEvent = bindRouterLinks(document.body, { event: 'custom-event' })
+      unbindCustomEvent = bindRouterLinks(document.body, {
+        event: 'custom-event',
+        params: (_route, el) => {
+          if (el.id === 'a-rootlink3') return { id: 'x' }
+        },
+      })
     })
 
     afterEach(function () {

@@ -15,9 +15,7 @@ export class GenericCSS extends AnimationHook {
 export class AnimateCSS extends AnimationHook {
 }
 export class AnimatedOutlet extends HTMLElement {
-    appendChild(el: any): void;
-    appending: any;
-    removeChild(el: any): void;
+    appending: T;
     removing: any;
 }
 //# sourceMappingURL=animated-outlet.d.ts.map

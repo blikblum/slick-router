@@ -9,10 +9,11 @@ export namespace routerLinks {
     export { create };
     export { done };
 }
-export type RoutePropCallback = (routeName: string, routeEl: HTMLElement) => any;
+export type RoutePropCallback = (routeName: string, routeEl: HTMLElement) => Record<string, any>;
 export type RouterLinksOptions = {
-    params?: any | RoutePropCallback;
-    query?: any | RoutePropCallback;
+    params?: Record<string, any> | RoutePropCallback;
+    query?: Record<string, any> | RoutePropCallback;
+    event?: string;
 };
 declare function create(instance: any): void;
 declare function done(): void;

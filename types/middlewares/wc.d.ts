@@ -28,14 +28,13 @@ export type WCRouteDef = {
     name: string;
     path: string;
     component: string | Function;
-    properties?: {
-        [x: string]: PropertyHook | PropertyHook[];
-    };
+    properties?: Record<string, PropertyHook | PropertyHook[]>;
     reuse?: boolean;
     beforeEnter?: (arg0: Transition) => Promise<boolean> | boolean;
     beforeLeave?: (arg0: Transition) => Promise<boolean> | boolean;
     afterEnter?: (arg0: Transition) => Promise<void> | void;
     afterLeave?: (arg0: Transition) => Promise<void> | void;
+    children?: WCRouteDef[];
 };
 export type PropertySetter = (value: any) => void;
 export type PropertyHook = {

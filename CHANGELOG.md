@@ -5,6 +5,7 @@
 - add routerLinks lit directive
 - allow `generate` to be called before `listen`
 - allow customization of router links click event
+- improve typescript definitions
 
 ### [v3.0.0] - 2024-04-18
 

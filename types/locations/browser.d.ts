@@ -1,12 +1,30 @@
 export default BrowserLocation;
+export type BrowserLocationOptions = {
+    /**
+     * Whether to use pushState or hashchange
+     */
+    pushState?: boolean;
+    /**
+     * The root URL path to use when using pushState
+     */
+    root?: string;
+};
+/**
+ * @typedef BrowserLocationOptions
+ * @property {boolean} [pushState=false] Whether to use pushState or hashchange
+ * @property {string} [root='/'] The root URL path to use when using pushState
+ */
 declare class BrowserLocation {
-    constructor(options?: {});
+    /**
+     * @param {BrowserLocationOptions} options
+     */
+    constructor(options?: BrowserLocationOptions);
     path: any;
     options: {
         pushState: boolean;
         root: string;
-    };
-    locationBar: LocationBar;
+    } & BrowserLocationOptions;
+    history: History;
     /**
      * Get the current URL
      */
@@ -23,10 +41,10 @@ declare class BrowserLocation {
     replaceURL(path: any, options?: {}): void;
     /**
      * Setup a URL change handler
-     * @param  {Function} callback
+     * @param  {(url: string) => void} callback
      */
-    onChange(callback: Function): void;
-    changeCallback: Function;
+    onChange(callback: (url: string) => void): void;
+    callback: (url: string) => void;
     /**
      * Given a path, generate a URL appending root
      * if pushState is used and # if hash state is used
@@ -55,6 +73,7 @@ declare class BrowserLocation {
       @private
      */
     private handleURL;
+    start(path: any): void;
 }
-import LocationBar from './location-bar.js';
+import { History } from './location-bar.js';
 //# sourceMappingURL=browser.d.ts.map
