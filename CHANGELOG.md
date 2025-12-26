@@ -2,6 +2,8 @@
 
 ### Unreleased
 
+### [v3.1.0] - 2025-12-25
+
 - add routerLinks lit directive
 - allow `generate` to be called before `listen`
 - allow customization of router links click event
